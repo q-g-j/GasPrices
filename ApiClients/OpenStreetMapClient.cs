@@ -43,7 +43,7 @@ namespace ApiClients
 
         public async Task<Address?> GetAddressAsync(Coords coords)
         {
-            Address? address = null;
+            Address? address;
 
             string url = string.Format(CultureInfo.InvariantCulture, "https://nominatim.openstreetmap.org/reverse?lat={0}&lon={1}&format=geocodejson&addressdetails=1", coords.Latitude, coords.Longitude);
             string result = await _httpClientRepository.GetAsync(url);

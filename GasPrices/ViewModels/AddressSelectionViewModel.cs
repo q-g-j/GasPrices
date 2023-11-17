@@ -31,9 +31,6 @@ namespace GasPrices.ViewModels
         private Settings? _settings = null;
 
         [ObservableProperty]
-        private bool isDebug = true;
-
-        [ObservableProperty]
         private string street = string.Empty;
 
         [ObservableProperty]
@@ -77,9 +74,6 @@ namespace GasPrices.ViewModels
 
         [ObservableProperty]
         private string errorText = string.Empty;
-
-        [ObservableProperty]
-        private string debugText = string.Empty;
 
         public AddressSelectionViewModel(
             NavigationService<SettingsViewModel> settingsNavigationService,
@@ -150,7 +144,7 @@ namespace GasPrices.ViewModels
             GeolocationButtonIsEnabled = false;
             ProgressRingIsActive = true;
 
-            Coords? coords = null;
+            Coords? coords;
             Location? location = null;
 
             try
@@ -160,22 +154,18 @@ namespace GasPrices.ViewModels
             catch (FeatureNotSupportedException fnsEx)
             {
                 // Handle not supported on device exception
-                DebugText = fnsEx.Message + ", fnsEx" + coords;
             }
             catch (FeatureNotEnabledException fneEx)
             {
                 // Handle not enabled on device exception
-                DebugText = fneEx.Message + ", fneEx" + coords;
             }
             catch (PermissionException pEx)
             {
                 // Handle permission exception
-                DebugText = pEx.Message + ", pEx" + coords;
             }
             catch (Exception ex)
             {
                 // Unable to get location
-                DebugText = ex.Message + ", ex" + coords;
             }
             finally
             {
@@ -219,21 +209,28 @@ namespace GasPrices.ViewModels
                 return;
             }
 
-            _searchResultStore.Address = address;
             _searchResultStore.Stations = stations;
-            _searchResultStore.SelectedGasType = GasTypeSelectedItem;
-            _searchResultStore.Distance = Distance;
+            SaveCurrentAddress();
             _resultsNavigationService.Navigate();
         }
 
         [RelayCommand]
         public void OpenSettingsCommand()
         {
+            SaveCurrentAddress();
             _settingsNavigationService.Navigate();
         }
 
         public override void Dispose()
         {
+        }
+
+        private void SaveCurrentAddress()
+        {
+            var address = new Address(Street, City, PostalCode, Country);
+            _searchResultStore.Address = address;
+            _searchResultStore.SelectedGasType = GasTypeSelectedItem;
+            _searchResultStore.Distance = Distance;
         }
     }
 }

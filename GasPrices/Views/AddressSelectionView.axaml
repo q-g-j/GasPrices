@@ -23,7 +23,7 @@
 		<Grid
 			Grid.Row="0"
 			ColumnDefinitions="*"
-			RowDefinitions="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, *, auto">
+			RowDefinitions="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, *, auto">
 
 			<!-- Geolocation button: -->
 			<Button
@@ -179,7 +179,7 @@
 				</TextBlock>
 			</Grid>
 
-			<!-- Search button: -->
+			<!-- Settings button: -->
 			<Button
 				Grid.Column="0"
 				Grid.Row="13"
@@ -190,11 +190,5 @@
 				Command="{Binding OpenSettingsCommand}">
 			</Button>
 		</Grid>
-		<TextBlock
-			x:Name="DebugTextBlock"
-			Grid.Row="1"
-			Text="{Binding DebugText}"
-			IsVisible="{Binding IsDebug}">
-		</TextBlock>
 	</Grid>
 </UserControl>

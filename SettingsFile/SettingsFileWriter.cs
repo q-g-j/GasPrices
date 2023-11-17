@@ -32,8 +32,15 @@ namespace SettingsFile.SettingsFile
             {
                 var settingsJson = JsonConvert.SerializeObject(settings, Formatting.Indented);
 
-                using var streamWriter = new StreamWriter(_settingsFileFullPath);
-                await streamWriter.WriteAsync(settingsJson);
+                try
+                {
+                    using var streamWriter = new StreamWriter(_settingsFileFullPath);
+                    await streamWriter.WriteAsync(settingsJson);
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
         }
     }

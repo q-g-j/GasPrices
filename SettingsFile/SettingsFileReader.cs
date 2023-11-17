@@ -27,11 +27,16 @@ namespace SettingsFile.SettingsFile
                 return settings;
             }
 
-            using (var streamReader = new StreamReader(_settingsFileFullPath))
+            try
             {
+                using var streamReader = new StreamReader(_settingsFileFullPath);
                 var settingsJson = await streamReader.ReadToEndAsync();
 
                 settings = JsonConvert.DeserializeObject<Settings>(settingsJson);
+            }
+            catch (Exception ex)
+            {
+
             }
 
             return settings;
