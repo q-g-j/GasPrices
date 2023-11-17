@@ -53,6 +53,9 @@ namespace GasPrices.ViewModels
         private bool saveButtonIsEnabled = false;
 
         [ObservableProperty]
+        private string noticeTitleText = string.Empty;
+
+        [ObservableProperty]
         private string noticeText = string.Empty;
 
         [ObservableProperty]
@@ -71,12 +74,14 @@ namespace GasPrices.ViewModels
             {
                 await Task.Run(() =>
                 {
+                    NoticeTitleText = "Fehler:";
                     NoticeText = "Der API-Schlüssel wurde nicht angenommen!";
                     Dispatcher.UIThread.Invoke(() =>
                         NoticeTextColor = new SolidColorBrush(Color.Parse("Orange")));
                     NoticeTextIsVisible = true;
                     Thread.Sleep(2000);
                     NoticeTextIsVisible = false;
+                    NoticeTitleText = string.Empty;
                     NoticeText = string.Empty;
                 });
             }
@@ -86,12 +91,14 @@ namespace GasPrices.ViewModels
 
                 await Task.Run(() =>
                 {
+                    NoticeTitleText = "Erfolg:";
                     NoticeText = "Der API-Schlüssel wurde angenommen!";
                     Dispatcher.UIThread.Invoke(() =>
                         NoticeTextColor = new SolidColorBrush(Color.Parse("Green")));
                     NoticeTextIsVisible = true;
                     Thread.Sleep(2000);
                     NoticeTextIsVisible = false;
+                    NoticeTitleText = string.Empty;
                     NoticeText = string.Empty;
                 });
             }

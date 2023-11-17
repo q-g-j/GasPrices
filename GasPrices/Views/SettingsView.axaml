@@ -37,7 +37,7 @@
 				Grid.Row="0"
 				FontSize="20"
 				FontWeight="DemiBold"
-				Text="Fehler:"
+				Text="{Binding NoticeTitleText}"
 				Foreground="{Binding NoticeTextColor}"
 				Margin="0, 0, 0, 20">
 			</TextBlock>
