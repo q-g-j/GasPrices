@@ -1,0 +1,34 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-android",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "--no-restore",
+                "${workspaceFolder}/GasPrices.Android/GasPrices.Android.csproj",
+                "-p:TargetFramework=net7.0-android",
+                "-p:Configuration=Debug"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run-debug-android",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "build",
+                "--no-restore",
+                "-t:Run",
+                "${workspaceFolder}/GasPrices.Android/GasPrices.Android.csproj",
+                "-p:TargetFramework=net7.0-android",
+                "-p:Configuration=Debug",
+                "-p:AndroidAttachDebugger=true",
+                "-p:AndroidSdbHostPort=10000"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

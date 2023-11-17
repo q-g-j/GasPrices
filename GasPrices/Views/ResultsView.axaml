@@ -1,0 +1,153 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
+             x:Class="GasPrices.Views.ResultsView">
+
+	<UserControl.Styles>
+		<Style Selector="TextBox">
+			<Setter Property="Padding" Value="0" />
+			<Setter Property="MinHeight" Value="0" />
+			<Setter Property="BorderThickness" Value="0" />
+		</Style>
+		<Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+			<Setter Property="BorderThickness" Value="0" />
+		</Style>
+		<Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+			<Setter Property="BorderThickness" Value="0" />
+		</Style>
+		<Style Selector="TextBox:pressed /template/ Border#PART_BorderElement">
+			<Setter Property="BorderThickness" Value="0" />
+		</Style>
+
+	</UserControl.Styles>
+	
+	<Grid
+		ColumnDefinitions="*"
+		RowDefinitions="3*, 1*, auto"
+		Margin="5, 15, 5, 15">
+		<DataGrid
+			x:Name="dgStations"
+			Grid.Column="0"
+			Grid.Row="0"
+			ItemsSource="{Binding Stations}"
+			AutoGenerateColumns="False"
+			SelectionMode="Single">
+
+			<i:Interaction.Behaviors>
+				<ia:EventTriggerBehavior EventName="SelectionChanged">
+					<ia:InvokeCommandAction Command="{Binding StationsSelectionChangedCommand}" PassEventArgsToCommand="True"/>
+				</ia:EventTriggerBehavior>
+			</i:Interaction.Behaviors>
+
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Name" Width="200" Binding="{Binding Brand}" IsReadOnly="True" />
+				<DataGridTextColumn Header="Entfernung" Binding="{Binding Distance}" IsReadOnly="True" />
+				<DataGridTextColumn Header="{Binding PriceFor}" Binding="{Binding Price}" IsReadOnly="True" />
+			</DataGrid.Columns>
+		</DataGrid>
+
+		<!-- Details: -->
+		<Grid
+			Grid.Column="0"
+			Grid.Row="1"
+			ColumnDefinitions="3*, 1*"
+			RowDefinitions="auto, auto"
+			VerticalAlignment="Bottom"
+			Margin="5, 0, 5, 15"
+			IsVisible="{Binding DetailsIsVisible}">
+			<Label
+				Grid.Column="0"
+				Grid.Row="0"
+				Content="Details:"
+				FontWeight="DemiBold"
+				FontSize="20">
+			</Label>
+			<Grid
+				Grid.Column="0"
+				Grid.Row="1"
+				ColumnDefinitions="*"
+				RowDefinitions="auto, auto, auto, auto"
+			Margin="0, 0, 10, 0">
+				<TextBox
+					Grid.Column="0"
+                    Grid.Row="0"
+					IsReadOnly="True"
+					Text="{Binding DetailsName}">
+				</TextBox>
+				<TextBox
+					Grid.Column="0"
+					Grid.Row="1"
+					IsReadOnly="True"
+					Text="{Binding DetailsBrand}">
+				</TextBox>
+				<TextBox
+					Grid.Column="0"
+					Grid.Row="2"
+					IsReadOnly="True"
+					Text="{Binding DetailsStreet}">
+				</TextBox>
+				<TextBox
+					Grid.Column="0"
+					Grid.Row="3"
+					IsReadOnly="True"
+					Text="{Binding DetailsCity}">
+				</TextBox>
+			</Grid>
+			<Grid
+				Grid.Column="1"
+				Grid.Row="1"
+				ColumnDefinitions="auto, auto"
+				RowDefinitions="auto, auto, auto"
+				HorizontalAlignment="Right">
+				<TextBlock
+					Grid.Column="0"
+					Grid.Row="0"
+					Margin="0, 0, 5, 0"
+					Text="E5:">
+				</TextBlock>
+				<TextBlock
+					Grid.Column="1"
+					Grid.Row="0"
+					Text="{Binding DetailsE5}">
+				</TextBlock>
+				<TextBlock
+					Grid.Column="0"
+					Grid.Row="1"
+					Margin="0, 0, 5, 0"
+					Text="E10:">
+				</TextBlock>
+				<TextBlock
+					Grid.Column="1"
+					Grid.Row="1"
+					Text="{Binding DetailsE10}">
+				</TextBlock>
+				<TextBlock
+					Grid.Column="0"
+					Grid.Row="2"
+					Margin="0, 0, 5, 0"
+					Text="Diesel:">
+				</TextBlock>
+				<TextBlock
+					Grid.Column="1"
+					Grid.Row="2"
+					Text="{Binding DetailsDiesel}">
+				</TextBlock>
+			</Grid>
+		</Grid>
+
+		<!-- Back button: -->
+		<Button
+			Grid.Column="0"
+			Grid.Row="2"
+			HorizontalAlignment="Stretch"
+			HorizontalContentAlignment="Center"
+			Content="Zurück"
+			Command="{Binding BackCommand}">
+
+		</Button>
+	</Grid>
+</UserControl>

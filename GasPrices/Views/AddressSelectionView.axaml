@@ -1,0 +1,200 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:progRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
+             x:Class="GasPrices.Views.AddressSelectionView">
+
+	<Grid
+		RowDefinitions="*, auto"
+		Margin="5, 15, 5, 15">
+		
+		<progRing:ProgressRing
+			Width="80"
+			Height="80"
+			IsActive="{Binding ProgressRingIsActive}"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+			Foreground="LightGray"
+			Margin="0, -200, 0, 0">
+		</progRing:ProgressRing>
+		
+		<Grid
+			Grid.Row="0"
+			ColumnDefinitions="*"
+			RowDefinitions="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, *, auto">
+
+			<!-- Geolocation button: -->
+			<Button
+				Grid.Column="0"
+				Grid.Row="0"
+				HorizontalAlignment="Stretch"
+				HorizontalContentAlignment="Center"
+				Content="Aktueller Standort"
+				Margin="0, 0, 0, 10"
+				IsEnabled="{Binding GeolocationButtonIsEnabled}"
+				IsVisible="{Binding GeolocationButtonIsVisible}"
+				Command="{Binding GeolocationCommand}">
+			</Button>
+			
+			<!-- Street: -->
+			<TextBlock
+				Grid.Column="0"
+				Grid.Row="1"
+				Margin="0, 0, 0, 10"
+				Text="Straße und Hausnummer:"
+			>
+			</TextBlock>
+			<TextBox
+				Grid.Column="0"
+				Grid.Row="2"
+				Margin="0, 0, 0, 10"
+				Text="{Binding Street}"
+			>
+			</TextBox>
+
+			<!-- Postal code: -->
+			<TextBlock
+				Grid.Column="0"
+				Grid.Row="3"
+				Margin="0, 0, 0, 10"
+				Text="Postleitzahl:">
+			</TextBlock>
+			<TextBox
+				Grid.Column="0"
+				Grid.Row="4"
+				Width="100"
+				HorizontalAlignment="Left"
+				Margin="0, 0, 0, 10"
+				Text="{Binding PostalCode}">
+			</TextBox>
+
+			<!-- City: -->
+			<TextBlock
+				Grid.Column="0"
+				Grid.Row="5"
+				Margin="0, 0, 0, 10"
+				Text="Stadt:">
+			</TextBlock>
+			<TextBox
+				Grid.Column="0"
+				Grid.Row="6"
+				Margin="0, 0, 0, 10"
+				Text="{Binding City}">
+			</TextBox>
+
+			<!-- Country: -->
+			<TextBlock
+				Grid.Column="0"
+				Grid.Row="7"
+				Margin="0, 0, 0, 10"
+				Text="Land:">
+			</TextBlock>
+			<TextBox
+				Grid.Column="0"
+				Grid.Row="8"
+				Margin="0, 0, 0, 10"
+				Text="{Binding Country}">
+			</TextBox>
+
+			<Grid
+				Grid.Column="0"
+				Grid.Row="9"
+				ColumnDefinitions="auto, auto, auto, auto, auto, auto">
+				<!-- Spritsorte: -->
+				<TextBlock
+					Grid.Column="0"
+					Margin="0, 0, 20, 0"
+					Text="Spritsorte:">
+				</TextBlock>
+				<ComboBox
+					Grid.Column="1"
+					Margin="0, 0, 20, 0"
+					Width="100"
+					ItemsSource="{Binding GasTypes}"
+					SelectedItem="{Binding GasTypeSelectedItem}">
+				</ComboBox>
+
+				<!-- Distance: -->
+				<TextBlock
+					Grid.Column="3"
+					Margin="0, 0, 20, 0"
+					Text="Umkreis:">
+				</TextBlock>
+				<TextBox
+					Grid.Column="4"
+					Margin="0, 0, 5, 0"
+					HorizontalContentAlignment="Right"
+					Text="{Binding Distance}">
+				</TextBox>
+				<TextBlock
+					Grid.Column="5"
+					Margin="0, 0, 0, 0"
+					Text="km">
+				</TextBlock>
+			</Grid>
+
+			<Slider
+				Grid.Column="0"
+				Grid.Row="10"
+				Minimum="1"
+				Maximum="40"
+				TickFrequency="1"
+				IsSnapToTickEnabled="True"
+				Margin="0, 0, 20, 0"
+				Value="{Binding Distance}">
+			</Slider>
+
+			<!-- Search button: -->
+			<Button
+				Grid.Column="0"
+				Grid.Row="11"
+				HorizontalAlignment="Stretch"
+				HorizontalContentAlignment="Center"
+				Content="Suchen"
+				IsEnabled="{Binding SearchButtonIsEnabled}"
+				Command="{Binding SearchCommand}">
+			</Button>
+
+			<!-- Warning message: -->
+			<Grid
+				Grid.Row="12"
+				RowDefinitions="auto, auto"
+				Margin="0, 20, 0, 0"
+				IsVisible="{Binding WarningTextIsVisible, FallbackValue=false}">
+				<TextBlock
+					Grid.Row="0"
+					FontSize="20"
+					FontWeight="DemiBold"
+					Text="Warnung:"
+					Foreground="Orange"
+					Margin="0, 0, 0, 20">
+				</TextBlock>
+				<TextBlock
+					Grid.Row="1"
+					FontSize="16"
+					Text="{Binding WarningText}"
+					Foreground="Orange">
+				</TextBlock>
+			</Grid>
+
+			<!-- Search button: -->
+			<Button
+				Grid.Column="0"
+				Grid.Row="13"
+				HorizontalAlignment="Stretch"
+				HorizontalContentAlignment="Center"
+				VerticalAlignment="Bottom"
+				Content="Einstellungen"
+				Command="{Binding OpenSettingsCommand}">
+			</Button>
+		</Grid>
+		<TextBlock
+			x:Name="DebugTextBlock"
+			Grid.Row="1"
+			Text="{Binding DebugText}"
+			IsVisible="{Binding IsDebug}">
+		</TextBlock>
+	</Grid>
+</UserControl>
