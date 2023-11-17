@@ -34,7 +34,7 @@ namespace SettingsFile.SettingsFile
 
                 settings = JsonConvert.DeserializeObject<Settings>(settingsJson);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }

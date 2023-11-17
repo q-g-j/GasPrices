@@ -54,16 +54,15 @@ namespace ApiClients
             string? street = geoData?.street?.ToString();
             string? postalCode = geoData?.postcode?.ToString();
             string? city = geoData?.city?.ToString();
-            string? country = geoData?.country?.ToString();
 
             if (string.IsNullOrEmpty(street) && string.IsNullOrEmpty(postalCode) &&
-                string.IsNullOrEmpty(city) && string.IsNullOrEmpty(country))
+                string.IsNullOrEmpty(city))
             {
                 address = null;
             }
             else
             {
-                address = new Address(street, city, postalCode, country);
+                address = new Address(street, city, postalCode);
             }
 
             return address;

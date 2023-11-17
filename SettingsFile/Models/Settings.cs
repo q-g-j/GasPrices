@@ -8,6 +8,11 @@ namespace SettingsFile.Models
 {
     public class Settings
     {
-        public string? TankerKönigApiKey { get; set; }
+        public string? TankerkönigApiKey { get; set; }
+        public string? LastKnownStreet { get; set; }
+        public string? LastKnownPostalCode { get; set; }
+        public string? LastKnownCity { get; set; }
+        public string? LastKnownGasType { get; set; } = "E5";
+        public int? LastKnownDistance { get; set; } = 5;
     }
 }

@@ -36,9 +36,9 @@ namespace GasPrices.ViewModels
             Task.Run(async () =>
             {
                 var settings = await _settingsFileReader!.ReadAsync();
-                if (settings != null && !string.IsNullOrEmpty(settings.TankerKönigApiKey))
+                if (settings != null && !string.IsNullOrEmpty(settings.TankerkönigApiKey))
                 {
-                    TankerKönigApiKey = settings.TankerKönigApiKey;
+                    TankerKönigApiKey = settings.TankerkönigApiKey;
                 }
             });
         }
@@ -109,7 +109,7 @@ namespace GasPrices.ViewModels
         {
             var settings = new Settings
             {
-                TankerKönigApiKey = TankerKönigApiKey
+                TankerkönigApiKey = TankerKönigApiKey
             };
             await _settingsFileWriter!.WriteAsync(settings);
             _addressSelectionNavigationService.Navigate();

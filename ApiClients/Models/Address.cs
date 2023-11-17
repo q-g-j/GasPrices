@@ -6,21 +6,16 @@ namespace ApiClients.Models
 {
     public class Address
     {
-        public Address(string? street, string? city, string? postalCode, string? country)
+        public Address(string? street, string? city, string? postalCode)
         {
             Street = street;
             City = city;
             PostalCode = postalCode;
-            Country = country;
         }
 
         public string? Street { get; set; }
         public string? City { get; set; }
         public string? PostalCode { get; set; }
-        public string? Country { get; set; }
-
-        //Debug:
-        //public string Url { get; set; }
 
         public string GetUriData()
         {
@@ -29,8 +24,6 @@ namespace ApiClients.Models
             stringBuilder.Append(", ");
             stringBuilder.Append(PostalCode + " ");
             stringBuilder.Append(City);
-            stringBuilder.Append(", ");
-            stringBuilder.Append(Country);
             return Uri.EscapeDataString(stringBuilder.ToString());
         }
     }

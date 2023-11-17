@@ -23,7 +23,7 @@
 		<Grid
 			Grid.Row="0"
 			ColumnDefinitions="*"
-			RowDefinitions="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, *, auto">
+			RowDefinitions="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, *, auto">
 
 			<!-- Geolocation button: -->
 			<Button
@@ -84,23 +84,9 @@
 				Text="{Binding City}">
 			</TextBox>
 
-			<!-- Country: -->
-			<TextBlock
-				Grid.Column="0"
-				Grid.Row="7"
-				Margin="0, 0, 0, 10"
-				Text="Land:">
-			</TextBlock>
-			<TextBox
-				Grid.Column="0"
-				Grid.Row="8"
-				Margin="0, 0, 0, 10"
-				Text="{Binding Country}">
-			</TextBox>
-
 			<Grid
 				Grid.Column="0"
-				Grid.Row="9"
+				Grid.Row="7"
 				ColumnDefinitions="auto, auto, auto, auto, auto, auto">
 				<!-- Spritsorte: -->
 				<TextBlock
@@ -137,7 +123,7 @@
 
 			<Slider
 				Grid.Column="0"
-				Grid.Row="10"
+				Grid.Row="8"
 				Minimum="1"
 				Maximum="40"
 				TickFrequency="1"
@@ -149,7 +135,7 @@
 			<!-- Search button: -->
 			<Button
 				Grid.Column="0"
-				Grid.Row="11"
+				Grid.Row="9"
 				HorizontalAlignment="Stretch"
 				HorizontalContentAlignment="Center"
 				Content="Suchen"
@@ -159,7 +145,7 @@
 
 			<!-- Warning message: -->
 			<Grid
-				Grid.Row="12"
+				Grid.Row="10"
 				RowDefinitions="auto, auto"
 				Margin="0, 20, 0, 0"
 				IsVisible="{Binding WarningTextIsVisible, FallbackValue=false}">
@@ -182,7 +168,7 @@
 			<!-- Settings button: -->
 			<Button
 				Grid.Column="0"
-				Grid.Row="13"
+				Grid.Row="11"
 				HorizontalAlignment="Stretch"
 				HorizontalContentAlignment="Center"
 				VerticalAlignment="Bottom"

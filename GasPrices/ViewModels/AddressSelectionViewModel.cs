@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace GasPrices.ViewModels
         private readonly IMapClient _mapClient;
         private readonly IGasPricesClient _gasPricesClient;
         private readonly SettingsFileReader _settingsFileReader;
+        private readonly SettingsFileWriter _settingsFileWriter;
         private Settings? _settings = null;
 
         [ObservableProperty]
@@ -38,9 +40,6 @@ namespace GasPrices.ViewModels
 
         [ObservableProperty]
         private string city = string.Empty;
-
-        [ObservableProperty]
-        private string country = string.Empty;
 
         [ObservableProperty]
         private int distance = 5;
@@ -81,7 +80,8 @@ namespace GasPrices.ViewModels
             IMapClient mapClient,
             IGasPricesClient gasPricesClient,
             SearchResultStore searchResultStore,
-            SettingsFileReader settingsFileReader)
+            SettingsFileReader settingsFileReader,
+            SettingsFileWriter settingsFileWriter)
         {
             _settingsNavigationService = settingsNavigationService;
             _resultsNavigationService = resultsNavigationService;
@@ -98,24 +98,7 @@ namespace GasPrices.ViewModels
             _searchResultStore = searchResultStore;
             _gasPricesClient = gasPricesClient;
             _settingsFileReader = settingsFileReader;
-
-            if (searchResultStore.SelectedGasType != null)
-            {
-                GasTypeSelectedItem = GasTypes.FirstOrDefault(gt => gt.ToString() == searchResultStore.SelectedGasType.ToString());
-            }
-
-            if (searchResultStore.Distance != null)
-            {
-                Distance = searchResultStore.Distance.Value;
-            }
-
-            if (searchResultStore.Address != null)
-            {
-                Street = searchResultStore.Address.Street;
-                PostalCode = searchResultStore.Address.PostalCode;
-                City = searchResultStore.Address.City;
-                Country = searchResultStore.Address.Country;
-            }
+            _settingsFileWriter = settingsFileWriter;
 
             if (OperatingSystem.IsAndroid())
             {
@@ -124,17 +107,8 @@ namespace GasPrices.ViewModels
 
             Task.Run(async () =>
             {
-                _settings = await _settingsFileReader.ReadAsync();
-                if (_settings == null && string.IsNullOrEmpty(_settings?.TankerKönigApiKey))
-                {
-                    SearchButtonIsEnabled = false;
-                    var warning = new StringBuilder();
-                    warning.Append("Es wurde kein Tankerkönig-API-Schlüssel\n");
-                    warning.Append("gefunden!\n\n");
-                    warning.Append("Bitte zu den Einstellungen wechseln.");
-                    WarningText = warning.ToString();
-                    WarningTextIsVisible = true;
-                }
+                await ProcessApiKeyAsync();
+                await ProcessSettingsAsync();
             });
         }
 
@@ -151,19 +125,19 @@ namespace GasPrices.ViewModels
             {
                 location = await Geolocation.GetLocationAsync();
             }
-            catch (FeatureNotSupportedException fnsEx)
+            catch (FeatureNotSupportedException)
             {
                 // Handle not supported on device exception
             }
-            catch (FeatureNotEnabledException fneEx)
+            catch (FeatureNotEnabledException)
             {
                 // Handle not enabled on device exception
             }
-            catch (PermissionException pEx)
+            catch (PermissionException)
             {
                 // Handle permission exception
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Unable to get location
             }
@@ -179,10 +153,9 @@ namespace GasPrices.ViewModels
                 var address = await _mapClient.GetAddressAsync(coords);
                 if (address != null)
                 {
-                    Street = address.Street;
-                    PostalCode = address.PostalCode;
-                    City = address.City;
-                    Country = address.Country;
+                    Street = address.Street!;
+                    PostalCode = address.PostalCode!;
+                    City = address.City!;
                 }
             }
         }
@@ -191,7 +164,7 @@ namespace GasPrices.ViewModels
         public async Task SearchCommand()
         {
             SearchButtonIsEnabled = false;
-            var address = new Address(Street, City, PostalCode, Country);
+            var address = new Address(Street, City, PostalCode);
             var coords = await _mapClient.GetCoordsAsync(address);
             if (coords is null)
             {
@@ -200,7 +173,7 @@ namespace GasPrices.ViewModels
             }
 
             var stations = await _gasPricesClient.GetStationsAsync(
-                _settings?.TankerKönigApiKey!,
+                _settings?.TankerkönigApiKey!,
                 coords,
                 Distance);
             if (stations is null)
@@ -210,14 +183,14 @@ namespace GasPrices.ViewModels
             }
 
             _searchResultStore.Stations = stations;
-            SaveCurrentAddress();
+            await SaveCurrentAddressAsync();
             _resultsNavigationService.Navigate();
         }
 
         [RelayCommand]
-        public void OpenSettingsCommand()
+        public async Task OpenSettingsCommand()
         {
-            SaveCurrentAddress();
+            await SaveCurrentAddressAsync();
             _settingsNavigationService.Navigate();
         }
 
@@ -225,12 +198,76 @@ namespace GasPrices.ViewModels
         {
         }
 
-        private void SaveCurrentAddress()
+        private async Task ProcessApiKeyAsync()
         {
-            var address = new Address(Street, City, PostalCode, Country);
+            _settings = await _settingsFileReader.ReadAsync();
+            if (_settings == null && string.IsNullOrEmpty(_settings?.TankerkönigApiKey))
+            {
+                SearchButtonIsEnabled = false;
+                var warning = new StringBuilder();
+                warning.Append("Es wurde kein Tankerkönig-API-Schlüssel\n");
+                warning.Append("gefunden!\n\n");
+                warning.Append("Bitte zu den Einstellungen wechseln.");
+                WarningText = warning.ToString();
+                WarningTextIsVisible = true;
+            }
+        }
+
+        private async Task ProcessSettingsAsync()
+        {
+            _settings = await _settingsFileReader.ReadAsync();
+
+            if (_searchResultStore.SelectedGasType != null)
+            {
+                GasTypeSelectedItem = GasTypes.FirstOrDefault(gt => gt.ToString() == _searchResultStore.SelectedGasType.ToString());
+            }
+            else if (_settings != null && _settings.LastKnownGasType != null)
+            {
+                GasTypeSelectedItem = GasTypes.FirstOrDefault(gt => gt.ToString() == _settings.LastKnownGasType.ToString());
+            }
+
+            if (_searchResultStore.Distance != null)
+            {
+                Distance = _searchResultStore.Distance.Value;
+            }
+            else if (_settings != null && _settings.LastKnownDistance != null)
+            {
+                Distance = _settings.LastKnownDistance.Value;
+            }
+
+            if (_searchResultStore.Address != null)
+            {
+                Street = _searchResultStore.Address.Street!;
+                PostalCode = _searchResultStore.Address.PostalCode!;
+                City = _searchResultStore.Address.City!;
+            }
+            else if (_settings != null)
+            {
+                Street = _settings.LastKnownStreet ?? string.Empty;
+                PostalCode = _settings.LastKnownPostalCode ?? string.Empty;
+                City = _settings.LastKnownCity ?? string.Empty;
+            }
+        }
+
+        private async Task SaveCurrentAddressAsync()
+        {
+            var address = new Address(Street, City, PostalCode);
             _searchResultStore.Address = address;
             _searchResultStore.SelectedGasType = GasTypeSelectedItem;
             _searchResultStore.Distance = Distance;
+
+            var settings = await _settingsFileReader.ReadAsync();
+            if (settings == null)
+            {
+                settings = new Settings();
+            }
+
+            settings.LastKnownStreet = Street;
+            settings.LastKnownCity = City;
+            settings.LastKnownPostalCode = PostalCode;
+            settings.LastKnownDistance = Distance;
+            settings.LastKnownGasType = GasTypeSelectedItem?.ToString();
+            await _settingsFileWriter.WriteAsync(settings);
         }
     }
 }

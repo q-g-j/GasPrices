@@ -38,7 +38,7 @@ public class MainActivity : AvaloniaMainActivity<App>
     public override void OnBackPressed()
     {
         var app = (App)Avalonia.Application.Current!;
-        if (app.IsBackPressedSubscribed())
+        if (app != null && app.IsBackPressedSubscribed())
         {
             app.OnBackPressed();
         }

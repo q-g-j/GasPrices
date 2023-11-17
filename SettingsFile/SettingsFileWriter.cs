@@ -37,7 +37,7 @@ namespace SettingsFile.SettingsFile
                     using var streamWriter = new StreamWriter(_settingsFileFullPath);
                     await streamWriter.WriteAsync(settingsJson);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                 }
