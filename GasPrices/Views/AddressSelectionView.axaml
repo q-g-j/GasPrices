@@ -2,10 +2,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:progRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
              x:Class="GasPrices.Views.AddressSelectionView">
 
+	<i:Interaction.Behaviors>
+		<ia:EventTriggerBehavior EventName="KeyDown">
+			<ia:InvokeCommandAction Command="{Binding KeyDownCommand}" PassEventArgsToCommand="True"/>
+		</ia:EventTriggerBehavior>
+	</i:Interaction.Behaviors>
+	
 	<Grid
 		RowDefinitions="*, auto"
 		Margin="5, 15, 5, 15">

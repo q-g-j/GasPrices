@@ -43,8 +43,6 @@ namespace GasPrices.Extensions
                 services.AddSingleton<NavigationService<ResultsViewModel>>();
 
                 // Add ViewModels:
-                services.AddSingleton<MainWindow>();
-                services.AddTransient<MainView>();
                 services.AddTransient<MainViewModel>();
                 services.AddTransient<AddressSelectionViewModel>();
                 services.AddTransient<ResultsViewModel>();
@@ -55,9 +53,9 @@ namespace GasPrices.Extensions
                 services.AddTransient<IMapClient, OpenStreetMapClient>();
 
                 // Add settings file handlers:
-                services.AddTransient(service =>
+                services.AddTransient(services =>
                 {
-                    var globals = service.GetRequiredService<Globals>();
+                    var globals = services.GetRequiredService<Globals>();
                     return new SettingsFileWriter(globals.SettingsFolderFullPath, globals.SettingsFileFullPath);
                 });
                 services.AddTransient(service =>

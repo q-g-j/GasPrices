@@ -49,17 +49,17 @@ public partial class App : Application
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var mainWindow = _host?.Services.GetService<MainWindow>();
-            var mainViewModel = _host?.Services.GetService<MainViewModel>();
-            desktop.MainWindow = mainWindow;
-            desktop.MainWindow!.DataContext = mainViewModel;
+            desktop.MainWindow = new MainWindow
+            {
+                DataContext = _host?.Services.GetService<MainViewModel>()
+        };
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
-            var mainView = _host?.Services.GetService<MainView>();
-            var mainViewModel = _host?.Services.GetService<MainViewModel>();
-            singleViewPlatform.MainView = mainView;
-            singleViewPlatform.MainView!.DataContext = mainViewModel;
+            singleViewPlatform.MainView = new MainView
+            {
+                DataContext = _host?.Services.GetService<MainViewModel>()
+        };
         }
 
         base.OnFrameworkInitializationCompleted();

@@ -1,5 +1,6 @@
 ﻿using ApiClients;
 using ApiClients.Models;
+using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -43,6 +44,8 @@ namespace GasPrices.ViewModels
             });
         }
 
+        private bool isValidated = false;
+
         [ObservableProperty]
         private string tankerKönigApiKey = string.Empty;
 
@@ -63,6 +66,24 @@ namespace GasPrices.ViewModels
 
         [ObservableProperty]
         private bool noticeTextIsVisible = false;
+
+        [RelayCommand]
+        public async Task KeyDownCommand(object sender)
+        {
+            var e = sender as KeyEventArgs;
+            if (e?.Key == Key.Enter || e?.Key == Key.Return)
+            {
+                e.Handled = true;
+                if (isValidated)
+                {
+                    await SaveCommand();
+                }
+                else if (ValidateButtonIsEnabled)
+                {
+                    await ValidateCommand();
+                }
+            }
+        }
 
         [RelayCommand]
         public async Task ValidateCommand()
@@ -96,6 +117,7 @@ namespace GasPrices.ViewModels
                     Dispatcher.UIThread.Invoke(() =>
                         NoticeTextColor = new SolidColorBrush(Color.Parse("Green")));
                     NoticeTextIsVisible = true;
+                    isValidated = true;
                     Thread.Sleep(2000);
                     NoticeTextIsVisible = false;
                     NoticeTitleText = string.Empty;

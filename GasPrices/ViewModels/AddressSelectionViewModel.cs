@@ -1,5 +1,6 @@
 ﻿using ApiClients;
 using ApiClients.Models;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -13,8 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -164,6 +163,7 @@ namespace GasPrices.ViewModels
         public async Task SearchCommand()
         {
             SearchButtonIsEnabled = false;
+
             var address = new Address(Street, City, PostalCode);
             var coords = await _mapClient.GetCoordsAsync(address);
             if (coords is null)
@@ -172,10 +172,7 @@ namespace GasPrices.ViewModels
                 return;
             }
 
-            var stations = await _gasPricesClient.GetStationsAsync(
-                _settings?.TankerkönigApiKey!,
-                coords,
-                Distance);
+            var stations = await _gasPricesClient.GetStationsAsync(_settings!.TankerkönigApiKey!, coords, Distance);
             if (stations is null)
             {
                 SearchButtonIsEnabled = true;
@@ -194,8 +191,18 @@ namespace GasPrices.ViewModels
             _settingsNavigationService.Navigate();
         }
 
-        public override void Dispose()
+        [RelayCommand]
+        public async Task KeyDownCommand(object sender)
         {
+            var e = sender as KeyEventArgs;
+            if (e?.Key == Key.Enter || e?.Key == Key.Return)
+            {
+                if (SearchButtonIsEnabled)
+                {
+                    e.Handled = true;
+                    await SearchCommand();
+                }
+            }
         }
 
         private async Task ProcessApiKeyAsync()
@@ -268,6 +275,9 @@ namespace GasPrices.ViewModels
             settings.LastKnownDistance = Distance;
             settings.LastKnownGasType = GasTypeSelectedItem?.ToString();
             await _settingsFileWriter.WriteAsync(settings);
+        }
+        public override void Dispose()
+        {
         }
     }
 }
