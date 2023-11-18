@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HttpClient\HttpClient.csproj" />
-    <ProjectReference Include="..\SettingsFile\SettingsFile.csproj" />
   </ItemGroup>
 
 </Project>
