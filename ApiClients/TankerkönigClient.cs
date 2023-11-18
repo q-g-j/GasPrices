@@ -1,7 +1,6 @@
 ﻿using ApiClients.Models;
 using HttpClient;
 using Newtonsoft.Json;
-using SettingsFile.SettingsFile;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
