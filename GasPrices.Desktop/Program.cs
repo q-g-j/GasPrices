@@ -1,6 +1,8 @@
 ﻿using System;
 
 using Avalonia;
+using Avalonia.Media;
+
 
 namespace GasPrices.Desktop;
 
@@ -18,6 +20,11 @@ class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .LogToTrace();
+            .LogToTrace()
 
+            // Fix crash in Linux (provide a default font):
+            .With(new FontManagerOptions
+            {
+                DefaultFamilyName = "avares://GasPrices/Assets/Fonts/selawk.ttf#Selawik"
+            });
 }
