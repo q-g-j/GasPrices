@@ -11,22 +11,23 @@ namespace GasPrices.ViewModels
 {
     public partial class LocationPickerViewModel : ViewModelBase
     {
-        private readonly NavigationService<AddressSelectionViewModel> _addressSelectionNavigationService;
+        //private readonly NavigationService<AddressSelectionViewModel> _addressSelectionNavigationService;
+        private readonly NavigationService _navigationService;
 
-        public LocationPickerViewModel(NavigationService<AddressSelectionViewModel> addressSelectionNavigationService)
+        public LocationPickerViewModel(NavigationService navigationService)
         {
-            _addressSelectionNavigationService = addressSelectionNavigationService;
+            _navigationService = navigationService;
         }
 
         [RelayCommand]
         public void BackCommand()
         {
-            _addressSelectionNavigationService.Navigate();
+            _navigationService.Navigate<AddressSelectionViewModel>();
         }
 
         private void OnBackPressed()
         {
-            _addressSelectionNavigationService.Navigate();
+            _navigationService.Navigate<AddressSelectionViewModel>();
         }
 
         public override void Dispose()

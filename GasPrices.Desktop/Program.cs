@@ -25,6 +25,6 @@ class Program
             // Fix crash in Linux (provide a default font):
             .With(new FontManagerOptions
             {
-                DefaultFamilyName = "avares://GasPrices/Assets/Fonts/selawk.ttf#Selawik"
+                DefaultFamilyName = "avares://GasPrices/Assets/Fonts/Inter-Light.otf#Inter"
             });
 }

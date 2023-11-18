@@ -19,15 +19,60 @@ namespace GasPrices.ViewModels
 {
     public partial class AddressSelectionViewModel : ViewModelBase
     {
-        private readonly NavigationService<ResultsViewModel> _resultsNavigationService;
-        private readonly NavigationService<SettingsViewModel> _settingsNavigationService;
-        private readonly NavigationService<LocationPickerViewModel> _locationPickerNavigationService;
+        //private readonly NavigationService<ResultsViewModel> _resultsNavigationService;
+        //private readonly NavigationService<SettingsViewModel> _settingsNavigationService;
+        //private readonly NavigationService<LocationPickerViewModel> _locationPickerNavigationService;
+        private readonly NavigationService _navigationService;
         private readonly SearchResultStore _searchResultStore;
         private readonly IMapClient _mapClient;
         private readonly IGasPricesClient _gasPricesClient;
         private readonly SettingsFileReader _settingsFileReader;
         private readonly SettingsFileWriter _settingsFileWriter;
         private Settings? _settings = null;
+
+        public AddressSelectionViewModel(
+            //NavigationService<SettingsViewModel> settingsNavigationService,
+            //NavigationService<ResultsViewModel> resultsNavigationService,
+            //NavigationService<LocationPickerViewModel> locationPickerNavigationService,
+            IMapClient mapClient,
+            IGasPricesClient gasPricesClient,
+            SearchResultStore searchResultStore,
+            SettingsFileReader settingsFileReader,
+            SettingsFileWriter settingsFileWriter,
+            NavigationService navigationService)
+        {
+            //_settingsNavigationService = settingsNavigationService;
+            //_resultsNavigationService = resultsNavigationService;
+            //_locationPickerNavigationService = locationPickerNavigationService;
+            _navigationService = navigationService;
+
+            _mapClient = mapClient;
+            _searchResultStore = searchResultStore;
+            _gasPricesClient = gasPricesClient;
+            _settingsFileReader = settingsFileReader;
+            _settingsFileWriter = settingsFileWriter;
+
+            gasTypes =
+            [
+                new GasType("E5"),
+                new GasType("E10"),
+                new GasType("Diesel")
+            ];
+
+            gasTypeSelectedItem = gasTypes[0];
+
+            if (OperatingSystem.IsAndroid())
+            {
+                GeolocationButtonIsVisible = true;
+                LocationPickerButtonGridColumn = 1;
+            }
+
+            Task.Run(async () =>
+            {
+                await ProcessApiKeyAsync();
+                await ProcessSettingsAsync();
+            });
+        }
 
         [ObservableProperty]
         private string street = string.Empty;
@@ -76,48 +121,6 @@ namespace GasPrices.ViewModels
 
         [ObservableProperty]
         private string errorText = string.Empty;
-
-        public AddressSelectionViewModel(
-            NavigationService<SettingsViewModel> settingsNavigationService,
-            NavigationService<ResultsViewModel> resultsNavigationService,
-            NavigationService<LocationPickerViewModel> locationPickerNavigationService,
-            IMapClient mapClient,
-            IGasPricesClient gasPricesClient,
-            SearchResultStore searchResultStore,
-            SettingsFileReader settingsFileReader,
-            SettingsFileWriter settingsFileWriter)
-        {
-            _settingsNavigationService = settingsNavigationService;
-            _resultsNavigationService = resultsNavigationService;
-            _locationPickerNavigationService = locationPickerNavigationService;
-
-            _mapClient = mapClient;
-            _searchResultStore = searchResultStore;
-            _gasPricesClient = gasPricesClient;
-            _settingsFileReader = settingsFileReader;
-            _settingsFileWriter = settingsFileWriter;
-
-            gasTypes =
-            [
-                new GasType("E5"),
-                new GasType("E10"),
-                new GasType("Diesel")
-            ];
-
-            gasTypeSelectedItem = gasTypes[0];
-
-            if (OperatingSystem.IsAndroid())
-            {
-                GeolocationButtonIsVisible = true;
-                LocationPickerButtonGridColumn = 1;
-            }
-
-            Task.Run(async () =>
-            {
-                await ProcessApiKeyAsync();
-                await ProcessSettingsAsync();
-            });
-        }
 
         [RelayCommand]
         public async Task GeolocationCommand()
@@ -168,9 +171,11 @@ namespace GasPrices.ViewModels
         }
 
         [RelayCommand]
-        public void LocationPickerCommand()
+        public async Task LocationPickerCommand()
         {
-            _locationPickerNavigationService.Navigate();
+            await SaveCurrentAddressAsync();
+            _searchResultStore.Coords = await _mapClient.GetCoordsAsync(_searchResultStore.Address!);
+            _navigationService.Navigate<LocationPickerViewModel>();
         }
 
         [RelayCommand]
@@ -195,14 +200,14 @@ namespace GasPrices.ViewModels
 
             _searchResultStore.Stations = stations;
             await SaveCurrentAddressAsync();
-            _resultsNavigationService.Navigate();
+            _navigationService.Navigate<ResultsViewModel>();
         }
 
         [RelayCommand]
         public async Task OpenSettingsCommand()
         {
             await SaveCurrentAddressAsync();
-            _settingsNavigationService.Navigate();
+            _navigationService.Navigate<SettingsViewModel>();
         }
 
         [RelayCommand]

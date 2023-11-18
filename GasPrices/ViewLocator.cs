@@ -2,15 +2,13 @@
 using Avalonia.Controls;
 using GasPrices.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GasPrices
 {
-    public class ViewLocator : IDataTemplate
+    public class ViewLocator(Func<Type, Control> viewCreator) : IDataTemplate
     {
+        private readonly Func<Type, Control> _viewCreator = viewCreator;
+
         public static bool SupportsRecycling => false;
 
         public Control Build(object? data)
@@ -20,7 +18,7 @@ namespace GasPrices
 
             if (type != null)
             {
-                return (Control)Activator.CreateInstance(type)!;
+                return _viewCreator(type);
             }
             else
             {

@@ -17,18 +17,18 @@ namespace GasPrices.ViewModels
 {
     public partial class SettingsViewModel : ViewModelBase
     {
-        private readonly NavigationService<AddressSelectionViewModel> _addressSelectionNavigationService;
+        private readonly NavigationService _navigationService;
         private readonly SettingsFileReader? _settingsFileReader;
         private readonly SettingsFileWriter? _settingsFileWriter;
         private readonly IGasPricesClient _gasPricesClient;
 
         public SettingsViewModel(
-            NavigationService<AddressSelectionViewModel> addressSelectionNavigationService,
+            NavigationService navigationService,
             SettingsFileReader? settingsFileReader,
             SettingsFileWriter? settingsFileWriter,
             IGasPricesClient gasPricesClient)
         {
-            _addressSelectionNavigationService = addressSelectionNavigationService;
+            _navigationService = navigationService;
             _settingsFileReader = settingsFileReader;
             _settingsFileWriter = settingsFileWriter;
             _gasPricesClient = gasPricesClient;
@@ -135,13 +135,13 @@ namespace GasPrices.ViewModels
                 TankerkönigApiKey = TankerKönigApiKey
             };
             await _settingsFileWriter!.WriteAsync(settings);
-            _addressSelectionNavigationService.Navigate();
+            _navigationService.Navigate<AddressSelectionViewModel>();
         }
 
         [RelayCommand]
         public void CancelCommand()
         {
-            _addressSelectionNavigationService.Navigate();
+            _navigationService.Navigate<AddressSelectionViewModel>();
         }
 
         partial void OnTankerKönigApiKeyChanged(string value)
@@ -151,7 +151,7 @@ namespace GasPrices.ViewModels
 
         protected void OnBackPressed()
         {
-            _addressSelectionNavigationService?.Navigate();
+            _navigationService.Navigate<AddressSelectionViewModel>();
         }
 
         public override void Dispose()

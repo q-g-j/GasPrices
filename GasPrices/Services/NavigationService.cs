@@ -9,21 +9,14 @@ using System.Threading.Tasks;
 
 namespace GasPrices.Services
 {
-    public class NavigationService<TViewModel> where TViewModel : ViewModelBase
+    public class NavigationService(NavigationStore navigationStore, Func<Type, ViewModelBase> viewModelCreator)
     {
-        private readonly NavigationStore _navigationStore;
-        private readonly Func<TViewModel> _getViewModelFromDI;
+        private readonly NavigationStore _navigationStore = navigationStore;
+        private readonly Func<Type, ViewModelBase> _viewModelCreator = viewModelCreator;
 
-        public NavigationService(NavigationStore navigationStore, Func<TViewModel> viewModelCreator)
+        public void Navigate<TViewModel>()
         {
-            _navigationStore = navigationStore;
-            _getViewModelFromDI = viewModelCreator;
-        }
-
-        public void Navigate()
-        {
-            _navigationStore.CurrentViewModel?.Dispose();
-            _navigationStore.CurrentViewModel = _getViewModelFromDI();
+            _navigationStore.CurrentViewModel = _viewModelCreator(typeof(TViewModel));
         }
     }
 }

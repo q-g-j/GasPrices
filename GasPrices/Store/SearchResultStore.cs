@@ -13,6 +13,7 @@ namespace GasPrices.Store
         public List<Station>? Stations { get; set; }
         public GasType? SelectedGasType { get; set; }
         public Address? Address { get; set; }
+        public Coords? Coords { get; set; }
         public int? Distance { get; set; }
     }
 }

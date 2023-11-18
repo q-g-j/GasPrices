@@ -40,8 +40,8 @@ public partial class App : Application
         var viewLocator = _host?.Services.GetService<ViewLocator>();
         DataTemplates.Add(viewLocator!);
 
-        var navigationService = _host?.Services.GetRequiredService<NavigationService<AddressSelectionViewModel>>();
-        navigationService!.Navigate();
+        var navigationService = _host?.Services.GetRequiredService<NavigationService>();
+        navigationService?.Navigate<AddressSelectionViewModel>();
 
         // Line below is needed to remove Avalonia data validation.
         // Without this line you will get duplicate validations from both Avalonia and CT

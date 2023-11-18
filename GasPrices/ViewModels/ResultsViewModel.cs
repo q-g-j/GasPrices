@@ -19,14 +19,16 @@ namespace GasPrices.ViewModels
 {
     public partial class ResultsViewModel : ViewModelBase
     {
-        private readonly NavigationService<AddressSelectionViewModel> _addressSelectionNavigationService;
+        //private readonly NavigationService<AddressSelectionViewModel> _addressSelectionNavigationService;
+        private readonly NavigationService _navigationService;
         private readonly SearchResultStore _searchResultStore;
 
         public ResultsViewModel(
-            NavigationService<AddressSelectionViewModel> addressSelectionNavigationService,
+            //NavigationService<AddressSelectionViewModel> addressSelectionNavigationService,
+            NavigationService navigationService,
             SearchResultStore searchResultStore)
         {
-            _addressSelectionNavigationService = addressSelectionNavigationService;
+            _navigationService = navigationService;
             _searchResultStore = searchResultStore;
             Stations = [];
             foreach (var station in _searchResultStore.Stations!)
@@ -90,12 +92,12 @@ namespace GasPrices.ViewModels
         [RelayCommand]
         public void BackCommand()
         {
-            _addressSelectionNavigationService.Navigate();
+            _navigationService.Navigate<AddressSelectionViewModel>();
         }
 
         private void OnBackPressed()
         {
-            _addressSelectionNavigationService.Navigate();
+            _navigationService.Navigate<AddressSelectionViewModel>();
         }
 
         public override void Dispose()
