@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:map="clr-namespace:Mapsui.UI.Avalonia;assembly=Mapsui.UI.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
+             x:Class="GasPrices.Views.LocationPickerView">
+
+	<Grid
+		Margin="5, 15, 5, 15"
+		RowDefinitions="auto, *, auto">
+
+		<!-- Map: -->
+		<map:MapControl
+			x:Name="MapControl"			
+			Grid.Row="1"
+			HorizontalAlignment="Stretch"
+			VerticalAlignment="Stretch">			
+		</map:MapControl>
+
+		<!-- Back button: -->
+		<Button
+			Grid.Column="0"
+			Grid.Row="2"
+			HorizontalAlignment="Stretch"
+			HorizontalContentAlignment="Center"
+			Content="Zurück"
+			Command="{Binding BackCommand}">
+		</Button>
+	</Grid>
+	
+</UserControl>

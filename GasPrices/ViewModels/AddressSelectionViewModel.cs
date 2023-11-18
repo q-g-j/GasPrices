@@ -1,17 +1,14 @@
 ﻿using ApiClients;
 using ApiClients.Models;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GasPrices.Models;
 using GasPrices.Services;
 using GasPrices.Store;
-using MsBox.Avalonia;
 using SettingsFile.Models;
 using SettingsFile.SettingsFile;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -24,6 +21,7 @@ namespace GasPrices.ViewModels
     {
         private readonly NavigationService<ResultsViewModel> _resultsNavigationService;
         private readonly NavigationService<SettingsViewModel> _settingsNavigationService;
+        private readonly NavigationService<LocationPickerViewModel> _locationPickerNavigationService;
         private readonly SearchResultStore _searchResultStore;
         private readonly IMapClient _mapClient;
         private readonly IGasPricesClient _gasPricesClient;
@@ -56,6 +54,12 @@ namespace GasPrices.ViewModels
         private bool geolocationButtonIsEnabled = true;
 
         [ObservableProperty]
+        private bool locationPickerButtonIsEnabled = true;
+
+        [ObservableProperty]
+        private int locationPickerButtonGridColumn = 0;
+
+        [ObservableProperty]
         private bool searchButtonIsEnabled = true;
 
         [ObservableProperty]
@@ -76,6 +80,7 @@ namespace GasPrices.ViewModels
         public AddressSelectionViewModel(
             NavigationService<SettingsViewModel> settingsNavigationService,
             NavigationService<ResultsViewModel> resultsNavigationService,
+            NavigationService<LocationPickerViewModel> locationPickerNavigationService,
             IMapClient mapClient,
             IGasPricesClient gasPricesClient,
             SearchResultStore searchResultStore,
@@ -84,24 +89,27 @@ namespace GasPrices.ViewModels
         {
             _settingsNavigationService = settingsNavigationService;
             _resultsNavigationService = resultsNavigationService;
+            _locationPickerNavigationService = locationPickerNavigationService;
 
-            gasTypes =
-            [
-                new GasType("E5"),
-                new GasType("E10"),
-                new GasType("Diesel"),
-            ];
-
-            gasTypeSelectedItem = gasTypes[0];
             _mapClient = mapClient;
             _searchResultStore = searchResultStore;
             _gasPricesClient = gasPricesClient;
             _settingsFileReader = settingsFileReader;
             _settingsFileWriter = settingsFileWriter;
 
+            gasTypes =
+            [
+                new GasType("E5"),
+                new GasType("E10"),
+                new GasType("Diesel")
+            ];
+
+            gasTypeSelectedItem = gasTypes[0];
+
             if (OperatingSystem.IsAndroid())
             {
                 GeolocationButtonIsVisible = true;
+                LocationPickerButtonGridColumn = 1;
             }
 
             Task.Run(async () =>
@@ -157,6 +165,12 @@ namespace GasPrices.ViewModels
                     City = address.City!;
                 }
             }
+        }
+
+        [RelayCommand]
+        public void LocationPickerCommand()
+        {
+            _locationPickerNavigationService.Navigate();
         }
 
         [RelayCommand]

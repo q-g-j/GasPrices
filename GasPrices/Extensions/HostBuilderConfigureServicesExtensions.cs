@@ -27,24 +27,28 @@ namespace GasPrices.Extensions
                 services.AddSingleton(new Globals("GasPricesApp", "settings.json"));
                 services.AddSingleton<NavigationStore>();
                 services.AddSingleton<SearchResultStore>();
-                services.AddSingleton<ViewLocator>();
+                services.AddTransient<ViewLocator>();
 
-                // Add ViewModel creator functions:
-                services.AddSingleton<Func<AddressSelectionViewModel>>(services => () =>
+                // Add ViewModel factory functions:
+                services.AddTransient<Func<AddressSelectionViewModel>>(services => () =>
                     services.GetRequiredService<AddressSelectionViewModel>());
-                services.AddSingleton<Func<ResultsViewModel>>(services => () =>
+                services.AddTransient<Func<ResultsViewModel>>(services => () =>
                     services.GetRequiredService<ResultsViewModel>());
-                services.AddSingleton<Func<SettingsViewModel>>(services => () =>
+                services.AddTransient<Func<SettingsViewModel>>(services => () =>
                     services.GetRequiredService<SettingsViewModel>());
+                services.AddTransient<Func<LocationPickerViewModel>>(services => () =>
+                    services.GetRequiredService<LocationPickerViewModel>());
 
                 // Add ViewModel navigation services:
-                services.AddSingleton<NavigationService<AddressSelectionViewModel>>();
-                services.AddSingleton<NavigationService<SettingsViewModel>>();
-                services.AddSingleton<NavigationService<ResultsViewModel>>();
+                services.AddTransient<NavigationService<AddressSelectionViewModel>>();
+                services.AddTransient<NavigationService<SettingsViewModel>>();
+                services.AddTransient<NavigationService<ResultsViewModel>>();
+                services.AddTransient<NavigationService<LocationPickerViewModel>>();
 
                 // Add ViewModels:
                 services.AddTransient<MainViewModel>();
                 services.AddTransient<AddressSelectionViewModel>();
+                services.AddTransient<LocationPickerViewModel>();
                 services.AddTransient<ResultsViewModel>();
                 services.AddTransient<SettingsViewModel>();
 

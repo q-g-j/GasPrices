@@ -13,11 +13,11 @@
 			<ia:InvokeCommandAction Command="{Binding KeyDownCommand}" PassEventArgsToCommand="True"/>
 		</ia:EventTriggerBehavior>
 	</i:Interaction.Behaviors>
-	
+
 	<Grid
 		RowDefinitions="*, auto"
 		Margin="5, 15, 5, 15">
-		
+
 		<progRing:ProgressRing
 			Width="80"
 			Height="80"
@@ -27,25 +27,44 @@
 			Foreground="LightGray"
 			Margin="0, -200, 0, 0">
 		</progRing:ProgressRing>
-		
+
 		<Grid
 			Grid.Row="0"
 			ColumnDefinitions="*"
 			RowDefinitions="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, *, auto">
 
-			<!-- Geolocation button: -->
-			<Button
+			<Grid
 				Grid.Column="0"
 				Grid.Row="0"
+				ColumnDefinitions="*, *"
 				HorizontalAlignment="Stretch"
-				HorizontalContentAlignment="Center"
-				Content="Aktueller Standort"
-				Margin="0, 0, 0, 10"
-				IsEnabled="{Binding GeolocationButtonIsEnabled}"
-				IsVisible="{Binding GeolocationButtonIsVisible}"
-				Command="{Binding GeolocationCommand}">
-			</Button>
-			
+				Margin="0, 0, 0, 10">
+
+				<!-- Geolocation button: -->
+				<Button
+					Grid.Column="0"
+					HorizontalAlignment="Stretch"
+					HorizontalContentAlignment="Center"
+					Margin="0, 0, 2, 0"
+					Content="Aktueller Standort"
+					IsEnabled="{Binding GeolocationButtonIsEnabled}"
+					IsVisible="{Binding GeolocationButtonIsVisible}"
+					Command="{Binding GeolocationCommand}">
+				</Button>
+
+				<!-- Location picker button: -->
+				<Button
+					Grid.Column="{Binding LocationPickerButtonGridColumn, FallbackValue=1}"
+					Grid.ColumnSpan="2"
+					HorizontalAlignment="Stretch"
+					HorizontalContentAlignment="Center"
+					Margin="2, 0, 0, 0"
+					Content="Auf Karte wählen"
+					IsEnabled="{Binding LocationPickerButtonIsEnabled}"
+					Command="{Binding LocationPickerCommand}">
+				</Button>
+			</Grid>
+
 			<!-- Street: -->
 			<TextBlock
 				Grid.Column="0"

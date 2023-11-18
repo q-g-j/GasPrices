@@ -1,5 +1,6 @@
 ﻿using ApiClients;
 using ApiClients.Models;
+using Avalonia;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Threading;
@@ -148,14 +149,14 @@ namespace GasPrices.ViewModels
             ValidateButtonIsEnabled = !string.IsNullOrEmpty(value);
         }
 
-        private void OnBackPressed()
+        protected void OnBackPressed()
         {
-            _addressSelectionNavigationService.Navigate();
+            _addressSelectionNavigationService?.Navigate();
         }
 
         public override void Dispose()
         {
-            ((App)Avalonia.Application.Current!).BackPressed -= OnBackPressed;
+            ((App)Application.Current!).BackPressed -= OnBackPressed;
         }
     }
 }
