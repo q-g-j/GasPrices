@@ -159,7 +159,7 @@ namespace GasPrices.ViewModels
 
             if (location != null)
             {
-                coords = new Coords(location.Longitude, location.Latitude);
+                coords = new Coords(location.Latitude, location.Longitude);
                 var address = await _mapClient.GetAddressAsync(coords);
                 if (address != null)
                 {

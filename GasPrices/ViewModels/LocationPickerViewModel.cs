@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using CommunityToolkit.Mvvm.Input;
 using GasPrices.Services;
+using GasPrices.Store;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,10 @@ namespace GasPrices.ViewModels
 {
     public partial class LocationPickerViewModel : ViewModelBase
     {
-        //private readonly NavigationService<AddressSelectionViewModel> _addressSelectionNavigationService;
         private readonly NavigationService _navigationService;
 
-        public LocationPickerViewModel(NavigationService navigationService)
+        public LocationPickerViewModel(
+            NavigationService navigationService)
         {
             _navigationService = navigationService;
         }

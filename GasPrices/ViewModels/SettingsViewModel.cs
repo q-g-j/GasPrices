@@ -89,7 +89,7 @@ namespace GasPrices.ViewModels
         [RelayCommand]
         public async Task ValidateCommand()
         {
-            var coords = new Coords(48.135788, 11.601314);
+            var coords = new Coords(11.601314, 48.135788);
 
             var stations = await _gasPricesClient.GetStationsAsync(TankerKönigApiKey, coords, 1);
             if (stations == null)

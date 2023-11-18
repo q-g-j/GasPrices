@@ -35,7 +35,7 @@ namespace ApiClients
 
             if (isValidLon && isValidLat)
             {
-                coords = new Coords(lon, lat);
+                coords = new Coords(lat, lon);
             }
 
             return coords;

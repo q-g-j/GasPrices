@@ -6,7 +6,7 @@ namespace ApiClients.Models
 {
     public class Coords
     {
-        public Coords(double longitude, double latitude)
+        public Coords(double latitude, double longitude)
         {
             Longitude = longitude;
             Latitude = latitude;
