@@ -18,13 +18,12 @@ using System.Threading.Tasks;
 using GasPrices.Utilities;
 using Avalonia.Input;
 using SkiaSharp;
+using CommunityToolkit.Mvvm.Input;
 
 namespace GasPrices.Views
 {
     public partial class LocationPickerView : UserControl
     {
-        private readonly SearchResultStore? _searchResultStore;
-
         public LocationPickerView()
         {
         }
@@ -32,7 +31,6 @@ namespace GasPrices.Views
         public LocationPickerView(SearchResultStore searchResultStore)
         {
             InitializeComponent();
-            _searchResultStore = searchResultStore;
 
             MapControl.Map.Layers.Add(OpenStreetMap.CreateTileLayer());
 
@@ -60,17 +58,6 @@ namespace GasPrices.Views
             {
                 MapControl.Map.Navigator.CenterOnAndZoomTo(point, zoomLevel, 500);
             };
-
-            MapControl.Info += OnMapClicked!;
-        }
-
-        private void OnMapClicked(object sender, MapInfoEventArgs a)
-        {
-            var pos = SphericalMercator.ToLonLat(a.MapInfo?.WorldPosition!);
-            var coords = new Coords(pos.Y, pos.X);
-            _searchResultStore!.Coords = coords;
-            _searchResultStore!.AreCoordsFromMap = true;
-            ((LocationPickerViewModel)DataContext!)?.BackCommand();
         }
     }
 }

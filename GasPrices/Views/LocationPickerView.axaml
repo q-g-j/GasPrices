@@ -2,6 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:map="clr-namespace:Mapsui.UI.Avalonia;assembly=Mapsui.UI.Avalonia"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
              x:Class="GasPrices.Views.LocationPickerView">
@@ -16,6 +18,11 @@
 			Grid.Row="0"
 			HorizontalAlignment="Stretch"
 			VerticalAlignment="Stretch">
+			<i:Interaction.Behaviors>
+				<ia:EventTriggerBehavior EventName="Info">
+					<ia:InvokeCommandAction Command="{Binding InfoCommand}" PassEventArgsToCommand="True"/>
+				</ia:EventTriggerBehavior>
+			</i:Interaction.Behaviors>
 		</map:MapControl>
 
 		<!-- Back button: -->
@@ -28,5 +35,5 @@
 			Command="{Binding BackCommand}">
 		</Button>
 	</Grid>
-	
+
 </UserControl>

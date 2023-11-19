@@ -20,14 +20,7 @@ namespace GasPrices.ViewModels
 {
     public partial class AddressSelectionViewModel : ViewModelBase
     {
-        private readonly NavigationService _navigationService;
-        private readonly SearchResultStore _searchResultStore;
-        private readonly IMapClient _mapClient;
-        private readonly IGasPricesClient _gasPricesClient;
-        private readonly SettingsFileReader _settingsFileReader;
-        private readonly SettingsFileWriter _settingsFileWriter;
-        private Settings? _settings = null;
-
+        #region constructors
         public AddressSelectionViewModel(
             IMapClient mapClient,
             IGasPricesClient gasPricesClient,
@@ -65,7 +58,19 @@ namespace GasPrices.ViewModels
                 await ProcessSettingsAsync();
             });
         }
+        #endregion constructors
 
+        #region private fields
+        private readonly NavigationService _navigationService;
+        private readonly SearchResultStore _searchResultStore;
+        private readonly IMapClient _mapClient;
+        private readonly IGasPricesClient _gasPricesClient;
+        private readonly SettingsFileReader _settingsFileReader;
+        private readonly SettingsFileWriter _settingsFileWriter;
+        private Settings? _settings = null;
+        #endregion private fields
+
+        #region bindable properties
         [ObservableProperty]
         private string street = string.Empty;
 
@@ -85,7 +90,7 @@ namespace GasPrices.ViewModels
         private GasType? gasTypeSelectedItem;
 
         [ObservableProperty]
-        private string mapCoordinates;
+        private string? mapCoordinates;
 
         [ObservableProperty]
         private bool mapCoordinatesIsVisible;
@@ -119,14 +124,18 @@ namespace GasPrices.ViewModels
 
         [ObservableProperty]
         private string errorText = string.Empty;
+        #endregion bindable properties
 
+        #region commands
         [RelayCommand]
         public async Task GeolocationCommand()
         {
+            MapCoordinates = string.Empty;
+            MapCoordinatesIsVisible = false;
+
             GeolocationButtonIsEnabled = false;
             ProgressRingIsActive = true;
 
-            Coords? coords;
             Location? location = null;
 
             try
@@ -157,14 +166,8 @@ namespace GasPrices.ViewModels
 
             if (location != null)
             {
-                coords = new Coords(location.Latitude, location.Longitude);
-                var address = await _mapClient.GetAddressAsync(coords);
-                if (address != null)
-                {
-                    Street = address.Street!;
-                    PostalCode = address.PostalCode!;
-                    City = address.City!;
-                }
+                _searchResultStore.Coords = new Coords(location.Latitude, location.Longitude);
+                await ProcessCoordsAsync();
             }
         }
 
@@ -248,7 +251,9 @@ namespace GasPrices.ViewModels
                 WarningTextIsVisible = true;
             }
         }
+        #endregion commands
 
+        #region private methods
         private async Task ProcessSettingsAsync()
         {
             _settings = await _settingsFileReader.ReadAsync();
@@ -286,45 +291,50 @@ namespace GasPrices.ViewModels
 
             if (_searchResultStore.Coords != null)
             {
-                ProgressRingIsActive = true;
-                var address = await _mapClient.GetAddressAsync(_searchResultStore.Coords);
-                ProgressRingIsActive = false;
+                await ProcessCoordsAsync();
+            }
+        }
 
-                bool isWrongPosition = false;
-                var wrongPosWarningMsg = new StringBuilder();
-                if (address == null)
-                {
-                    isWrongPosition = true;
-                    wrongPosWarningMsg.Append("Es konnte keine Addresse zu der gewünschten Position ermittelt werden. ");
-                    wrongPosWarningMsg.Append("Bitte eine andere Position oder Adresse wählen.");
-                }
-                else if (address.Country != "Deutschland")
-                {
-                    isWrongPosition = true;
-                    wrongPosWarningMsg.Append("Diese App kann nur Tankstellen in Deutschland anzeigen. ");
-                    wrongPosWarningMsg.Append("Bitte eine andere Position oder Adresse wählen.");
-                }
-                else
-                {
-                    MapCoordinates = _searchResultStore.Coords.ToString();
-                    MapCoordinatesIsVisible = true;
-                    _searchResultStore.Address = address;
-                    Street = _searchResultStore.Address?.Street!;
-                    PostalCode = _searchResultStore.Address?.PostalCode!;
-                    City = _searchResultStore.Address?.City!;
-                }
+        private async Task ProcessCoordsAsync()
+        {
+            ProgressRingIsActive = true;
+            var address = await _mapClient.GetAddressAsync(_searchResultStore.Coords!);
+            ProgressRingIsActive = false;
 
-                if (isWrongPosition)
+            bool isWrongPosition = false;
+            var wrongPosWarningMsg = new StringBuilder();
+            if (address == null)
+            {
+                isWrongPosition = true;
+                wrongPosWarningMsg.Append("Es konnte keine Addresse zu der gewünschten Position ermittelt werden. ");
+                wrongPosWarningMsg.Append("Bitte eine andere Position oder Adresse wählen.");
+            }
+            else if (address.Country != "Deutschland")
+            {
+                isWrongPosition = true;
+                wrongPosWarningMsg.Append("Diese App kann nur Tankstellen in Deutschland anzeigen. ");
+                wrongPosWarningMsg.Append("Bitte eine andere Position oder Adresse wählen.");
+            }
+            else
+            {
+                MapCoordinates = _searchResultStore.Coords!.ToString();
+                MapCoordinatesIsVisible = true;
+                _searchResultStore.Address = address;
+                Street = _searchResultStore.Address?.Street!;
+                PostalCode = _searchResultStore.Address?.PostalCode!;
+                City = _searchResultStore.Address?.City!;
+            }
+
+            if (isWrongPosition)
+            {
+                await Task.Run(() =>
                 {
-                    await Task.Run(() =>
-                    {
-                        WarningText = wrongPosWarningMsg.ToString();
-                        WarningTextIsVisible = true;
-                        Thread.Sleep(5000);
-                        WarningTextIsVisible = false;
-                        WarningText = string.Empty;
-                    });
-                }
+                    WarningText = wrongPosWarningMsg.ToString();
+                    WarningTextIsVisible = true;
+                    Thread.Sleep(5000);
+                    WarningTextIsVisible = false;
+                    WarningText = string.Empty;
+                });
             }
         }
 
@@ -348,9 +358,12 @@ namespace GasPrices.ViewModels
             settings.LastKnownGasType = GasTypeSelectedItem?.ToString();
             await _settingsFileWriter.WriteAsync(settings);
         }
+        #endregion private methods
 
+        #region public methods
         public override void Dispose()
         {
         }
+        #endregion public methods
     }
 }
