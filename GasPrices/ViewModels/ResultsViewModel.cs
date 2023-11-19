@@ -19,12 +19,10 @@ namespace GasPrices.ViewModels
 {
     public partial class ResultsViewModel : ViewModelBase
     {
-        //private readonly NavigationService<AddressSelectionViewModel> _addressSelectionNavigationService;
         private readonly NavigationService _navigationService;
         private readonly SearchResultStore _searchResultStore;
 
         public ResultsViewModel(
-            //NavigationService<AddressSelectionViewModel> addressSelectionNavigationService,
             NavigationService navigationService,
             SearchResultStore searchResultStore)
         {

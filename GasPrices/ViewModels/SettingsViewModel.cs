@@ -33,7 +33,7 @@ namespace GasPrices.ViewModels
             _settingsFileWriter = settingsFileWriter;
             _gasPricesClient = gasPricesClient;
 
-            ((App)Avalonia.Application.Current!).BackPressed += OnBackPressed;
+            ((App)Application.Current!).BackPressed += OnBackPressed;
 
             Task.Run(async () =>
             {

@@ -14,6 +14,7 @@ namespace GasPrices.Store
         public GasType? SelectedGasType { get; set; }
         public Address? Address { get; set; }
         public Coords? Coords { get; set; }
+        public bool AreCoordsFromMap { get; set; } = false;
         public int? Distance { get; set; }
     }
 }

@@ -20,9 +20,6 @@ namespace GasPrices.ViewModels
 {
     public partial class AddressSelectionViewModel : ViewModelBase
     {
-        //private readonly NavigationService<ResultsViewModel> _resultsNavigationService;
-        //private readonly NavigationService<SettingsViewModel> _settingsNavigationService;
-        //private readonly NavigationService<LocationPickerViewModel> _locationPickerNavigationService;
         private readonly NavigationService _navigationService;
         private readonly SearchResultStore _searchResultStore;
         private readonly IMapClient _mapClient;
@@ -32,9 +29,6 @@ namespace GasPrices.ViewModels
         private Settings? _settings = null;
 
         public AddressSelectionViewModel(
-            //NavigationService<SettingsViewModel> settingsNavigationService,
-            //NavigationService<ResultsViewModel> resultsNavigationService,
-            //NavigationService<LocationPickerViewModel> locationPickerNavigationService,
             IMapClient mapClient,
             IGasPricesClient gasPricesClient,
             SearchResultStore searchResultStore,
@@ -42,9 +36,6 @@ namespace GasPrices.ViewModels
             SettingsFileWriter settingsFileWriter,
             NavigationService navigationService)
         {
-            //_settingsNavigationService = settingsNavigationService;
-            //_resultsNavigationService = resultsNavigationService;
-            //_locationPickerNavigationService = locationPickerNavigationService;
             _navigationService = navigationService;
 
             _mapClient = mapClient;
@@ -92,6 +83,12 @@ namespace GasPrices.ViewModels
 
         [ObservableProperty]
         private GasType? gasTypeSelectedItem;
+
+        [ObservableProperty]
+        private string mapCoordinates;
+
+        [ObservableProperty]
+        private bool mapCoordinatesIsVisible;
 
         [ObservableProperty]
         private bool geolocationButtonIsVisible = false;
@@ -184,12 +181,25 @@ namespace GasPrices.ViewModels
         {
             SearchButtonIsEnabled = false;
 
-            var address = new Address(Street, City, PostalCode);
-            var coords = await _mapClient.GetCoordsAsync(address);
-            if (coords is null)
+            Coords? coords;
+
+            if (_searchResultStore.AreCoordsFromMap && _searchResultStore.Coords != null)
             {
-                SearchButtonIsEnabled = true;
-                return;
+                coords = _searchResultStore.Coords;
+                _searchResultStore.Coords = null;
+                _searchResultStore.AreCoordsFromMap = false;
+            }
+            else
+            {
+                var address = new Address(Street, City, PostalCode);
+                ProgressRingIsActive = true;
+                coords = await _mapClient.GetCoordsAsync(address);
+                ProgressRingIsActive = false;
+                if (coords is null)
+                {
+                    SearchButtonIsEnabled = true;
+                    return;
+                }
             }
 
             var stations = await _gasPricesClient.GetStationsAsync(_settings!.TankerkönigApiKey!, coords, Distance);
@@ -199,7 +209,7 @@ namespace GasPrices.ViewModels
                 return;
             }
 
-            _searchResultStore.Stations = stations;
+            _searchResultStore!.Stations = stations;
             await SaveCurrentAddressAsync();
             _navigationService.Navigate<ResultsViewModel>();
         }
@@ -276,11 +286,9 @@ namespace GasPrices.ViewModels
 
             if (_searchResultStore.Coords != null)
             {
-                var oldAddress = _searchResultStore.Address;
                 ProgressRingIsActive = true;
                 var address = await _mapClient.GetAddressAsync(_searchResultStore.Coords);
                 ProgressRingIsActive = false;
-                _searchResultStore.Coords = null;
 
                 bool isWrongPosition = false;
                 var wrongPosWarningMsg = new StringBuilder();
@@ -298,6 +306,8 @@ namespace GasPrices.ViewModels
                 }
                 else
                 {
+                    MapCoordinates = _searchResultStore.Coords.ToString();
+                    MapCoordinatesIsVisible = true;
                     _searchResultStore.Address = address;
                     Street = _searchResultStore.Address?.Street!;
                     PostalCode = _searchResultStore.Address?.PostalCode!;
@@ -338,6 +348,7 @@ namespace GasPrices.ViewModels
             settings.LastKnownGasType = GasTypeSelectedItem?.ToString();
             await _settingsFileWriter.WriteAsync(settings);
         }
+
         public override void Dispose()
         {
         }

@@ -16,13 +16,14 @@ using GasPrices.ViewModels;
 using ApiClients;
 using System.Threading.Tasks;
 using GasPrices.Utilities;
+using Avalonia.Input;
+using SkiaSharp;
 
 namespace GasPrices.Views
 {
     public partial class LocationPickerView : UserControl
     {
         private readonly SearchResultStore? _searchResultStore;
-        private readonly IMapClient? _mapClient;
 
         public LocationPickerView()
         {
@@ -39,32 +40,37 @@ namespace GasPrices.Views
             MapControl.UnSnapRotationDegrees = 30;
             MapControl.ReSnapRotationDegrees = 5;
 
-            MPoint point;
+            MPoint pointLonLat;
             int zoomLevel;
 
             if (searchResultStore.Coords != null)
             {
-                point = _searchResultStore.Coords!.ToMPoint();
+                pointLonLat = new MPoint(searchResultStore.Coords.Longitude, searchResultStore.Coords.Latitude);
                 zoomLevel = 2;
             }
             else
             {
-                point = new Coords(51.163361, 10.447683).ToMPoint();
+                pointLonLat = new MPoint(51.163361, 10.447683);
                 zoomLevel = 3000;
             }
+            
+            var point = SphericalMercator.FromLonLat(pointLonLat);
 
             MapControl.Map.Home += n =>
             {
                 MapControl.Map.Navigator.CenterOnAndZoomTo(point, zoomLevel, 500);
             };
 
-            MapControl.Map.Info += (s, a) =>
-            {
-                var pos = SphericalMercator.ToLonLat(a.MapInfo?.WorldPosition!);
-                var coords = new Coords(pos.Y, pos.X);
-                _searchResultStore.Coords = coords;
-                ((LocationPickerViewModel)DataContext!)?.BackCommand();
-            };
+            MapControl.Info += OnMapClicked!;
+        }
+
+        private void OnMapClicked(object sender, MapInfoEventArgs a)
+        {
+            var pos = SphericalMercator.ToLonLat(a.MapInfo?.WorldPosition!);
+            var coords = new Coords(pos.Y, pos.X);
+            _searchResultStore!.Coords = coords;
+            _searchResultStore!.AreCoordsFromMap = true;
+            ((LocationPickerViewModel)DataContext!)?.BackCommand();
         }
     }
 }

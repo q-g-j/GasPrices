@@ -23,7 +23,7 @@
 			Grid.RowSpan="2"
 			Width="80"
 			Height="80"
-			IsActive="{Binding ProgressRingIsActive}"
+			IsActive="{Binding ProgressRingIsActive, FallbackValue=False}"
 			HorizontalAlignment="Center"
 			VerticalAlignment="Center"
 			Foreground="LightGray"
@@ -33,7 +33,7 @@
 		<Grid
 			Grid.Row="0"
 			ColumnDefinitions="*"
-			RowDefinitions="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, *, auto">
+			RowDefinitions="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, *, auto">
 
 			<Grid
 				Grid.Column="0"
@@ -67,32 +67,49 @@
 				</Button>
 			</Grid>
 
+			<!-- Map Coordinates: -->
+			<Grid
+				RowDefinitions="auto, auto"
+				Grid.Column="0"
+				Grid.Row="1"
+				IsVisible="{Binding MapCoordinatesIsVisible, FallbackValue=false}">
+				<TextBlock
+					Grid.Row="0"
+					Margin="0, 0, 0, 10"
+					Text="Koordinaten vom Kartendienst:">
+				</TextBlock>
+				<TextBox
+					Grid.Row="1"
+					Margin="0, 0, 0, 10"
+					IsEnabled="False"
+					Text="{Binding MapCoordinates}">
+				</TextBox>
+			</Grid>
+			
 			<!-- Street: -->
 			<TextBlock
 				Grid.Column="0"
-				Grid.Row="1"
+				Grid.Row="2"
 				Margin="0, 0, 0, 10"
-				Text="Straße und Hausnummer:"
-			>
+				Text="Straße und Hausnummer:">
 			</TextBlock>
 			<TextBox
 				Grid.Column="0"
-				Grid.Row="2"
+				Grid.Row="3"
 				Margin="0, 0, 0, 10"
-				Text="{Binding Street}"
-			>
+				Text="{Binding Street}">
 			</TextBox>
 
 			<!-- Postal code: -->
 			<TextBlock
 				Grid.Column="0"
-				Grid.Row="3"
+				Grid.Row="4"
 				Margin="0, 0, 0, 10"
 				Text="Postleitzahl:">
 			</TextBlock>
 			<TextBox
 				Grid.Column="0"
-				Grid.Row="4"
+				Grid.Row="5"
 				Width="100"
 				HorizontalAlignment="Left"
 				Margin="0, 0, 0, 10"
@@ -102,20 +119,20 @@
 			<!-- City: -->
 			<TextBlock
 				Grid.Column="0"
-				Grid.Row="5"
+				Grid.Row="6"
 				Margin="0, 0, 0, 10"
 				Text="Stadt:">
 			</TextBlock>
 			<TextBox
 				Grid.Column="0"
-				Grid.Row="6"
+				Grid.Row="7"
 				Margin="0, 0, 0, 10"
 				Text="{Binding City}">
 			</TextBox>
 
 			<Grid
 				Grid.Column="0"
-				Grid.Row="7"
+				Grid.Row="8"
 				ColumnDefinitions="auto, auto, auto, auto, auto, auto">
 				<!-- Spritsorte: -->
 				<TextBlock
@@ -152,7 +169,7 @@
 
 			<Slider
 				Grid.Column="0"
-				Grid.Row="8"
+				Grid.Row="9"
 				Minimum="1"
 				Maximum="40"
 				TickFrequency="1"
@@ -164,7 +181,7 @@
 			<!-- Search button: -->
 			<Button
 				Grid.Column="0"
-				Grid.Row="9"
+				Grid.Row="10"
 				HorizontalAlignment="Stretch"
 				HorizontalContentAlignment="Center"
 				Content="Suchen"
@@ -174,7 +191,7 @@
 
 			<!-- Warning message: -->
 			<Grid
-				Grid.Row="10"
+				Grid.Row="11"
 				ColumnDefinitions="*"
 				RowDefinitions="auto, auto"
 				Margin="0, 20, 0, 0"
@@ -200,7 +217,7 @@
 			<!-- Settings button: -->
 			<Button
 				Grid.Column="0"
-				Grid.Row="11"
+				Grid.Row="12"
 				HorizontalAlignment="Stretch"
 				HorizontalContentAlignment="Center"
 				VerticalAlignment="Bottom"
