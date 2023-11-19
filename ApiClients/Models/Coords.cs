@@ -8,8 +8,8 @@ namespace ApiClients.Models
     {
         public Coords(double latitude, double longitude)
         {
-            Longitude = longitude;
-            Latitude = latitude;
+            Longitude = Math.Round(longitude, 6);
+            Latitude = Math.Round(latitude, 6);
         }
 
         public double Longitude { get; set; }

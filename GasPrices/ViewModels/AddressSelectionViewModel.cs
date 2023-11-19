@@ -12,6 +12,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
@@ -231,8 +232,7 @@ namespace GasPrices.ViewModels
             {
                 SearchButtonIsEnabled = false;
                 var warning = new StringBuilder();
-                warning.Append("Es wurde kein Tankerkönig-API-Schlüssel\n");
-                warning.Append("gefunden!\n\n");
+                warning.Append("Es wurde kein Tankerkönig-API-Schlüssel gefunden!\n\n");
                 warning.Append("Bitte zu den Einstellungen wechseln.");
                 WarningText = warning.ToString();
                 WarningTextIsVisible = true;
@@ -272,6 +272,48 @@ namespace GasPrices.ViewModels
                 Street = _settings.LastKnownStreet ?? string.Empty;
                 PostalCode = _settings.LastKnownPostalCode ?? string.Empty;
                 City = _settings.LastKnownCity ?? string.Empty;
+            }
+
+            if (_searchResultStore.Coords != null)
+            {
+                var oldAddress = _searchResultStore.Address;
+                ProgressRingIsActive = true;
+                var address = await _mapClient.GetAddressAsync(_searchResultStore.Coords);
+                ProgressRingIsActive = false;
+
+                bool isWrongPosition = false;
+                var wrongPosWarningMsg = new StringBuilder();
+                if (address == null)
+                {
+                    isWrongPosition = true;
+                    wrongPosWarningMsg.Append("Es konnte keine Addresse zu der gewünschten Position ermittelt werden. ");
+                    wrongPosWarningMsg.Append("Bitte eine andere Position oder Adresse wählen.");
+                }
+                else if (address.Country != "Deutschland")
+                {
+                    isWrongPosition = true;
+                    wrongPosWarningMsg.Append("Diese App kann nur Tankstellen in Deutschland anzeigen. ");
+                    wrongPosWarningMsg.Append("Bitte eine andere Position oder Adresse wählen.");
+                }
+                else
+                {
+                    _searchResultStore.Address = address;
+                    Street = _searchResultStore.Address?.Street!;
+                    PostalCode = _searchResultStore.Address?.PostalCode!;
+                    City = _searchResultStore.Address?.City!;
+                }
+
+                if (isWrongPosition)
+                {
+                    await Task.Run(() =>
+                    {
+                        WarningText = wrongPosWarningMsg.ToString();
+                        WarningTextIsVisible = true;
+                        Thread.Sleep(5000);
+                        WarningTextIsVisible = false;
+                        WarningText = string.Empty;
+                    });
+                }
             }
         }
 

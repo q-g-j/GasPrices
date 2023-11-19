@@ -19,6 +19,8 @@
 		Margin="5, 15, 5, 15">
 
 		<progRing:ProgressRing
+			Grid.Row="0"
+			Grid.RowSpan="2"
 			Width="80"
 			Height="80"
 			IsActive="{Binding ProgressRingIsActive}"
@@ -173,6 +175,7 @@
 			<!-- Warning message: -->
 			<Grid
 				Grid.Row="10"
+				ColumnDefinitions="*"
 				RowDefinitions="auto, auto"
 				Margin="0, 20, 0, 0"
 				IsVisible="{Binding WarningTextIsVisible, FallbackValue=false}">
@@ -185,9 +188,11 @@
 					Margin="0, 0, 0, 20">
 				</TextBlock>
 				<TextBlock
+					Grid.Column="0"
 					Grid.Row="1"
 					FontSize="16"
 					Text="{Binding WarningText}"
+					TextWrapping="Wrap"
 					Foreground="Orange">
 				</TextBlock>
 			</Grid>
