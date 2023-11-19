@@ -186,11 +186,10 @@ namespace GasPrices.ViewModels
 
             Coords? coords;
 
-            if (_searchResultStore.AreCoordsFromMap && _searchResultStore.Coords != null)
+            if (_searchResultStore.Coords != null)
             {
                 coords = _searchResultStore.Coords;
                 _searchResultStore.Coords = null;
-                _searchResultStore.AreCoordsFromMap = false;
             }
             else
             {

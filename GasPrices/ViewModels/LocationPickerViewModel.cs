@@ -38,7 +38,6 @@ namespace GasPrices.ViewModels
             var pos = SphericalMercator.ToLonLat(a.MapInfo?.WorldPosition!);
             var coords = new Coords(pos.Y, pos.X);
             _searchResultStore!.Coords = coords;
-            _searchResultStore!.AreCoordsFromMap = true;
             _navigationService.Navigate<AddressSelectionViewModel>();
         }
 
