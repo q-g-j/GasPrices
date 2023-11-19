@@ -1,4 +1,4 @@
-# GasPrices
+# OpenSpritpreise
 Copyright 2023 Jann Emken
 
 ### Beschreibung
