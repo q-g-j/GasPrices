@@ -280,6 +280,7 @@ namespace GasPrices.ViewModels
                 ProgressRingIsActive = true;
                 var address = await _mapClient.GetAddressAsync(_searchResultStore.Coords);
                 ProgressRingIsActive = false;
+                _searchResultStore.Coords = null;
 
                 bool isWrongPosition = false;
                 var wrongPosWarningMsg = new StringBuilder();
