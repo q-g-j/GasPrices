@@ -1,6 +1,7 @@
 ﻿using ApiClients;
 using ApiClients.Models;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GasPrices.Models;
@@ -55,8 +56,8 @@ namespace GasPrices.ViewModels
             Task.Run(async () =>
             {
                 await ProcessApiKeyAsync();
-                await ProcessSettingsAsync();
                 await ProcessCoordsAsync();
+                await ProcessSettingsAsync();
             });
         }
         #endregion constructors
@@ -69,7 +70,9 @@ namespace GasPrices.ViewModels
         private readonly SettingsFileReader _settingsFileReader;
         private readonly SettingsFileWriter _settingsFileWriter;
         private Settings? _settings = null;
-        private bool _isLoaded = false;
+        private bool _hasStreetFocus = false;
+        private bool _hasPostalCodeFocus = false;
+        private bool _hasCityFocus = false;
         #endregion private fields
 
         #region bindable properties
@@ -130,10 +133,13 @@ namespace GasPrices.ViewModels
 
         #region commands
         [RelayCommand]
-        public void LoadedCommand()
-        {
-            _isLoaded = true;
-        }
+        public void StreetFocusChangedCommand(object value) => _hasStreetFocus = value.ToString() == "True";
+
+        [RelayCommand]
+        public void PostalCodeFocusChangedCommand(object value) => _hasPostalCodeFocus = value.ToString() == "True";
+
+        [RelayCommand]
+        public void CityFocusChangedCommand(object value) => _hasCityFocus = value.ToString() == "True";
 
         [RelayCommand]
         public async Task GeolocationCommand()
@@ -183,7 +189,6 @@ namespace GasPrices.ViewModels
         public async Task LocationPickerCommand()
         {
             await SaveCurrentAddressAsync();
-            _searchResultStore.Coords = await _mapClient.GetCoordsAsync(_searchResultStore.Address!);
             _navigationService.Navigate<LocationPickerViewModel>();
         }
 
@@ -243,7 +248,15 @@ namespace GasPrices.ViewModels
                 }
             }
         }
+        #endregion commands
 
+        #region OnPropertyChangedHandlers
+        partial void OnStreetChanged(string value) => ResetCachedCoords();
+        partial void OnCityChanged(string value) => ResetCachedCoords();
+        partial void OnPostalCodeChanged(string value) => ResetCachedCoords();
+        #endregion OnPropertyChangedHandlers
+
+        #region private methods
         private async Task ProcessApiKeyAsync()
         {
             _settings = await _settingsFileReader.ReadAsync();
@@ -257,15 +270,7 @@ namespace GasPrices.ViewModels
                 WarningTextIsVisible = true;
             }
         }
-        #endregion commands
 
-        #region OnPropertyChangedHandlers
-        partial void OnStreetChanged(string value) => ResetCachedCoords();
-        partial void OnCityChanged(string value) => ResetCachedCoords();
-        partial void OnPostalCodeChanged(string value) => ResetCachedCoords();
-        #endregion OnPropertyChangedHandlers
-
-        #region private methods
         private async Task ProcessSettingsAsync()
         {
             _settings = await _settingsFileReader.ReadAsync();
@@ -286,6 +291,16 @@ namespace GasPrices.ViewModels
             else if (_settings != null && _settings.LastKnownDistance != null)
             {
                 Distance = _settings.LastKnownDistance.Value;
+            }
+
+            if (_searchResultStore.Coords != null) return;
+
+            if (_settings?.LastKnownLatitude != null && _settings.LastKnownLongitude != null)
+            {
+                _searchResultStore.Coords = new Coords(
+                    _settings.LastKnownLatitude.Value, _settings.LastKnownLongitude.Value);
+                MapCoordinates = _searchResultStore.Coords!.ToString();
+                MapCoordinatesIsVisible = true;
             }
 
             if (_searchResultStore.Address != null)
@@ -368,12 +383,16 @@ namespace GasPrices.ViewModels
             settings.LastKnownPostalCode = PostalCode;
             settings.LastKnownDistance = Distance;
             settings.LastKnownGasType = GasTypeSelectedItem?.ToString();
+            settings.LastKnownLatitude = _searchResultStore.Coords?.Latitude;
+            settings.LastKnownLongitude = _searchResultStore.Coords?.Longitude;
+
+            _searchResultStore.Coords = null;
             await _settingsFileWriter.WriteAsync(settings);
         }
 
         private void ResetCachedCoords()
         {
-            if (_isLoaded)
+            if (_hasStreetFocus || _hasPostalCodeFocus || _hasCityFocus)
             {
                 _searchResultStore.Coords = null;
                 MapCoordinates = null;

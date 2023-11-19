@@ -12,9 +12,6 @@
 		<ia:EventTriggerBehavior EventName="KeyDown">
 			<ia:InvokeCommandAction Command="{Binding KeyDownCommand}" PassEventArgsToCommand="True"/>
 		</ia:EventTriggerBehavior>
-		<ia:EventTriggerBehavior EventName="Loaded">
-			<ia:InvokeCommandAction Command="{Binding LoadedCommand}" PassEventArgsToCommand="False"/>
-		</ia:EventTriggerBehavior>
 	</i:Interaction.Behaviors>
 
 	<Grid
@@ -101,6 +98,14 @@
 				Grid.Row="3"
 				Margin="0, 0, 0, 10"
 				Text="{Binding Street}">
+				<i:Interaction.Behaviors>
+					<ia:EventTriggerBehavior EventName="GotFocus">
+						<ia:InvokeCommandAction Command="{Binding StreetFocusChangedCommand}" CommandParameter="True"/>
+					</ia:EventTriggerBehavior>
+					<ia:EventTriggerBehavior EventName="LostFocus">
+						<ia:InvokeCommandAction Command="{Binding StreetFocusChangedCommand}" CommandParameter="False"/>
+					</ia:EventTriggerBehavior>
+				</i:Interaction.Behaviors>
 			</TextBox>
 
 			<!-- Postal code: -->
@@ -117,6 +122,14 @@
 				HorizontalAlignment="Left"
 				Margin="0, 0, 0, 10"
 				Text="{Binding PostalCode}">
+				<i:Interaction.Behaviors>
+					<ia:EventTriggerBehavior EventName="GotFocus">
+						<ia:InvokeCommandAction Command="{Binding PostalCodeFocusChangedCommand}" CommandParameter="True"/>
+					</ia:EventTriggerBehavior>
+					<ia:EventTriggerBehavior EventName="LostFocus">
+						<ia:InvokeCommandAction Command="{Binding PostalCodeFocusChangedCommand}" CommandParameter="False"/>
+					</ia:EventTriggerBehavior>
+				</i:Interaction.Behaviors>
 			</TextBox>
 
 			<!-- City: -->
@@ -131,6 +144,14 @@
 				Grid.Row="7"
 				Margin="0, 0, 0, 10"
 				Text="{Binding City}">
+				<i:Interaction.Behaviors>
+					<ia:EventTriggerBehavior EventName="GotFocus">
+						<ia:InvokeCommandAction Command="{Binding CityFocusChangedCommand}" CommandParameter="True"/>
+					</ia:EventTriggerBehavior>
+					<ia:EventTriggerBehavior EventName="LostFocus">
+						<ia:InvokeCommandAction Command="{Binding CityFocusChangedCommand}" CommandParameter="False"/>
+					</ia:EventTriggerBehavior>
+				</i:Interaction.Behaviors>
 			</TextBox>
 
 			<Grid

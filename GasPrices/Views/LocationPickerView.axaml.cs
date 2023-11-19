@@ -5,18 +5,16 @@ using ApiClients.Models;
 using Mapsui;
 using Mapsui.Nts.Extensions;
 using Mapsui.Projections;
-using GasPrices.Services;
 using Mapsui.Layers;
 using Mapsui.Styles;
 using System.Collections.Generic;
 using Mapsui.Nts;
 using Mapsui.UI.Avalonia;
-using Avalonia.Input;
-using System;
-using BruTile.Wms;
 using Mapsui.UI.Avalonia.Extensions;
-using NetTopologySuite.Geometries;
 using GasPrices.ViewModels;
+using SettingsFile.SettingsFile;
+using System.Threading.Tasks;
+using GasPrices.Utilities;
 
 namespace GasPrices.Views
 {
@@ -26,17 +24,26 @@ namespace GasPrices.Views
         {
         }
 
-        public LocationPickerView(SearchResultStore searchResultStore)
+        public LocationPickerView(SearchResultStore searchResultStore, SettingsFileReader settingsFileReader)
         {
             _searchResultStore = searchResultStore;
-
+            _settingsFileReader = settingsFileReader;
             InitializeComponent();
+
+            var settings = _settingsFileReader.Read();
+            if (settings?.LastKnownLatitude != null && settings?.LastKnownLongitude != null)
+            {
+                _cachedPoint = new MPoint(settings.LastKnownLongitude.Value, settings.LastKnownLatitude.Value);
+            }
 
             SetupMap();
         }
 
         private readonly SearchResultStore? _searchResultStore;
+        private readonly SettingsFileReader? _settingsFileReader;
         private GenericCollectionLayer<List<IFeature>>? _pinLayer;
+        private MPoint? _cachedPoint;
+        private MPoint? _cachedMapPoint;
 
         private void SetupMap()
         {
@@ -47,17 +54,14 @@ namespace GasPrices.Views
             MapControl.ReSnapRotationDegrees = 5;
 
             MPoint pointLonLat;
-            int zoomLevel;
 
-            if (_searchResultStore!.Coords != null)
+            if (_cachedPoint != null)
             {
-                pointLonLat = new MPoint(_searchResultStore!.Coords.Longitude, _searchResultStore!.Coords.Latitude);
-                zoomLevel = 2;
+                pointLonLat = _cachedPoint;
             }
             else
             {
-                pointLonLat = new MPoint(51.163361, 10.447683);
-                zoomLevel = 3000;
+                pointLonLat = new MPoint(10.447683, 51.163361);
             }
 
             _pinLayer = new GenericCollectionLayer<List<IFeature>>
@@ -66,12 +70,13 @@ namespace GasPrices.Views
             };
             MapControl.Map.Layers.Add(_pinLayer);
 
-            var point = SphericalMercator.FromLonLat(pointLonLat);
+            _cachedMapPoint = SphericalMercator.FromLonLat(pointLonLat);
             MapControl.Map.Layers[0].IsMapInfoLayer = false;
 
             MapControl.Map.Home += n =>
             {
-                MapControl.Map.Navigator.CenterOnAndZoomTo(point, zoomLevel, 500);
+                int zoomLevel = _cachedPoint == null ? 3000 : 2;
+                MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint!, zoomLevel, 500);
             };
 
             MapControl.Tapped += (s, e) =>

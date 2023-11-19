@@ -18,6 +18,30 @@ namespace SettingsFile.SettingsFile
             _settingsFileFullPath = settingsFileFullPath;
         }
 
+        public Settings? Read()
+        {
+            Settings? settings = null;
+
+            if (!File.Exists(_settingsFileFullPath))
+            {
+                return settings;
+            }
+
+            try
+            {
+                using var streamReader = new StreamReader(_settingsFileFullPath);
+                var settingsJson = streamReader.ReadToEnd();
+
+                settings = JsonConvert.DeserializeObject<Settings>(settingsJson);
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return settings;
+        }
+
         public async Task<Settings?> ReadAsync()
         {
             Settings? settings = null;

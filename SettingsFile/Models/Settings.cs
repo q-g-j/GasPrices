@@ -12,6 +12,8 @@ namespace SettingsFile.Models
         public string? LastKnownStreet { get; set; }
         public string? LastKnownPostalCode { get; set; }
         public string? LastKnownCity { get; set; }
+        public double? LastKnownLatitude { get; set; }
+        public double? LastKnownLongitude { get; set; }
         public string? LastKnownGasType { get; set; } = "E5";
         public int? LastKnownDistance { get; set; } = 5;
     }

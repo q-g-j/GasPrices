@@ -18,7 +18,6 @@ namespace GasPrices.ViewModels
     {
         private readonly NavigationService _navigationService;
         private readonly SearchResultStore _searchResultStore;
-        private readonly Coords _oldCoords;
 
         public LocationPickerViewModel(
             NavigationService navigationService,
@@ -26,7 +25,6 @@ namespace GasPrices.ViewModels
         {
             _navigationService = navigationService;
             _searchResultStore = searchResultStore;
-            _oldCoords = searchResultStore.Coords!;
         }
 
         [ObservableProperty]
@@ -41,12 +39,13 @@ namespace GasPrices.ViewModels
         [RelayCommand]
         public void BackCommand()
         {
-            _searchResultStore.Coords = _oldCoords;
+            _searchResultStore.Coords = null;
             _navigationService.Navigate<AddressSelectionViewModel>();
         }
 
         private void OnBackPressed()
         {
+            _searchResultStore.Coords = null;
             _navigationService.Navigate<AddressSelectionViewModel>();
         }
 

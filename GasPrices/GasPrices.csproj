@@ -1,73 +1,72 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-    <Platforms>AnyCPU;ARM64</Platforms>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+		<Platforms>AnyCPU;ARM64</Platforms>
+	</PropertyGroup>
 
-  
-  <ItemGroup>
-    <AvaloniaResource Include="Assets\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<AvaloniaResource Include="Assets\**" />
+	</ItemGroup>
 
-  
-  <ItemGroup>
-    <None Remove="Assets\Fonts\Inter-Black.otf" />
-    <None Remove="Assets\Fonts\Inter-BlackItalic.otf" />
-    <None Remove="Assets\Fonts\Inter-Bold.otf" />
-    <None Remove="Assets\Fonts\Inter-BoldItalic.otf" />
-    <None Remove="Assets\Fonts\Inter-ExtraBold.otf" />
-    <None Remove="Assets\Fonts\Inter-ExtraBoldItalic.otf" />
-    <None Remove="Assets\Fonts\Inter-ExtraLight.otf" />
-    <None Remove="Assets\Fonts\Inter-ExtraLightItalic.otf" />
-    <None Remove="Assets\Fonts\Inter-Italic.otf" />
-    <None Remove="Assets\Fonts\Inter-Light.otf" />
-    <None Remove="Assets\Fonts\Inter-LightItalic.otf" />
-    <None Remove="Assets\Fonts\Inter-Medium.otf" />
-    <None Remove="Assets\Fonts\Inter-MediumItalic.otf" />
-    <None Remove="Assets\Fonts\Inter-Regular.otf" />
-    <None Remove="Assets\Fonts\Inter-SemiBold.otf" />
-    <None Remove="Assets\Fonts\Inter-SemiBoldItalic.otf" />
-    <None Remove="Assets\Fonts\Inter-Thin.otf" />
-    <None Remove="Assets\Fonts\Inter-ThinItalic.otf" />
-    <None Remove="Assets\Fonts\Inter-V.ttf" />
-    <None Remove="Assets\Fonts\selawk.ttf" />
-    <None Remove="Assets\Images\location.png" />
-    <None Remove="Assets\Images\Pin.svg" />
-  </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.5" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.5" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.5" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.5" />
-    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.5" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+	<ItemGroup>
+		<None Remove="Assets\Fonts\Inter-Black.otf" />
+		<None Remove="Assets\Fonts\Inter-BlackItalic.otf" />
+		<None Remove="Assets\Fonts\Inter-Bold.otf" />
+		<None Remove="Assets\Fonts\Inter-BoldItalic.otf" />
+		<None Remove="Assets\Fonts\Inter-ExtraBold.otf" />
+		<None Remove="Assets\Fonts\Inter-ExtraBoldItalic.otf" />
+		<None Remove="Assets\Fonts\Inter-ExtraLight.otf" />
+		<None Remove="Assets\Fonts\Inter-ExtraLightItalic.otf" />
+		<None Remove="Assets\Fonts\Inter-Italic.otf" />
+		<None Remove="Assets\Fonts\Inter-Light.otf" />
+		<None Remove="Assets\Fonts\Inter-LightItalic.otf" />
+		<None Remove="Assets\Fonts\Inter-Medium.otf" />
+		<None Remove="Assets\Fonts\Inter-MediumItalic.otf" />
+		<None Remove="Assets\Fonts\Inter-Regular.otf" />
+		<None Remove="Assets\Fonts\Inter-SemiBold.otf" />
+		<None Remove="Assets\Fonts\Inter-SemiBoldItalic.otf" />
+		<None Remove="Assets\Fonts\Inter-Thin.otf" />
+		<None Remove="Assets\Fonts\Inter-ThinItalic.otf" />
+		<None Remove="Assets\Fonts\Inter-V.ttf" />
+		<None Remove="Assets\Fonts\selawk.ttf" />
+		<None Remove="Assets\Images\location.png" />
+		<None Remove="Assets\Images\Pin.svg" />
+	</ItemGroup>
 
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.5" />
-    <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.3" />
-    <PackageReference Include="Mapsui" Version="4.1.1" />
-    <PackageReference Include="Mapsui.Avalonia" Version="4.1.1" />
-    <PackageReference Include="Mapsui.Extensions" Version="4.1.1" />
-    <PackageReference Include="MessageBox.Avalonia" Version="3.1.5.1" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.8.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="11.0.5" />
+		<PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.5" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.5" />
+		<PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.5" />
+		<PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.5" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 
-  <ItemGroup>
-    <ProjectReference Include="..\ApiClients\ApiClients.csproj" />
-    <ProjectReference Include="..\HttpClient\HttpClient.csproj" />
-    <ProjectReference Include="..\SettingsFile\SettingsFile.csproj" />
-  </ItemGroup>
+		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.5" />
+		<PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.3" />
+		<PackageReference Include="Mapsui" Version="4.1.1" />
+		<PackageReference Include="Mapsui.Avalonia" Version="4.1.1" />
+		<PackageReference Include="Mapsui.Extensions" Version="4.1.1" />
+		<PackageReference Include="MessageBox.Avalonia" Version="3.1.5.1" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.7.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.7.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+		<PackageReference Include="Xamarin.Essentials" Version="1.8.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Views\AddressSelectionView.axaml.cs">
-      <DependentUpon>AddressSelectionView.axaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ApiClients\ApiClients.csproj" />
+		<ProjectReference Include="..\HttpClient\HttpClient.csproj" />
+		<ProjectReference Include="..\SettingsFile\SettingsFile.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Views\AddressSelectionView.axaml.cs">
+			<DependentUpon>AddressSelectionView.axaml</DependentUpon>
+		</Compile>
+	</ItemGroup>
 </Project>
