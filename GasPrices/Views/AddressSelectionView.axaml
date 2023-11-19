@@ -12,6 +12,9 @@
 		<ia:EventTriggerBehavior EventName="KeyDown">
 			<ia:InvokeCommandAction Command="{Binding KeyDownCommand}" PassEventArgsToCommand="True"/>
 		</ia:EventTriggerBehavior>
+		<ia:EventTriggerBehavior EventName="Loaded">
+			<ia:InvokeCommandAction Command="{Binding LoadedCommand}" PassEventArgsToCommand="False"/>
+		</ia:EventTriggerBehavior>
 	</i:Interaction.Behaviors>
 
 	<Grid
@@ -85,7 +88,7 @@
 					Text="{Binding MapCoordinates}">
 				</TextBox>
 			</Grid>
-			
+
 			<!-- Street: -->
 			<TextBlock
 				Grid.Column="0"

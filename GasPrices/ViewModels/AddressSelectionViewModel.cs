@@ -56,6 +56,7 @@ namespace GasPrices.ViewModels
             {
                 await ProcessApiKeyAsync();
                 await ProcessSettingsAsync();
+                await ProcessCoordsAsync();
             });
         }
         #endregion constructors
@@ -68,6 +69,7 @@ namespace GasPrices.ViewModels
         private readonly SettingsFileReader _settingsFileReader;
         private readonly SettingsFileWriter _settingsFileWriter;
         private Settings? _settings = null;
+        private bool _isLoaded = false;
         #endregion private fields
 
         #region bindable properties
@@ -127,6 +129,12 @@ namespace GasPrices.ViewModels
         #endregion bindable properties
 
         #region commands
+        [RelayCommand]
+        public void LoadedCommand()
+        {
+            _isLoaded = true;
+        }
+
         [RelayCommand]
         public async Task GeolocationCommand()
         {
@@ -189,7 +197,6 @@ namespace GasPrices.ViewModels
             if (_searchResultStore.Coords != null)
             {
                 coords = _searchResultStore.Coords;
-                _searchResultStore.Coords = null;
             }
             else
             {
@@ -252,6 +259,12 @@ namespace GasPrices.ViewModels
         }
         #endregion commands
 
+        #region OnPropertyChangedHandlers
+        partial void OnStreetChanged(string value) => ResetCachedCoords();
+        partial void OnCityChanged(string value) => ResetCachedCoords();
+        partial void OnPostalCodeChanged(string value) => ResetCachedCoords();
+        #endregion OnPropertyChangedHandlers
+
         #region private methods
         private async Task ProcessSettingsAsync()
         {
@@ -287,15 +300,15 @@ namespace GasPrices.ViewModels
                 PostalCode = _settings.LastKnownPostalCode ?? string.Empty;
                 City = _settings.LastKnownCity ?? string.Empty;
             }
-
-            if (_searchResultStore.Coords != null)
-            {
-                await ProcessCoordsAsync();
-            }
         }
 
         private async Task ProcessCoordsAsync()
         {
+            if (_searchResultStore.Coords == null)
+            {
+                return;
+            }
+
             ProgressRingIsActive = true;
             var address = await _mapClient.GetAddressAsync(_searchResultStore.Coords!);
             ProgressRingIsActive = false;
@@ -356,6 +369,16 @@ namespace GasPrices.ViewModels
             settings.LastKnownDistance = Distance;
             settings.LastKnownGasType = GasTypeSelectedItem?.ToString();
             await _settingsFileWriter.WriteAsync(settings);
+        }
+
+        private void ResetCachedCoords()
+        {
+            if (_isLoaded)
+            {
+                _searchResultStore.Coords = null;
+                MapCoordinates = null;
+                MapCoordinatesIsVisible = false;
+            }
         }
         #endregion private methods
 
