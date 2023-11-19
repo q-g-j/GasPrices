@@ -6,7 +6,10 @@ Eine kleine Work-in-progress Cross-Platform-App zum Auflisten von Tankstellen un
 
 Benötigt einen persönlichen API-Schlüssel von [Tankerkönig.de](http://tankerkoenig.de/). Dieser kann [hier](https://creativecommons.tankerkoenig.de/) kostenlos bezogen werden und muss anschließend einmalig in den App-Einstellungen angegeben werden.
 
+Die Position kann wahlweise auf einer Karte ausgewählt werden. Tipp: in Android mit einem Doppel-Tap.<br/>>
 In der Android-Version kann der Standort-Dienst zum Ermitteln der aktuellen Position genutzt werden.
+
+Sowohl bei der Kartenposition als auch nach der Nutzung des Standortdienstes erfolgt die Suche nach Koordinaten statt nach der angezeigten Adresse.
 
 #### Unterstützte Betriebssysteme:
 - Windows
