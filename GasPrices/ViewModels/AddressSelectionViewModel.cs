@@ -383,10 +383,21 @@ namespace GasPrices.ViewModels
             settings.LastKnownPostalCode = PostalCode;
             settings.LastKnownDistance = Distance;
             settings.LastKnownGasType = GasTypeSelectedItem?.ToString();
-            settings.LastKnownLatitude = _searchResultStore.Coords?.Latitude;
-            settings.LastKnownLongitude = _searchResultStore.Coords?.Longitude;
-
-            _searchResultStore.Coords = null;
+            if (_searchResultStore.Coords == null)
+            {
+                var coords = await _mapClient.GetCoordsAsync(address);
+                if (coords != null)
+                {
+                    settings.LastKnownLatitude = coords.Latitude;
+                    settings.LastKnownLongitude = coords.Longitude;
+                }
+            }
+            else
+            {
+                settings.LastKnownLatitude = _searchResultStore.Coords?.Latitude;
+                settings.LastKnownLongitude = _searchResultStore.Coords?.Longitude;
+                _searchResultStore.Coords = null;
+            }
             await _settingsFileWriter.WriteAsync(settings);
         }
 
