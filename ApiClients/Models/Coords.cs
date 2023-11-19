@@ -17,7 +17,7 @@ namespace ApiClients.Models
 
         public override string ToString()
         {
-            return string.Format("Long: {0}, Lat: {1}", Longitude, Latitude);
+            return string.Format("Lat: {0} Long: {1}", Latitude, Longitude);
         }
     }
 }

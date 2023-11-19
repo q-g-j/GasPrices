@@ -1,5 +1,6 @@
 ﻿using ApiClients.Models;
 using Avalonia;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GasPrices.Services;
 using GasPrices.Store;
@@ -16,34 +17,31 @@ namespace GasPrices.ViewModels
     public partial class LocationPickerViewModel : ViewModelBase
     {
         private readonly NavigationService _navigationService;
-        private readonly SearchResultStore? _searchResultStore;
+        private readonly SearchResultStore _searchResultStore;
+        private readonly Coords _oldCoords;
 
         public LocationPickerViewModel(
-            NavigationService navigationService, SearchResultStore? searchResultStore)
+            NavigationService navigationService,
+            SearchResultStore searchResultStore)
         {
             _navigationService = navigationService;
             _searchResultStore = searchResultStore;
+            _oldCoords = searchResultStore.Coords!;
         }
 
-        [RelayCommand]
-        public void HomeCommand(object sender)
-        {
-
-        }
+        [ObservableProperty]
+        private bool applyButtonIsEnabled;
 
         [RelayCommand]
-        public void InfoCommand(object sender)
+        public void ApplyCommand()
         {
-            var a = sender as MapInfoEventArgs;
-            var pos = SphericalMercator.ToLonLat(a.MapInfo?.WorldPosition!);
-            var coords = new Coords(pos.Y, pos.X);
-            _searchResultStore!.Coords = coords;
             _navigationService.Navigate<AddressSelectionViewModel>();
         }
 
         [RelayCommand]
         public void BackCommand()
         {
+            _searchResultStore.Coords = _oldCoords;
             _navigationService.Navigate<AddressSelectionViewModel>();
         }
 
