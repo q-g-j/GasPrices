@@ -84,7 +84,7 @@
 			<Grid
 				Grid.Column="0"
 				Grid.Row="1"
-				ColumnDefinitions="3*, 1*"
+				ColumnDefinitions="*, auto"
 				RowDefinitions="auto , auto, auto"
 				Margin="5, 0, 5, 15"
 				IsVisible="{Binding DetailsIsVisible}">
@@ -156,6 +156,7 @@
 					<TextBlock
 						Grid.Column="1"
 						Grid.Row="0"
+						TextAlignment="Right"
 						Text="{Binding DetailsE5}">
 					</TextBlock>
 					<TextBlock
