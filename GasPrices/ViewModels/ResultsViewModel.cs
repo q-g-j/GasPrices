@@ -81,7 +81,7 @@ namespace GasPrices.ViewModels
             if (o is TappedEventArgs e)
             {
                 var control = e.Source as Control;
-                if (control?.Parent?.GetType() != typeof(DataGridCell))
+                if (control?.Parent is not DataGridCell && control?.Parent is not Button)
                 {
                     SelectedIndex = -1;
                 }
@@ -110,6 +110,18 @@ namespace GasPrices.ViewModels
                 {
                     DetailsIsVisible = false;
                 }
+            }
+        }
+
+        [RelayCommand]
+        public void StationsSortingCommand()
+        {
+            if (SelectedItem != null) return;
+
+            if (Stations?.Count > 0)
+            {
+                SelectedItem = 0;
+                SelectedItem = -1;
             }
         }
 

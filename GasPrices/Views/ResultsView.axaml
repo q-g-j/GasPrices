@@ -47,6 +47,9 @@
 				<ia:EventTriggerBehavior EventName="SelectionChanged">
 					<ia:InvokeCommandAction Command="{Binding StationsSelectionChangedCommand}" PassEventArgsToCommand="True"/>
 				</ia:EventTriggerBehavior>
+				<ia:EventTriggerBehavior EventName="Sorting">
+					<ia:InvokeCommandAction Command="{Binding StationsSortingCommand}" />
+				</ia:EventTriggerBehavior>
 			</i:Interaction.Behaviors>
 
 			<DataGrid.Columns>
