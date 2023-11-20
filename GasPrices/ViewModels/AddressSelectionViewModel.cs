@@ -97,7 +97,7 @@ namespace GasPrices.ViewModels
         [ObservableProperty]
         private string city = string.Empty;
 
-        private string? radius;
+        private string? radius = "5";
         public string? Radius
         {
             get => radius;
@@ -290,7 +290,7 @@ namespace GasPrices.ViewModels
         private async Task ProcessApiKeyAsync()
         {
             _settings = await _settingsFileReader.ReadAsync();
-            if (_settings == null && string.IsNullOrEmpty(_settings?.TankerkönigApiKey))
+            if (_settings == null || string.IsNullOrEmpty(_settings?.TankerkönigApiKey))
             {
                 SearchButtonIsEnabled = false;
                 var warning = new StringBuilder();
@@ -318,9 +318,9 @@ namespace GasPrices.ViewModels
             {
                 RadiusInt = _appStateStore.Distance.Value;
             }
-            else if (_settings != null && _settings.LastKnownDistance != null)
+            else if (_settings != null && _settings.LastKnownRadius != null)
             {
-                RadiusInt = _settings.LastKnownDistance.Value;
+                Radius = _settings.LastKnownRadius;
             }
 
             if (_appStateStore.CoordsFromMapClient != null) return;
@@ -401,7 +401,7 @@ namespace GasPrices.ViewModels
             settings.LastKnownStreet = Street;
             settings.LastKnownCity = City;
             settings.LastKnownPostalCode = PostalCode;
-            settings.LastKnownDistance = RadiusInt;
+            settings.LastKnownRadius = Radius;
             settings.LastKnownGasType = GasTypeSelectedItem?.ToString();
 
             if (_appStateStore.CoordsFromMapClient != null)
