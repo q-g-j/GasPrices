@@ -167,6 +167,7 @@
 					<TextBlock
 						Grid.Column="1"
 						Grid.Row="1"
+						TextAlignment="Right"
 						Text="{Binding DetailsE10}">
 					</TextBlock>
 					<TextBlock
@@ -178,6 +179,7 @@
 					<TextBlock
 						Grid.Column="1"
 						Grid.Row="2"
+						TextAlignment="Right"
 						Text="{Binding DetailsDiesel}">
 					</TextBlock>
 				</Grid>

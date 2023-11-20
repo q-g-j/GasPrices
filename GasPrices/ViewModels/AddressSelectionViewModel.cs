@@ -12,6 +12,7 @@ using SettingsFile.Models;
 using SettingsFile.SettingsFile;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -78,6 +79,14 @@ namespace GasPrices.ViewModels
         private CancellationTokenSource? _cancellationTokenSource;
         #endregion private fields
 
+        #region private properties
+        private int RadiusInt
+        {
+            get => int.Parse(Radius!);
+            set => Radius = value.ToString();
+        }
+        #endregion private properties
+
         #region bindable properties
         [ObservableProperty]
         private string street = string.Empty;
@@ -88,8 +97,20 @@ namespace GasPrices.ViewModels
         [ObservableProperty]
         private string city = string.Empty;
 
-        [ObservableProperty]
-        private int distance = 5;
+        private string? radius;
+        public string? Radius
+        {
+            get => radius;
+            set
+            {
+                var isValid = int.TryParse(value, out int radiusInt);
+                if (isValid && radiusInt > 0 && radiusInt <= 40)
+                {
+                    radius = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         [ObservableProperty]
         private ObservableCollection<GasType> gasTypes;
@@ -215,7 +236,7 @@ namespace GasPrices.ViewModels
 
             if (coords != null)
             {
-                var stations = await _gasPricesClient.GetStationsAsync(_settings!.TankerkönigApiKey!, coords, Distance);
+                var stations = await _gasPricesClient.GetStationsAsync(_settings!.TankerkönigApiKey!, coords, RadiusInt);
                 if (stations != null && stations?.Count > 0)
                 {
                     _appStateStore!.Stations = stations;
@@ -295,11 +316,11 @@ namespace GasPrices.ViewModels
 
             if (_appStateStore.Distance != null)
             {
-                Distance = _appStateStore.Distance.Value;
+                RadiusInt = _appStateStore.Distance.Value;
             }
             else if (_settings != null && _settings.LastKnownDistance != null)
             {
-                Distance = _settings.LastKnownDistance.Value;
+                RadiusInt = _settings.LastKnownDistance.Value;
             }
 
             if (_appStateStore.CoordsFromMapClient != null) return;
@@ -372,7 +393,7 @@ namespace GasPrices.ViewModels
             var address = new Address(Street, City, PostalCode);
             _appStateStore.Address = address;
             _appStateStore.SelectedGasType = GasTypeSelectedItem;
-            _appStateStore.Distance = Distance;
+            _appStateStore.Distance = RadiusInt;
 
             var settings = await _settingsFileReader.ReadAsync();
             settings ??= new Settings();
@@ -380,7 +401,7 @@ namespace GasPrices.ViewModels
             settings.LastKnownStreet = Street;
             settings.LastKnownCity = City;
             settings.LastKnownPostalCode = PostalCode;
-            settings.LastKnownDistance = Distance;
+            settings.LastKnownDistance = RadiusInt;
             settings.LastKnownGasType = GasTypeSelectedItem?.ToString();
 
             if (_appStateStore.CoordsFromMapClient != null)

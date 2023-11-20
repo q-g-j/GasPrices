@@ -182,7 +182,7 @@
 					Grid.Column="4"
 					Margin="0, 0, 5, 0"
 					HorizontalContentAlignment="Right"
-					Text="{Binding Distance}">
+					Text="{Binding Radius}">
 				</TextBox>
 				<TextBlock
 					Grid.Column="5"
@@ -199,7 +199,7 @@
 				TickFrequency="1"
 				IsSnapToTickEnabled="True"
 				Margin="0, 0, 20, 0"
-				Value="{Binding Distance}">
+				Value="{Binding Radius}">
 			</Slider>
 
 			<!-- Search button: -->
