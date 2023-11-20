@@ -24,10 +24,9 @@ namespace GasPrices.Views
         {
         }
 
-        public LocationPickerView(IMapClient mapClient, AppStateStore appStateStore, SettingsFileReader settingsFileReader)
+        public LocationPickerView(AppStateStore appStateStore, SettingsFileReader settingsFileReader)
         {
             _appStateStore = appStateStore;
-            _mapClient = mapClient;
             _settingsFileReader = settingsFileReader;
             InitializeComponent();
 
@@ -45,7 +44,6 @@ namespace GasPrices.Views
         }
 
         private readonly AppStateStore? _appStateStore;
-        private readonly IMapClient? _mapClient;
         private readonly SettingsFileReader? _settingsFileReader;
         private GenericCollectionLayer<List<IFeature>>? _pinLayer;
         private readonly MPoint? _cachedPoint;
