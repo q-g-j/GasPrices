@@ -22,19 +22,25 @@
 		<Style Selector="TextBox:pressed /template/ Border#PART_BorderElement">
 			<Setter Property="BorderThickness" Value="0" />
 		</Style>
+		<Style Selector="DataGridCell Rectangle">
+			<Setter Property="IsVisible" Value="False"></Setter>
+		</Style>
 
 	</UserControl.Styles>
-	
+
 	<Grid
 		ColumnDefinitions="*"
-		RowDefinitions="3*, 1*, auto"
+		RowDefinitions="4*, 2*, auto"
 		Margin="5, 15, 5, 15">
+
 		<DataGrid
 			x:Name="dgStations"
 			Grid.Column="0"
 			Grid.Row="0"
 			ItemsSource="{Binding Stations}"
 			AutoGenerateColumns="False"
+			SelectedIndex="{Binding SelectedIndex}"
+			SelectedItem="{Binding SelectedItem}"
 			SelectionMode="Single">
 
 			<i:Interaction.Behaviors>
@@ -49,104 +55,132 @@
 				<DataGridTextColumn Header="{Binding PriceFor}" Binding="{Binding Price}" IsReadOnly="True" />
 			</DataGrid.Columns>
 		</DataGrid>
-
-		<!-- Details: -->
 		<Grid
+			RowDefinitions="*, auto"
 			Grid.Column="0"
 			Grid.Row="1"
-			ColumnDefinitions="3*, 1*"
-			RowDefinitions="auto, auto"
-			VerticalAlignment="Bottom"
-			Margin="5, 0, 5, 15"
-			IsVisible="{Binding DetailsIsVisible}">
-			<Label
+			Background="Transparent"
+			VerticalAlignment="Stretch">
+
+			<i:Interaction.Behaviors>
+				<ia:EventTriggerBehavior EventName="Tapped">
+					<ia:InvokeCommandAction Command="{Binding TappedCommand}" PassEventArgsToCommand="True"/>
+				</ia:EventTriggerBehavior>
+			</i:Interaction.Behaviors>
+
+			<!-- Details: -->
+			<Grid
 				Grid.Column="0"
 				Grid.Row="0"
-				Content="Details:"
-				FontWeight="DemiBold"
-				FontSize="20">
-			</Label>
-			<Grid
+				ColumnDefinitions="3*, 1*"
+				RowDefinitions="auto, auto, auto"
+				VerticalAlignment="Bottom"
+				Margin="5, 0, 5, 0"
+				IsVisible="{Binding DetailsIsVisible}">
+
+				<TextBlock
+					Grid.Column="0"
+					Grid.Row="0"
+					Text="Details:"
+					FontWeight="DemiBold"
+					FontSize="20"
+					Margin="0, 0, 0, 5">
+				</TextBlock>
+				<Grid
+					Grid.Column="0"
+					Grid.Row="1"
+					ColumnDefinitions="*"
+					RowDefinitions="auto, auto, auto, auto"
+					Margin="0, 0, 10, 0">
+					<TextBox
+						Grid.Column="0"
+						Grid.Row="0"
+						IsReadOnly="True"
+						Text="{Binding DetailsName}">
+					</TextBox>
+					<TextBox
+						Grid.Column="0"
+						Grid.Row="1"
+						IsReadOnly="True"
+						Text="{Binding DetailsBrand}">
+					</TextBox>
+					<TextBox
+						Grid.Column="0"
+						Grid.Row="2"
+						IsReadOnly="True"
+						Text="{Binding DetailsStreet}">
+					</TextBox>
+					<TextBox
+						Grid.Column="0"
+						Grid.Row="3"
+						IsReadOnly="True"
+						Text="{Binding DetailsCity}">
+					</TextBox>
+				</Grid>
+				<Grid
+					Grid.Column="1"
+					Grid.Row="1"
+					ColumnDefinitions="auto, auto"
+					RowDefinitions="auto, auto, auto"
+					HorizontalAlignment="Right">
+					<TextBlock
+						Grid.Column="0"
+						Grid.Row="0"
+						Margin="0, 0, 5, 0"
+						Text="E5:">
+					</TextBlock>
+					<TextBlock
+						Grid.Column="1"
+						Grid.Row="0"
+						Text="{Binding DetailsE5}">
+					</TextBlock>
+					<TextBlock
+						Grid.Column="0"
+						Grid.Row="1"
+						Margin="0, 0, 5, 0"
+						Text="E10:">
+					</TextBlock>
+					<TextBlock
+						Grid.Column="1"
+						Grid.Row="1"
+						Text="{Binding DetailsE10}">
+					</TextBlock>
+					<TextBlock
+						Grid.Column="0"
+						Grid.Row="2"
+						Margin="0, 0, 5, 0"
+						Text="Diesel:">
+					</TextBlock>
+					<TextBlock
+						Grid.Column="1"
+						Grid.Row="2"
+						Text="{Binding DetailsDiesel}">
+					</TextBlock>
+				</Grid>
+
+				<!-- Open in map button: -->
+				<Button
+					Grid.Column="0"
+					Grid.Row="2"
+					Grid.ColumnSpan="2"
+					HorizontalAlignment="Center"
+					HorizontalContentAlignment="Center"
+					Content="Auf Karte anzeigen"
+					Margin="0, 15, 0, 10"
+					Width="220"
+					Command="{Binding OpenInMapCommand}">
+				</Button>
+			</Grid>
+
+			<!-- Back button: -->
+			<Button
 				Grid.Column="0"
 				Grid.Row="1"
-				ColumnDefinitions="*"
-				RowDefinitions="auto, auto, auto, auto"
-			Margin="0, 0, 10, 0">
-				<TextBox
-					Grid.Column="0"
-                    Grid.Row="0"
-					IsReadOnly="True"
-					Text="{Binding DetailsName}">
-				</TextBox>
-				<TextBox
-					Grid.Column="0"
-					Grid.Row="1"
-					IsReadOnly="True"
-					Text="{Binding DetailsBrand}">
-				</TextBox>
-				<TextBox
-					Grid.Column="0"
-					Grid.Row="2"
-					IsReadOnly="True"
-					Text="{Binding DetailsStreet}">
-				</TextBox>
-				<TextBox
-					Grid.Column="0"
-					Grid.Row="3"
-					IsReadOnly="True"
-					Text="{Binding DetailsCity}">
-				</TextBox>
-			</Grid>
-			<Grid
-				Grid.Column="1"
-				Grid.Row="1"
-				ColumnDefinitions="auto, auto"
-				RowDefinitions="auto, auto, auto"
-				HorizontalAlignment="Right">
-				<TextBlock
-					Grid.Column="0"
-					Grid.Row="0"
-					Margin="0, 0, 5, 0"
-					Text="E5:">
-				</TextBlock>
-				<TextBlock
-					Grid.Column="1"
-					Grid.Row="0"
-					Text="{Binding DetailsE5}">
-				</TextBlock>
-				<TextBlock
-					Grid.Column="0"
-					Grid.Row="1"
-					Margin="0, 0, 5, 0"
-					Text="E10:">
-				</TextBlock>
-				<TextBlock
-					Grid.Column="1"
-					Grid.Row="1"
-					Text="{Binding DetailsE10}">
-				</TextBlock>
-				<TextBlock
-					Grid.Column="0"
-					Grid.Row="2"
-					Margin="0, 0, 5, 0"
-					Text="Diesel:">
-				</TextBlock>
-				<TextBlock
-					Grid.Column="1"
-					Grid.Row="2"
-					Text="{Binding DetailsDiesel}">
-				</TextBlock>
-			</Grid>
+				HorizontalAlignment="Stretch"
+				HorizontalContentAlignment="Center"
+				Content="Zurück"
+				Command="{Binding BackCommand}">
+			</Button>
 		</Grid>
-
-		<!-- Back button: -->
-		<Button
-			Grid.Column="0"
-			Grid.Row="2"
-			HorizontalAlignment="Stretch"
-			HorizontalContentAlignment="Center"
-			Content="Zurück"
-			Command="{Binding BackCommand}">
-		</Button>
 	</Grid>
 </UserControl>

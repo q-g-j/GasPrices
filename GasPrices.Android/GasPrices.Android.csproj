@@ -16,30 +16,30 @@
 		<TrimMode>partial</TrimMode>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DebugType>none</DebugType>
 		<AndroidEnableMultiDex>True</AndroidEnableMultiDex>
 		<AndroidCreatePackagePerAbi>True</AndroidCreatePackagePerAbi>
 		<AndroidKeyStore>False</AndroidKeyStore>
+		<IsTrimmable>True</IsTrimmable>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-		<DebugType>none</DebugType>
 		<AndroidEnableMultiDex>True</AndroidEnableMultiDex>
 		<AndroidCreatePackagePerAbi>True</AndroidCreatePackagePerAbi>
 		<AndroidKeyStore>False</AndroidKeyStore>
+		<IsTrimmable>True</IsTrimmable>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DebugType>none</DebugType>
 		<AndroidEnableMultiDex>True</AndroidEnableMultiDex>
 		<AndroidCreatePackagePerAbi>True</AndroidCreatePackagePerAbi>
 		<AndroidKeyStore>False</AndroidKeyStore>
 		<PublishTrimmed>true</PublishTrimmed>
 		<TrimMode>partial</TrimMode>
+		<IsTrimmable>True</IsTrimmable>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-		<DebugType>none</DebugType>
 		<AndroidEnableMultiDex>True</AndroidEnableMultiDex>
 		<AndroidCreatePackagePerAbi>True</AndroidCreatePackagePerAbi>
 		<AndroidKeyStore>False</AndroidKeyStore>
+		<IsTrimmable>True</IsTrimmable>
 	</PropertyGroup>
 
 	<ItemGroup>

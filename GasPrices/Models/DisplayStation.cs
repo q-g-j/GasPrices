@@ -63,5 +63,15 @@ namespace GasPrices.Models
         public string E10 { get; set; } = string.Empty;
         public string Price { get; set; } = string.Empty;
         public bool? IsOpen { get; set; } = false;
+
+        public string GetUriData()
+        {
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append(Name + ", ");
+            stringBuilder.Append(Street + ", ");
+            stringBuilder.Append(PostalCode + " ");
+            stringBuilder.Append(City);
+            return Uri.EscapeDataString(stringBuilder.ToString());
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace GasPrices.Views
             dgStations.Loaded += (o, e) =>
             {
                 dgStations.Columns[2].Sort(System.ComponentModel.ListSortDirection.Ascending);
+                dgStations.SelectedItem = null;
             };
         }
     }

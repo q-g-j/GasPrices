@@ -42,7 +42,7 @@ namespace GasPrices.Views
         private readonly AppStateStore? _appStateStore;
         private readonly SettingsFileReader? _settingsFileReader;
         private GenericCollectionLayer<List<IFeature>>? _pinLayer;
-        private MPoint? _cachedPoint;
+        private readonly MPoint? _cachedPoint;
         private MPoint? _cachedMapPoint;
 
         private void SetupMap()
