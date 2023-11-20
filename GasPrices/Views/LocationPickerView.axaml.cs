@@ -13,8 +13,8 @@ using Mapsui.UI.Avalonia;
 using Mapsui.UI.Avalonia.Extensions;
 using GasPrices.ViewModels;
 using SettingsFile.SettingsFile;
-using System.Threading.Tasks;
-using GasPrices.Utilities;
+using Xamarin.Essentials;
+using ApiClients;
 
 namespace GasPrices.Views
 {
@@ -24,9 +24,10 @@ namespace GasPrices.Views
         {
         }
 
-        public LocationPickerView(AppStateStore appStateStore, SettingsFileReader settingsFileReader)
+        public LocationPickerView(IMapClient mapClient, AppStateStore appStateStore, SettingsFileReader settingsFileReader)
         {
             _appStateStore = appStateStore;
+            _mapClient = mapClient;
             _settingsFileReader = settingsFileReader;
             InitializeComponent();
 
@@ -35,11 +36,16 @@ namespace GasPrices.Views
             {
                 _cachedPoint = new MPoint(settings.LastKnownLongitude.Value, settings.LastKnownLatitude.Value);
             }
+            else if (_appStateStore.CoordsFromMapClient != null)
+            {
+                _cachedPoint = new MPoint(_appStateStore.CoordsFromMapClient.Longitude, _appStateStore.CoordsFromMapClient.Latitude);
+            }
 
             SetupMap();
         }
 
         private readonly AppStateStore? _appStateStore;
+        private readonly IMapClient? _mapClient;
         private readonly SettingsFileReader? _settingsFileReader;
         private GenericCollectionLayer<List<IFeature>>? _pinLayer;
         private readonly MPoint? _cachedPoint;
@@ -69,14 +75,19 @@ namespace GasPrices.Views
                 Style = SymbolStyles.CreatePinStyle()
             };
             MapControl.Map.Layers.Add(_pinLayer);
+            MapControl.Map.Layers[0].IsMapInfoLayer = false;
 
             _cachedMapPoint = SphericalMercator.FromLonLat(pointLonLat);
-            MapControl.Map.Layers[0].IsMapInfoLayer = false;
 
             MapControl.Map.Home += n =>
             {
                 int zoomLevel = _cachedPoint == null ? 3000 : 2;
                 MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint!, zoomLevel, 500);
+
+                if (_cachedPoint != null)
+                {
+                    PlacePin(_cachedMapPoint);
+                }
             };
 
             MapControl.Tapped += (s, e) =>
@@ -87,25 +98,24 @@ namespace GasPrices.Views
 
                 if (mapInfo != null && mapInfo.WorldPosition != null)
                 {
-                    var geographicalCoordinates = SphericalMercator.ToLonLat(mapInfo.WorldPosition!);
-
-                    double latitude = geographicalCoordinates.Y;
-                    double longitude = geographicalCoordinates.X;
-
-                    _pinLayer?.Features.Clear();
-                    _pinLayer?.Features.Add(new GeometryFeature
-                    {
-                        Geometry = mapInfo.WorldPosition!.ToPoint()
-                    });
-
-                    _pinLayer?.DataHasChanged();
+                    PlacePin(mapInfo.WorldPosition!);
 
                     var pos = SphericalMercator.ToLonLat(mapInfo.WorldPosition!);
                     var coords = new Coords(pos.Y, pos.X);
-                    _appStateStore!.Coords = coords;
+                    _appStateStore!.CoordsFromMapClient = coords;
                     ((LocationPickerViewModel)DataContext!).ApplyButtonIsEnabled = true;
                 }
             };
+        }
+        private void PlacePin(MPoint mPoint)
+        {
+            _pinLayer?.Features.Clear();
+            _pinLayer?.Features.Add(new GeometryFeature
+            {
+                Geometry = mPoint.ToPoint()
+            });
+
+            _pinLayer?.DataHasChanged();
         }
     }
 }

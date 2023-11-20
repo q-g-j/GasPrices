@@ -18,6 +18,8 @@ namespace GasPrices.ViewModels
             _navigationService = navigationService;
             _appStateStore = appStateStore;
 
+            ApplyButtonIsEnabled = _appStateStore.CoordsFromMapClient != null;
+
             ((App)Application.Current!).BackPressed += OnBackPressed;
         }
 
@@ -33,13 +35,13 @@ namespace GasPrices.ViewModels
         [RelayCommand]
         public void BackCommand()
         {
-            _appStateStore.Coords = null;
+            _appStateStore.CoordsFromMapClient = null;
             _navigationService.Navigate<AddressSelectionViewModel>();
         }
 
         private void OnBackPressed()
         {
-            _appStateStore.Coords = null;
+            _appStateStore.CoordsFromMapClient = null;
             _navigationService.Navigate<AddressSelectionViewModel>();
         }
 
