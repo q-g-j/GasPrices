@@ -97,7 +97,7 @@ namespace GasPrices.ViewModels
                 {
                     var station = e.AddedItems[0] as DisplayStation;
                     DetailsName = station!.Name;
-                    DetailsBrand = string.IsNullOrEmpty(station!.Brand) ? station!.Name : station!.Brand;
+                    DetailsBrand = station!.Brand;
                     DetailsStreet = station!.Street;
                     DetailsCity = station!.PostalCode + " " + station!.City;
                     DetailsE5 = station!.E5;

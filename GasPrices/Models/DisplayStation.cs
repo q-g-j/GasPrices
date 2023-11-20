@@ -13,7 +13,7 @@ namespace GasPrices.Models
         public DisplayStation(Station station, GasType selectedGasType)
         {
             Name = station.Name!;
-            Brand = station.Brand!;
+            Brand = string.IsNullOrEmpty(station!.Brand!) ? station!.Name! : station!.Brand!;
             Distance = Math.Round(station.Distance!.Value, 2).ToString() + " km";
             if (!string.IsNullOrEmpty(station.Street))
             {
