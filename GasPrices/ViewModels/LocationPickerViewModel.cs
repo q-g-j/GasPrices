@@ -1,30 +1,24 @@
-﻿using ApiClients.Models;
-using Avalonia;
+﻿using Avalonia;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GasPrices.Services;
 using GasPrices.Store;
-using Mapsui;
-using Mapsui.Projections;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GasPrices.ViewModels
 {
     public partial class LocationPickerViewModel : ViewModelBase
     {
         private readonly NavigationService _navigationService;
-        private readonly SearchResultStore _searchResultStore;
+        private readonly AppStateStore _appStateStore;
 
         public LocationPickerViewModel(
             NavigationService navigationService,
-            SearchResultStore searchResultStore)
+            AppStateStore appStateStore)
         {
             _navigationService = navigationService;
-            _searchResultStore = searchResultStore;
+            _appStateStore = appStateStore;
+
+            ((App)Application.Current!).BackPressed += OnBackPressed;
         }
 
         [ObservableProperty]
@@ -39,13 +33,13 @@ namespace GasPrices.ViewModels
         [RelayCommand]
         public void BackCommand()
         {
-            _searchResultStore.Coords = null;
+            _appStateStore.Coords = null;
             _navigationService.Navigate<AddressSelectionViewModel>();
         }
 
         private void OnBackPressed()
         {
-            _searchResultStore.Coords = null;
+            _appStateStore.Coords = null;
             _navigationService.Navigate<AddressSelectionViewModel>();
         }
 

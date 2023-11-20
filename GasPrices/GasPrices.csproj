@@ -4,12 +4,15 @@
 		<Nullable>enable</Nullable>
 		<LangVersion>latest</LangVersion>
 		<Platforms>AnyCPU;ARM64</Platforms>
+		<PublishTrimmed>true</PublishTrimmed>
+		<TrimMode>partial</TrimMode>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<AvaloniaResource Include="Assets\**" />
 	</ItemGroup>
 
+		
 
 	<ItemGroup>
 		<None Remove="Assets\Fonts\Inter-Black.otf" />

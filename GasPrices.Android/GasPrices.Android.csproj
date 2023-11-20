@@ -12,6 +12,8 @@
 		<AssemblyName></AssemblyName>
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<Platforms>AnyCPU;ARM64</Platforms>
+		<PublishTrimmed>true</PublishTrimmed>
+		<TrimMode>partial</TrimMode>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DebugType>none</DebugType>

@@ -24,9 +24,9 @@ namespace GasPrices.Views
         {
         }
 
-        public LocationPickerView(SearchResultStore searchResultStore, SettingsFileReader settingsFileReader)
+        public LocationPickerView(AppStateStore appStateStore, SettingsFileReader settingsFileReader)
         {
-            _searchResultStore = searchResultStore;
+            _appStateStore = appStateStore;
             _settingsFileReader = settingsFileReader;
             InitializeComponent();
 
@@ -39,7 +39,7 @@ namespace GasPrices.Views
             SetupMap();
         }
 
-        private readonly SearchResultStore? _searchResultStore;
+        private readonly AppStateStore? _appStateStore;
         private readonly SettingsFileReader? _settingsFileReader;
         private GenericCollectionLayer<List<IFeature>>? _pinLayer;
         private MPoint? _cachedPoint;
@@ -102,7 +102,7 @@ namespace GasPrices.Views
 
                     var pos = SphericalMercator.ToLonLat(mapInfo.WorldPosition!);
                     var coords = new Coords(pos.Y, pos.X);
-                    _searchResultStore!.Coords = coords;
+                    _appStateStore!.Coords = coords;
                     ((LocationPickerViewModel)DataContext!).ApplyButtonIsEnabled = true;
                 }
             };

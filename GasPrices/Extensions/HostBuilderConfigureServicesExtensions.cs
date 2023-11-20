@@ -27,7 +27,7 @@ namespace GasPrices.Extensions
                 // Add Singletons (global variables and store):
                 services.AddSingleton(new Globals("GasPricesApp", "settings.json"));
                 services.AddSingleton<NavigationStore>();
-                services.AddSingleton<SearchResultStore>();
+                services.AddSingleton<AppStateStore>();
 
                 // Add HttpClient functionality:
                 services.AddHttpClient();

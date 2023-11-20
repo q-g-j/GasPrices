@@ -1,41 +1,33 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GasPrices.Models;
 using GasPrices.Services;
 using GasPrices.Store;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Essentials;
 
 namespace GasPrices.ViewModels
 {
     public partial class ResultsViewModel : ViewModelBase
     {
         private readonly NavigationService _navigationService;
-        private readonly SearchResultStore _searchResultStore;
+        private readonly AppStateStore _appStateStore;
 
         public ResultsViewModel(
             NavigationService navigationService,
-            SearchResultStore searchResultStore)
+            AppStateStore appStateStore)
         {
             _navigationService = navigationService;
-            _searchResultStore = searchResultStore;
+            _appStateStore = appStateStore;
             Stations = [];
-            foreach (var station in _searchResultStore.Stations!)
+            foreach (var station in _appStateStore.Stations!)
             {
-                Stations.Add(new DisplayStation(station, _searchResultStore.SelectedGasType!));
+                Stations.Add(new DisplayStation(station, _appStateStore.SelectedGasType!));
             }
-            PriceFor = searchResultStore!.SelectedGasType!.ToString()!;
+            PriceFor = appStateStore!.SelectedGasType!.ToString()!;
 
-            ((App)Avalonia.Application.Current!).BackPressed += OnBackPressed;
+            ((App)Application.Current!).BackPressed += OnBackPressed;
         }
 
         [ObservableProperty]

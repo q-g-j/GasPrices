@@ -9,7 +9,6 @@ using CommunityToolkit.Mvvm.Input;
 using GasPrices.Services;
 using SettingsFile.Models;
 using SettingsFile.SettingsFile;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
