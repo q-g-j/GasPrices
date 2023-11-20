@@ -2,7 +2,7 @@
 Copyright 2023 Jann Emken
 
 ### Beschreibung
-Eine kleine Work-in-progress Cross-Platform-App zum Auflisten von Tankstellen und Spritpreisen in der Nähe (auf Deutschland beschränkt).
+Eine Cross-Platform-App zum Auflisten von Tankstellen und Spritpreisen in der Nähe (auf Deutschland beschränkt).
 
 Benötigt einen persönlichen API-Schlüssel von [Tankerkönig.de](http://tankerkoenig.de/). Dieser kann [hier](https://creativecommons.tankerkoenig.de/) kostenlos bezogen werden und muss anschließend einmalig in den App-Einstellungen angegeben werden.
 
@@ -20,7 +20,7 @@ Sowohl bei der Kartenposition als auch nach der Nutzung des Standortdienstes erf
 
 #### Technische Details
 Das Programm ist in C# mit dem AvaloniaUI Framework geschrieben und nutzt durchgehend das MVVM Pattern - außer beim Mapsui.UI.Avalonia.MapControl, welches MVVM leider nicht unterstützt. Hier wurde auf das Code-Behind ausgewichen.<br/>
-Zur Umsetzung des IoC (Inversion of Control) im Projekt wurde der Dependency-Injection-Service aus **Microsoft.Extensions.DependencyInjection** gewählt.<br/>
+Zur Umsetzung des IoC-Prinzips (Inversion of Control) im Projekt wurde der Dependency-Injection-Service aus **Microsoft.Extensions.DependencyInjection** gewählt.<br/>
 Die ViewModels machen Gebrauch vom Source-Code-Generator aus dem **CommunityToolkit.Mvvm** um die Definitionen der Properties für die XAML-Bindings zu vereinfachen.<br/>
 Die Navigation zwischen den Views wird ermöglicht durch eine Kombination aus einem [ViewLocator](https://docs.avaloniaui.net/docs/next/concepts/view-locator) und einem NavigationService (nach diesem Vorbild: [NavigationMVVM](https://github.com/SingletonSean/wpf-tutorials/tree/master/NavigationMVVM) vom Youtuber SingletonSean).
 
