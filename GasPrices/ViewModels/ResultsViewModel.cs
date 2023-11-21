@@ -76,16 +76,9 @@ namespace GasPrices.ViewModels
         private string detailsDiesel = "";
 
         [RelayCommand]
-        public void TappedCommand(object o)
+        public void TappedCommand()
         {
-            if (o is TappedEventArgs e)
-            {
-                var control = e.Source as Control;
-                if (control?.Parent is not DataGridCell && control?.Parent is not Button)
-                {
-                    SelectedIndex = -1;
-                }
-            }
+            SelectedIndex = -1;
         }
 
         [RelayCommand]

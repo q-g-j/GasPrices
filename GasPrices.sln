@@ -13,7 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiClients", "ApiClients\Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpClient", "HttpClient\HttpClient.csproj", "{BA59D4DE-D462-4F39-ADB2-C32F6A4B96D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettingsFile", "SettingsFile\SettingsFile.csproj", "{A77A3FC1-9C1A-4606-B011-3BA6A460A0A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SettingsFile", "SettingsFile\SettingsFile.csproj", "{A77A3FC1-9C1A-4606-B011-3BA6A460A0A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B2F29AC3-336E-4B6A-A57D-AD4B6E576FA5}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

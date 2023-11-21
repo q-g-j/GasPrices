@@ -47,7 +47,7 @@ namespace GasPrices.Extensions
                 services.AddTransient<SettingsViewModel>();
 
                 // Add the ViewLocator service:
-                services.AddTransient<ViewLocator>();
+                services.AddTransient<ViewLocatorService>();
                 
                 // Add ViewModel navigation service:
                 services.AddTransient<NavigationService>();

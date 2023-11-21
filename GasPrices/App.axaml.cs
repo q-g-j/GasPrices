@@ -37,7 +37,7 @@ public partial class App : Application
     {
         _host?.Start();
 
-        var viewLocator = _host?.Services.GetService<ViewLocator>();
+        var viewLocator = _host?.Services.GetService<ViewLocatorService>();
         DataTemplates.Add(viewLocator!);
 
         var navigationService = _host?.Services.GetRequiredService<NavigationService>();

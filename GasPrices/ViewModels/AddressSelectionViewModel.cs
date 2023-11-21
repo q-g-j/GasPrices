@@ -1,20 +1,17 @@
 ﻿using ApiClients;
 using ApiClients.Models;
+using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Rendering;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GasPrices.Models;
 using GasPrices.Services;
 using GasPrices.Store;
-using Microsoft.CodeAnalysis.FlowAnalysis;
 using SettingsFile.Models;
 using SettingsFile.SettingsFile;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -82,10 +79,13 @@ namespace GasPrices.ViewModels
         #region private properties
         private int RadiusInt
         {
-            get => int.Parse(Radius!);
-            set => Radius = value.ToString();
+            get
+            {
+                var isDigit = int.TryParse(Radius, out int intValue);
+                return isDigit ? intValue : 5;
+            }
         }
-        #endregion private properties
+        #endregion
 
         #region bindable properties
         [ObservableProperty]
@@ -97,20 +97,8 @@ namespace GasPrices.ViewModels
         [ObservableProperty]
         private string city = string.Empty;
 
-        private string? radius = "5";
-        public string? Radius
-        {
-            get => radius;
-            set
-            {
-                var isValid = int.TryParse(value, out int radiusInt);
-                if (isValid && radiusInt > 0 && radiusInt <= 40)
-                {
-                    radius = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        [ObservableProperty]
+        private string radius = "5";
 
         [ObservableProperty]
         private ObservableCollection<GasType> gasTypes;
@@ -174,7 +162,7 @@ namespace GasPrices.ViewModels
             GeolocationButtonIsEnabled = false;
             ProgressRingIsActive = true;
 
-            Location? location = null;
+            Xamarin.Essentials.Location? location = null;
 
             try
             {
@@ -220,6 +208,18 @@ namespace GasPrices.ViewModels
         [RelayCommand]
         public async Task SearchCommand()
         {
+            if (Radius == "0")
+            {
+                ShowWarning("Der Umkreis muss mindestens 1 km betragen!", 5000);
+                return;
+            }
+            var isDigit = int.TryParse(Radius, out int _);
+            if (!isDigit)
+            {
+                ShowWarning("Ungültige Eingabe für den Umkreis!", 5000);
+                return;
+            }
+
             SearchButtonIsEnabled = false;
             ProgressRingIsActive = true;
 
@@ -266,9 +266,9 @@ namespace GasPrices.ViewModels
         }
 
         [RelayCommand]
-        public async Task KeyDownCommand(object sender)
+        public async Task KeyDownCommand(object o)
         {
-            var e = sender as KeyEventArgs;
+            var e = o as KeyEventArgs;
             if (e?.Key == Key.Enter || e?.Key == Key.Return)
             {
                 if (SearchButtonIsEnabled)
@@ -316,7 +316,7 @@ namespace GasPrices.ViewModels
 
             if (_appStateStore.Distance != null)
             {
-                RadiusInt = _appStateStore.Distance.Value;
+                Radius = _appStateStore.Distance.Value.ToString();
             }
             else if (_settings != null && _settings.LastKnownRadius != null)
             {
@@ -401,7 +401,7 @@ namespace GasPrices.ViewModels
             settings.LastKnownStreet = Street;
             settings.LastKnownCity = City;
             settings.LastKnownPostalCode = PostalCode;
-            settings.LastKnownRadius = Radius;
+            settings.LastKnownRadius = RadiusInt.ToString();
             settings.LastKnownGasType = GasTypeSelectedItem?.ToString();
 
             if (_appStateStore.CoordsFromMapClient != null)

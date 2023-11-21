@@ -3,9 +3,9 @@ using Avalonia.Controls;
 using GasPrices.ViewModels;
 using System;
 
-namespace GasPrices
+namespace GasPrices.Services
 {
-    public class ViewLocator(Func<Type, Control> viewCreator) : IDataTemplate
+    public class ViewLocatorService(Func<Type, Control> viewCreator) : IDataTemplate
     {
         private readonly Func<Type, Control> _viewCreator = viewCreator;
 
@@ -14,7 +14,7 @@ namespace GasPrices
         public Control Build(object? data)
         {
             string? name = data?.GetType().FullName?.Replace("ViewModel", "View");
-            Type? type = Type.GetType(name);
+            Type? type = Type.GetType(name!);
 
             if (type != null)
             {

@@ -22,6 +22,7 @@ namespace GasPrices.Views
     {
         public LocationPickerView()
         {
+            InitializeComponent();
         }
 
         public LocationPickerView(AppStateStore appStateStore, SettingsFileReader settingsFileReader)
