@@ -9,6 +9,11 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="GasPrices"
 		Width="400"
-		Height="700">
-        <views:MainView />
+		Height="800">
+
+	<ScrollViewer
+		HorizontalScrollBarVisibility="Auto"
+		VerticalScrollBarVisibility="Auto">
+        <views:MainView MaxWidth="600"/>
+	</ScrollViewer>
 </Window>

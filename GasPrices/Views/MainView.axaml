@@ -6,12 +6,14 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GasPrices.Views.MainView"
              x:DataType="vm:MainViewModel">
+
 	<Design.DataContext>
 		<vm:MainViewModel />
 	</Design.DataContext>
 
-	<TransitioningContentControl 
-		MaxWidth="600" Content="{Binding CurrentViewModel}">
+	<TransitioningContentControl
+		VerticalAlignment="Stretch"
+		Content="{Binding CurrentViewModel}">
 		<TransitioningContentControl.PageTransition>
 			<CrossFade Duration="0:00:00.300" />
 		</TransitioningContentControl.PageTransition>

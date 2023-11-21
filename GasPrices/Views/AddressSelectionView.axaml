@@ -254,6 +254,7 @@
 				HorizontalContentAlignment="Center"
 				VerticalAlignment="Bottom"
 				Content="Einstellungen"
+				Margin="0, 10, 0, 0"
 				Command="{Binding OpenSettingsCommand}">
 			</Button>
 		</Grid>
