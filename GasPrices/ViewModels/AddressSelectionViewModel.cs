@@ -199,6 +199,7 @@ namespace GasPrices.ViewModels
         [RelayCommand]
         public async Task LocationPickerCommand()
         {
+            LocationPickerButtonIsEnabled = false;
             await SaveCurrentAddressAsync();
             _appStateStore.CoordsFromMapClient = await GetCoordsFromAddressFields();
             _navigationService.Navigate<LocationPickerViewModel>();
