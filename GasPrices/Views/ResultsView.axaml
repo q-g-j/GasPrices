@@ -7,8 +7,8 @@
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
              x:Class="GasPrices.Views.ResultsView"
 			 MinWidth="400"
-			 MaxHeight="800"
-		     MaxWidth="{Binding $parent[Window].Width}">
+		     MaxWidth="{Binding $parent[Window].Width}"
+		     MaxHeight="{Binding $parent[Window].Height}">
 
 	<UserControl.Styles>
 		<Style Selector="TextBox">
@@ -50,7 +50,8 @@
 			SelectedIndex="{Binding SelectedIndex}"
 			SelectedItem="{Binding SelectedItem}"
 			SelectionMode="Single"
-			HorizontalAlignment="Stretch">
+			HorizontalAlignment="Stretch"
+			VerticalAlignment="Top">
 
 			<i:Interaction.Behaviors>
 				<ia:EventTriggerBehavior EventName="SelectionChanged">
