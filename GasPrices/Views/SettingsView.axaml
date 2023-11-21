@@ -5,7 +5,9 @@
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
-             x:Class="GasPrices.Views.SettingsView">
+             x:Class="GasPrices.Views.SettingsView"
+		     MaxWidth="{Binding $parent[Window].Width}"
+		     MaxHeight="{Binding $parent[Window].Height}">
 
 	<i:Interaction.Behaviors>
 		<ia:EventTriggerBehavior EventName="KeyDown">
@@ -35,7 +37,7 @@
 			Command="{Binding ValidateCommand}">
 		</Button>
 
-		<!-- Error message: -->
+		<!-- Message: -->
 		<Grid
 			Grid.Row="3"
 			RowDefinitions="auto, auto"
@@ -53,6 +55,7 @@
 				Grid.Row="1"
 				FontSize="16"
 				Text="{Binding NoticeText}"
+				TextWrapping="Wrap"
 				Foreground="{Binding NoticeTextColor}">
 			</TextBlock>
 		</Grid>

@@ -6,9 +6,11 @@ using CommunityToolkit.Mvvm.Input;
 using GasPrices.Models;
 using GasPrices.Services;
 using GasPrices.Store;
+using HttpClient.Exceptions;
 using SettingsFile.Models;
 using SettingsFile.SettingsFile;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -161,27 +163,19 @@ namespace GasPrices.ViewModels
             GeolocationButtonIsEnabled = false;
             ProgressRingIsActive = true;
 
-            Xamarin.Essentials.Location? location = null;
+            Location? location = null;
 
             try
             {
                 location = await Geolocation.GetLocationAsync();
             }
-            catch (FeatureNotSupportedException)
+            catch (Exception ex)
             {
-                // Handle not supported on device exception
-            }
-            catch (FeatureNotEnabledException)
-            {
-                // Handle not enabled on device exception
-            }
-            catch (PermissionException)
-            {
-                // Handle permission exception
-            }
-            catch (Exception)
-            {
-                // Unable to get location
+                var message = new StringBuilder();
+                message.AppendLine("Fehler bei der Standortermittlung!\n");
+                message.AppendLine("Fehlermeldung:");
+                message.Append(ex.Message);
+                ShowWarning(message.ToString(), 5000);
             }
             finally
             {
@@ -200,9 +194,37 @@ namespace GasPrices.ViewModels
         public async Task LocationPickerCommand()
         {
             LocationPickerButtonIsEnabled = false;
+
             await SaveCurrentAddressAsync();
-            _appStateStore.CoordsFromMapClient = await GetCoordsFromAddressFields();
-            _navigationService.Navigate<LocationPickerViewModel>();
+
+            try
+            {
+                _appStateStore.CoordsFromMapClient = await GetCoordsFromAddressFields();
+                _navigationService.Navigate<LocationPickerViewModel>();
+            }
+            catch (HttpClientException ex)
+            {
+                var message = new StringBuilder();
+                message.AppendLine("Keine Verbindung zum Kartendienst!\n");
+                message.AppendLine("Fehlermeldung:");
+                message.Append(ex.Message);
+                ShowWarning(message.ToString(), 5000);
+            }
+            catch (BadStatuscodeException ex)
+            {
+                var message = new StringBuilder();
+                message.AppendLine("Keine Verbindung zum Kartendienst!\n");
+                message.Append($"HTTP-Status-Code: {ex.StatusCode.ToString()}");
+                ShowWarning(message.ToString(), 5000);
+            }
+            catch (Exception)
+            {
+                ShowWarning("Keine Verbindung zum Kartendienst!", 5000);
+            }
+            finally
+            {
+                LocationPickerButtonIsEnabled = true;
+            }
         }
 
         [RelayCommand]
@@ -225,37 +247,64 @@ namespace GasPrices.ViewModels
 
             Coords? coords;
 
-            if (_appStateStore.CoordsFromMapClient != null)
+            try
             {
-                coords = _appStateStore.CoordsFromMapClient;
-            }
-            else
-            {
-                coords = await GetCoordsFromAddressFields();
-            }
-
-            if (coords != null)
-            {
-                var stations = await _gasPricesClient.GetStationsAsync(_settings!.TankerkönigApiKey!, coords, RadiusInt);
-                if (stations != null && stations?.Count > 0)
+                if (_appStateStore.CoordsFromMapClient != null)
                 {
-                    _appStateStore!.Stations = stations;
-                    await SaveCurrentAddressAsync();
-                    _appStateStore.CoordsFromMapClient = null;
-                    _navigationService.Navigate<ResultsViewModel>();
+                    coords = _appStateStore.CoordsFromMapClient;
                 }
                 else
                 {
-                    ShowWarning("Es wurden keine Tankstellen gefunden!", 5000);
+                    coords = await GetCoordsFromAddressFields();
+                }
+
+                if (coords != null)
+                {
+                    List<Station>? stations = null;
+                    stations = await _gasPricesClient.GetStationsAsync(_settings!.TankerkönigApiKey!, coords, RadiusInt);
+
+                    if (stations != null && stations?.Count > 0)
+                    {
+                        _appStateStore!.Stations = stations;
+                        await SaveCurrentAddressAsync();
+                        _appStateStore.CoordsFromMapClient = null;
+                        _navigationService.Navigate<ResultsViewModel>();
+                    }
+                    else
+                    {
+                        ShowWarning("Es wurden keine Tankstellen gefunden!", 5000);
+                    }
+                }
+                else
+                {
+                    ShowWarning("Es wurde keine gültige Adresse eingegeben!", 5000);
                 }
             }
-            else
+            catch (HttpClientException ex)
             {
-                ShowWarning("Es wurde keine gültige Adresse eingegeben!", 5000);
+                var message = new StringBuilder();
+                message.AppendLine("Fehler bei der Tankstellensuche!\n");
+                message.AppendLine("Fehlermeldung:");
+                message.Append(ex.Message);
+                ShowWarning(message.ToString(), 5000);
             }
+            catch (BadStatuscodeException ex)
+            {
+                var message = new StringBuilder();
+                message.AppendLine("Fehler bei der Tankstellensuche!\n");
+                message.Append($"HTTP-Status-Code: {ex.StatusCode.ToString()}");
+                ShowWarning(message.ToString(), 5000);
+            }
+            catch (Exception)
+            {
+                ShowWarning("Bei der Abfrage der Tankstellen ist ein Fehler aufgetreten!", 5000);
+            }
+            finally
+            {
 
-            ProgressRingIsActive = false;
-            SearchButtonIsEnabled = true;
+                ProgressRingIsActive = false;
+                SearchButtonIsEnabled = true;
+            }
         }
 
         [RelayCommand]
@@ -355,8 +404,35 @@ namespace GasPrices.ViewModels
             }
 
             ProgressRingIsActive = true;
-            var address = await _mapClient.GetAddressAsync(_appStateStore.CoordsFromMapClient!);
-            ProgressRingIsActive = false;
+
+            Address? address = null;
+
+            try
+            {
+                address = await _mapClient.GetAddressAsync(_appStateStore.CoordsFromMapClient!);
+            }
+            catch (HttpClientException ex)
+            {
+                var message = new StringBuilder();
+                message.AppendLine("Fehler bei der Auswerten der Koordinaten!\n");
+                message.AppendLine("Fehlermeldung:");
+                message.Append(ex.Message);
+                ShowWarning(message.ToString(), 5000);
+            }
+            catch (BadStatuscodeException ex)
+            {
+                var message = new StringBuilder();
+                message.AppendLine("Fehler bei der Auswerten der Koordinaten!\n");
+                message.Append($"HTTP-Status-Code: {ex.StatusCode.ToString()}");
+                ShowWarning(message.ToString(), 5000);
+            }
+            catch (Exception)
+            {
+                ShowWarning("Fehler bei der Auswerten der Koordinaten!", 5000);
+            } finally
+            {
+                ProgressRingIsActive = false;
+            }
 
             bool isWrongPosition = false;
             var wrongPosWarningMsg = new StringBuilder();
@@ -439,7 +515,16 @@ namespace GasPrices.ViewModels
         private async Task<Coords?> GetCoordsFromAddressFields()
         {
             var address = new Address(Street, City, PostalCode);
-            var coords = await _mapClient.GetCoordsAsync(address);
+            Coords? coords;
+
+            try
+            {
+                coords = await _mapClient.GetCoordsAsync(address);
+            }
+            catch
+            {
+                throw;
+            }
 
             return coords;
         }

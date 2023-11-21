@@ -7,6 +7,8 @@
              xmlns:progRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
 			 xmlns:converters="clr-namespace:GasPrices.Converters"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
+		     MaxWidth="{Binding $parent[Window].Width}"
+		     MaxHeight="{Binding $parent[Window].Height}"
              x:Class="GasPrices.Views.AddressSelectionView">
 
 	<UserControl.Resources>
@@ -20,10 +22,12 @@
 	</i:Interaction.Behaviors>
 
 	<Grid
+		ColumnDefinitions="*"
 		RowDefinitions="*, auto"
 		Margin="5, 15, 5, 15">
 
 		<progRing:ProgressRing
+			Grid.Column="0"
 			Grid.Row="0"
 			Grid.RowSpan="2"
 			Width="80"
@@ -36,6 +40,7 @@
 		</progRing:ProgressRing>
 
 		<Grid
+			Grid.Column="0"
 			Grid.Row="0"
 			ColumnDefinitions="*"
 			RowDefinitions="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, *, auto">

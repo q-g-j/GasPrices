@@ -7,8 +7,12 @@ using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GasPrices.Services;
+using HttpClient.Exceptions;
 using SettingsFile.Models;
 using SettingsFile.SettingsFile;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,6 +24,7 @@ namespace GasPrices.ViewModels
         private readonly SettingsFileReader? _settingsFileReader;
         private readonly SettingsFileWriter? _settingsFileWriter;
         private readonly IGasPricesClient _gasPricesClient;
+        private CancellationTokenSource? _cancellationTokenSource;
 
         public SettingsViewModel(
             NavigationService navigationService,
@@ -90,39 +95,41 @@ namespace GasPrices.ViewModels
         {
             var coords = new Coords(11.601314, 48.135788);
 
-            var stations = await _gasPricesClient.GetStationsAsync(TankerKönigApiKey, coords, 1);
-            if (stations == null)
-            {
-                await Task.Run(() =>
-                {
-                    NoticeTitleText = "Fehler:";
-                    NoticeText = "Der API-Schlüssel wurde nicht angenommen!";
-                    Dispatcher.UIThread.Invoke(() =>
-                        NoticeTextColor = new SolidColorBrush(Color.Parse("Orange")));
-                    NoticeTextIsVisible = true;
-                    Thread.Sleep(2000);
-                    NoticeTextIsVisible = false;
-                    NoticeTitleText = string.Empty;
-                    NoticeText = string.Empty;
-                });
-            }
-            else
-            {
-                SaveButtonIsEnabled = true;
+            List<Station>? stations;
 
-                await Task.Run(() =>
+            try
+            {
+                stations = await _gasPricesClient.GetStationsAsync(TankerKönigApiKey, coords, 1);
+
+                if (stations == null)
                 {
-                    NoticeTitleText = "Erfolg:";
-                    NoticeText = "Der API-Schlüssel wurde angenommen!";
-                    Dispatcher.UIThread.Invoke(() =>
-                        NoticeTextColor = new SolidColorBrush(Color.Parse("Green")));
-                    NoticeTextIsVisible = true;
-                    isValidated = true;
-                    Thread.Sleep(2000);
-                    NoticeTextIsVisible = false;
-                    NoticeTitleText = string.Empty;
-                    NoticeText = string.Empty;
-                });
+                    ShowWarning(true, "Der API-Schlüssel wurde nicht angenommen!", 2000);
+                }
+                else
+                {
+                    SaveButtonIsEnabled = true;
+                    ShowWarning(false, "Der API-Schlüssel wurde angenommen!", 2000);                 
+                }
+            }
+
+            catch (HttpClientException ex)
+            {
+                var message = new StringBuilder();
+                message.AppendLine("Keine Verbindung zu Tankerkönig.de!\n");
+                message.AppendLine("Fehlermeldung:");
+                message.Append(ex.Message);
+                ShowWarning(true, message.ToString(), 5000);
+            }
+            catch (BadStatuscodeException ex)
+            {
+                var message = new StringBuilder();
+                message.AppendLine("Keine Verbindung zu Tankerkönig.de!\n");
+                message.Append($"HTTP-Status-Code: {ex.StatusCode.ToString()}");
+                ShowWarning(true, message.ToString(), 5000);
+            }
+            catch (Exception)
+            {
+                ShowWarning(true, "Keine Verbindung zu Tankerkönig.de!", 5000);
             }
         }
 
@@ -141,6 +148,43 @@ namespace GasPrices.ViewModels
         public void CancelCommand()
         {
             _navigationService.Navigate<AddressSelectionViewModel>();
+        }
+
+        private void ShowWarning(bool isError, string message, int duration)
+        {
+            if (_cancellationTokenSource != null)
+            {
+                _cancellationTokenSource.Cancel();
+                _cancellationTokenSource = null;
+            }
+
+            _cancellationTokenSource = new CancellationTokenSource();
+
+            if (isError )
+            {
+                NoticeTextColor = new SolidColorBrush(Color.Parse("Orange"));
+                NoticeTitleText = "Fehler:";
+            }
+            else
+            {
+                NoticeTextColor = new SolidColorBrush(Color.Parse("Green"));
+                NoticeTitleText = "Erfolg:";
+            }
+
+            var token = _cancellationTokenSource.Token;
+            Task.Run(async () =>
+            {
+                NoticeText = message;
+                NoticeTextIsVisible = true;
+
+                await Task.Delay(duration);
+
+                token.ThrowIfCancellationRequested();
+
+                NoticeTitleText = string.Empty;
+                NoticeText = string.Empty;
+                NoticeTextIsVisible = false;
+            }, token);
         }
 
         partial void OnTankerKönigApiKeyChanged(string value)

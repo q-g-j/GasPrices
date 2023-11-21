@@ -1,11 +1,9 @@
 ﻿using ApiClients.Models;
 using HttpClient;
+using HttpClient.Exceptions;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Net.Mail;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ApiClients
@@ -23,7 +21,22 @@ namespace ApiClients
         {
             Coords? coords = null;
             string url = $"https://nominatim.openstreetmap.org/search?q={address.GetUriData()}&format=json&polygon=1&addressdetails=1";
-            string result = await _httpClientRepository.GetAsync(url);
+
+            string? result;
+
+            try
+            {
+                result = await _httpClientRepository.GetAsync(url);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            if (result == null)
+            {
+                return coords;
+            }
 
             dynamic? coordsObject = JsonConvert.DeserializeObject(result);
             if (coordsObject?.Count == 0)
@@ -43,10 +56,24 @@ namespace ApiClients
 
         public async Task<Address?> GetAddressAsync(Coords coords)
         {
-            Address? address;
+            Address? address = null;
 
             string url = string.Format(CultureInfo.InvariantCulture, "https://nominatim.openstreetmap.org/reverse?lat={0}&lon={1}&format=geocodejson&addressdetails=1", coords.Latitude, coords.Longitude);
-            string result = await _httpClientRepository.GetAsync(url);
+
+            string? result;
+            try
+            {
+                result = await _httpClientRepository.GetAsync(url);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            if (result == null)
+            {
+                return address;
+            }
 
             dynamic? addressObject = JsonConvert.DeserializeObject(result);
             dynamic? geoData = addressObject?.features?[0]?.properties?.geocoding;
