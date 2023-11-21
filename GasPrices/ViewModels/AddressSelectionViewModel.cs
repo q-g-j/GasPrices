@@ -414,7 +414,7 @@ namespace GasPrices.ViewModels
             catch (HttpClientException ex)
             {
                 var message = new StringBuilder();
-                message.AppendLine("Fehler bei der Auswerten der Koordinaten!\n");
+                message.AppendLine("Fehler beim Auswerten der Koordinaten!\n");
                 message.AppendLine("Fehlermeldung:");
                 message.Append(ex.Message);
                 ShowWarning(message.ToString(), 5000);
@@ -422,13 +422,13 @@ namespace GasPrices.ViewModels
             catch (BadStatuscodeException ex)
             {
                 var message = new StringBuilder();
-                message.AppendLine("Fehler bei der Auswerten der Koordinaten!\n");
+                message.AppendLine("Fehler beim Auswerten der Koordinaten!\n");
                 message.Append($"HTTP-Status-Code: {ex.StatusCode.ToString()}");
                 ShowWarning(message.ToString(), 5000);
             }
             catch (Exception)
             {
-                ShowWarning("Fehler bei der Auswerten der Koordinaten!", 5000);
+                ShowWarning("Fehler beim Auswerten der Koordinaten!", 5000);
             } finally
             {
                 ProgressRingIsActive = false;
@@ -439,13 +439,13 @@ namespace GasPrices.ViewModels
             if (address == null)
             {
                 isWrongPosition = true;
-                wrongPosWarningMsg.Append("Es konnte keine Addresse zu der gewünschten Position ermittelt werden. ");
+                wrongPosWarningMsg.AppendLine("Es konnte keine Addresse zu der gewünschten Position ermittelt werden.");
                 wrongPosWarningMsg.Append("Bitte eine andere Position oder Adresse wählen.");
             }
             else if (address.Country != "Deutschland")
             {
                 isWrongPosition = true;
-                wrongPosWarningMsg.Append("Diese App kann nur Tankstellen in Deutschland anzeigen. ");
+                wrongPosWarningMsg.AppendLine("Diese App kann nur Tankstellen in Deutschland anzeigen.");
                 wrongPosWarningMsg.Append("Bitte eine andere Position oder Adresse wählen.");
             }
             else
