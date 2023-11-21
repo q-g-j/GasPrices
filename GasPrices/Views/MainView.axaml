@@ -10,7 +10,8 @@
 		<vm:MainViewModel />
 	</Design.DataContext>
 
-	<TransitioningContentControl Content="{Binding CurrentViewModel}">
+	<TransitioningContentControl 
+		MaxWidth="600" Content="{Binding CurrentViewModel}">
 		<TransitioningContentControl.PageTransition>
 			<CrossFade Duration="0:00:00.300" />
 		</TransitioningContentControl.PageTransition>

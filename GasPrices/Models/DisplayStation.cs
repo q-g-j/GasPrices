@@ -14,7 +14,7 @@ namespace GasPrices.Models
         {
             Name = station.Name!;
             Brand = string.IsNullOrEmpty(station!.Brand!) ? station!.Name! : station!.Brand!;
-            Distance = Math.Round(station.Distance!.Value, 2).ToString() + " km";
+            Distance = Math.Round(station.Distance!.Value, 2);
             if (!string.IsNullOrEmpty(station.Street))
             {
                 Street = station.Street + " ";
@@ -54,7 +54,7 @@ namespace GasPrices.Models
 
         public string Name { get; set; } = string.Empty;
         public string Brand { get; set; } = string.Empty;
-        public string Distance { get; set; } = string.Empty;
+        public double Distance { get; set; }
         public string Street { get; set; } = string.Empty;
         public string PostalCode { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
