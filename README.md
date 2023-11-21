@@ -13,8 +13,8 @@ Sowohl bei der Kartenposition als auch nach der Nutzung des Standortdienstes erf
 
 #### Unterstützte Betriebssysteme:
 - Windows
-- Linux (noch nicht getestet)
-- MacOS (noch nicht getestet)
+- Linux
+- MacOS
 - Android
 - ~~iOS~~ (entfernt, da ich es nicht testen kann)
 
