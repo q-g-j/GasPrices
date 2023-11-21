@@ -20,12 +20,16 @@
 		<AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
 		<AndroidKeyStore>False</AndroidKeyStore>
 		<IsTrimmable>True</IsTrimmable>
+		<RunAOTCompilation>False</RunAOTCompilation>
+		<EnableLLVM>False</EnableLLVM>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
 		<AndroidEnableMultiDex>False</AndroidEnableMultiDex>
 		<AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
 		<AndroidKeyStore>False</AndroidKeyStore>
 		<IsTrimmable>True</IsTrimmable>
+		<RunAOTCompilation>False</RunAOTCompilation>
+		<EnableLLVM>False</EnableLLVM>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<AndroidEnableMultiDex>False</AndroidEnableMultiDex>
@@ -34,6 +38,7 @@
 		<PublishTrimmed>true</PublishTrimmed>
 		<IsTrimmable>True</IsTrimmable>
 		<RunAOTCompilation>False</RunAOTCompilation>
+		<EnableLLVM>False</EnableLLVM>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
 		<AndroidEnableMultiDex>False</AndroidEnableMultiDex>
@@ -41,6 +46,7 @@
 		<AndroidKeyStore>False</AndroidKeyStore>
 		<IsTrimmable>True</IsTrimmable>
 		<RunAOTCompilation>False</RunAOTCompilation>
+		<EnableLLVM>False</EnableLLVM>
 	</PropertyGroup>
 
 	<ItemGroup>
