@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "GasPrices.Desktop",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-GasPrices.Desktop",
+            "program": "${workspaceFolder}/GasPrices.Desktop/bin/Debug/net8.0/GasPrices.Desktop.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/GasPrices.Desktop",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        }
+    ]
+}
