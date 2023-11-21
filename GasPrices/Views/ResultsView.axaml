@@ -6,9 +6,10 @@
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
              x:Class="GasPrices.Views.ResultsView"
-			 MinWidth="400"
 		     MaxWidth="{Binding $parent[Window].Width}"
-		     MaxHeight="{Binding $parent[Window].Height}">
+		     MaxHeight="{Binding $parent[Window].Height}"
+			 MinWidth="400"
+			 MinHeight="600">
 
 	<UserControl.Styles>
 		<Style Selector="TextBox">
@@ -37,7 +38,7 @@
 	<Grid
 		x:Name="main"
 		ColumnDefinitions="*"
-		RowDefinitions="*, auto"
+		RowDefinitions="7*, 1*, auto"
 		Margin="5, 15, 5, 15">
 
 		<!-- DataGrid: -->
@@ -51,7 +52,7 @@
 			SelectedItem="{Binding SelectedItem}"
 			SelectionMode="Single"
 			HorizontalAlignment="Stretch"
-			VerticalAlignment="Top">
+			VerticalAlignment="Stretch">
 
 			<i:Interaction.Behaviors>
 				<ia:EventTriggerBehavior EventName="SelectionChanged">
@@ -69,29 +70,29 @@
 			</DataGrid.Columns>
 		</DataGrid>
 
+
+		<!-- vertical spacer: -->
 		<Grid
-			RowDefinitions="40, 180, auto"
 			Grid.Column="0"
 			Grid.Row="1"
+			VerticalAlignment="Stretch"
+			Background="Transparent">
+			<i:Interaction.Behaviors>
+				<ia:EventTriggerBehavior EventName="Tapped">
+					<ia:InvokeCommandAction Command="{Binding TappedCommand}" />
+				</ia:EventTriggerBehavior>
+			</i:Interaction.Behaviors>
+		</Grid>
+		<Grid
+			RowDefinitions="180, auto"
+			Grid.Column="0"
+			Grid.Row="2"
 			VerticalAlignment="Bottom">
-			
-			<!-- vertical spacer: -->
-			<Grid
-				Grid.Column="0"
-				Grid.Row="0"
-				VerticalAlignment="Stretch"
-				Background="Transparent">
-				<i:Interaction.Behaviors>
-					<ia:EventTriggerBehavior EventName="Tapped">
-						<ia:InvokeCommandAction Command="{Binding TappedCommand}" />
-					</ia:EventTriggerBehavior>
-				</i:Interaction.Behaviors>
-			</Grid>
 
 			<!-- Details: -->
 			<Grid
 				Grid.Column="0"
-				Grid.Row="1"
+				Grid.Row="0"
 				ColumnDefinitions="*, auto"
 				RowDefinitions="auto , auto, auto"
 				Margin="5, 0, 5, 15"
@@ -197,7 +198,7 @@
 			<!-- Back button: -->
 			<Button
 				Grid.Column="0"
-				Grid.Row="2"
+				Grid.Row="1"
 				HorizontalAlignment="Stretch"
 				HorizontalContentAlignment="Center"
 				Content="Zurück"

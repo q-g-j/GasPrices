@@ -9,7 +9,9 @@
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
 		     MaxWidth="{Binding $parent[Window].Width}"
 		     MaxHeight="{Binding $parent[Window].Height}"
-             x:Class="GasPrices.Views.AddressSelectionView">
+             x:Class="GasPrices.Views.AddressSelectionView"
+			 MinWidth="400"
+			 MinHeight="600">
 
 	<UserControl.Resources>
 		<converters:RadiusValueConverter x:Key="RadiusValueConverter" />

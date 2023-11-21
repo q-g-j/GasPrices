@@ -12,6 +12,7 @@
 	</Design.DataContext>
 
 	<TransitioningContentControl
+		HorizontalAlignment="Stretch"
 		VerticalAlignment="Stretch"
 		Content="{Binding CurrentViewModel}">
 		<TransitioningContentControl.PageTransition>

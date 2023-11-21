@@ -53,32 +53,24 @@ namespace GasPrices.Extensions
                 services.AddTransient<NavigationService>();
 
                 // Add View factory function for the ViewLocator:
-                services.AddTransient<Func<Type, Control>>(serviceProvider => type =>
-                {
-                    var view = serviceProvider.GetRequiredService(type) as Control;
-                    return view ?? throw new ArgumentException("Wrong View type");
-                });
+                services.AddTransient<Func<Type, Control?>>(sp => type => sp.GetRequiredService(type) as Control);
 
                 // Add ViewModel factory function:
-                services.AddTransient<Func<Type, ViewModelBase>>(serviceProvider => type =>
-                {
-                    var viewModel = serviceProvider.GetRequiredService(type) as ViewModelBase;
-                    return viewModel ?? throw new ArgumentException("Wrong ViewModel type");
-                });
+                services.AddTransient<Func<Type, ViewModelBase?>>(sp => type => sp.GetRequiredService(type) as ViewModelBase);
 
                 // Add API clients:
                 services.AddTransient<IGasPricesClient, TankerkönigClient>();
                 services.AddTransient<IMapClient, OpenStreetMapClient>();
 
                 // Add settings file handlers:
-                services.AddTransient(services =>
+                services.AddTransient(sp =>
                 {
-                    var globals = services.GetRequiredService<Globals>();
+                    var globals = sp.GetRequiredService<Globals>();
                     return new SettingsFileWriter(globals.SettingsFolderFullPath, globals.SettingsFileFullPath);
                 });
-                services.AddTransient(service =>
+                services.AddTransient(sp =>
                 {
-                    var globals = service.GetRequiredService<Globals>();
+                    var globals = sp.GetRequiredService<Globals>();
                     return new SettingsFileReader(globals.SettingsFileFullPath);
                 });
             });
