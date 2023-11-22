@@ -80,13 +80,20 @@ namespace GasPrices.Views
 
             MapControl.Map.Home += n =>
             {
-                int zoomLevel = _cachedPoint == null ? 3000 : 2;
-                MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint!, zoomLevel, 500);
-
-                if (_cachedPoint != null)
+                int zoomLevel = 2;
+                int duration = 1000;
+                if (_cachedPoint == null)
                 {
+                    zoomLevel = 3000;
+                    duration = 0;
+                }
+                else
+                {
+                    MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint!, 3000, 0);
                     PlacePin(_cachedMapPoint);
                 }
+
+                MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint!, zoomLevel, duration);
             };
 
             MapControl.Tapped += (s, e) =>

@@ -25,7 +25,7 @@ namespace GasPrices.Extensions
             hostBuilder.ConfigureServices((context, services) =>
             {
                 // Add Singletons (global variables and store):
-                services.AddSingleton(new Globals("GasPricesApp", "settings.json"));
+                services.AddSingleton(new GlobalsStore("GasPricesApp", "settings.json"));
                 services.AddSingleton<NavigationStore>();
                 services.AddSingleton<AppStateStore>();
 
@@ -65,12 +65,12 @@ namespace GasPrices.Extensions
                 // Add settings file handlers:
                 services.AddTransient(sp =>
                 {
-                    var globals = sp.GetRequiredService<Globals>();
+                    var globals = sp.GetRequiredService<GlobalsStore>();
                     return new SettingsFileWriter(globals.SettingsFolderFullPath, globals.SettingsFileFullPath);
                 });
                 services.AddTransient(sp =>
                 {
-                    var globals = sp.GetRequiredService<Globals>();
+                    var globals = sp.GetRequiredService<GlobalsStore>();
                     return new SettingsFileReader(globals.SettingsFileFullPath);
                 });
             });

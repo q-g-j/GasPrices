@@ -79,9 +79,15 @@ namespace ApiClients
             dynamic? geoData = addressObject?.features?[0]?.properties?.geocoding;
 
             string? street = geoData?.street?.ToString();
+            string? houseNumber = geoData?.housenumber?.ToString();
             string? postalCode = geoData?.postcode?.ToString();
             string? city = geoData?.city?.ToString();
             string? country = geoData?.country?.ToString();
+
+            if (!string.IsNullOrEmpty(street) && !string.IsNullOrEmpty(houseNumber))
+            {
+                street += " " + houseNumber;
+            }
 
             if (string.IsNullOrEmpty(street) && string.IsNullOrEmpty(postalCode) &&
                 string.IsNullOrEmpty(city))

@@ -15,11 +15,11 @@ namespace GasPrices.Models
             Name = station.Name!;
             Brand = string.IsNullOrEmpty(station!.Brand!) ? station!.Name! : station!.Brand!;
             Distance = Math.Round(station.Distance!.Value, 2);
-            if (!string.IsNullOrEmpty(station.Street))
+            Street = station.Street!;
+            if (!string.IsNullOrEmpty(station.Street) && !string.IsNullOrEmpty(station.HouseNumber))
             {
-                Street = station.Street + " ";
+                Street += " " + station.HouseNumber;
             }
-            Street += station.HouseNumber;
             PostalCode = station.PostalCode!.ToString()!;
             City = station.City!.ToString();
             if (station.Diesel != 0)

@@ -20,12 +20,7 @@ namespace GasPrices.ViewModels
 {
     public partial class SettingsViewModel : ViewModelBase
     {
-        private readonly NavigationService _navigationService;
-        private readonly SettingsFileReader? _settingsFileReader;
-        private readonly SettingsFileWriter? _settingsFileWriter;
-        private readonly IGasPricesClient _gasPricesClient;
-        private CancellationTokenSource? _cancellationTokenSource;
-
+        #region constructors
         public SettingsViewModel(
             NavigationService navigationService,
             SettingsFileReader? settingsFileReader,
@@ -48,9 +43,19 @@ namespace GasPrices.ViewModels
                 }
             });
         }
+        #endregion constructors
 
+        #region private fields
+        private readonly NavigationService _navigationService;
+        private readonly SettingsFileReader? _settingsFileReader;
+        private readonly SettingsFileWriter? _settingsFileWriter;
+        private readonly IGasPricesClient _gasPricesClient;
+
+        private CancellationTokenSource? _cancellationTokenSource;
         private bool isValidated = false;
+        #endregion private fields
 
+        #region bindable properties
         [ObservableProperty]
         private string tankerKönigApiKey = string.Empty;
 
@@ -72,6 +77,11 @@ namespace GasPrices.ViewModels
         [ObservableProperty]
         private bool noticeTextIsVisible = false;
 
+        [ObservableProperty]
+        private bool progressRingIsActive = false;
+        #endregion bindable properties
+
+        #region commands
         [RelayCommand]
         public async Task KeyDownCommand(object sender)
         {
@@ -97,6 +107,8 @@ namespace GasPrices.ViewModels
 
             List<Station>? stations;
 
+            ProgressRingIsActive = true;
+
             try
             {
                 stations = await _gasPricesClient.GetStationsAsync(TankerKönigApiKey, coords, 1);
@@ -107,11 +119,11 @@ namespace GasPrices.ViewModels
                 }
                 else
                 {
+                    isValidated = true;
                     SaveButtonIsEnabled = true;
                     ShowWarning(false, "Der API-Schlüssel wurde angenommen!", 2000);                 
                 }
             }
-
             catch (HttpClientException ex)
             {
                 var message = new StringBuilder();
@@ -131,6 +143,10 @@ namespace GasPrices.ViewModels
             {
                 ShowWarning(true, "Keine Verbindung zu Tankerkönig.de!", 5000);
             }
+            finally
+            {
+                ProgressRingIsActive = false;
+            }
         }
 
         [RelayCommand]
@@ -149,7 +165,9 @@ namespace GasPrices.ViewModels
         {
             _navigationService.Navigate<AddressSelectionViewModel>();
         }
+        #endregion commands
 
+        #region private methods
         private void ShowWarning(bool isError, string message, int duration)
         {
             if (_cancellationTokenSource != null)
@@ -187,19 +205,24 @@ namespace GasPrices.ViewModels
             }, token);
         }
 
+        private void OnBackPressed()
+        {
+            _navigationService.Navigate<AddressSelectionViewModel>();
+        }
+        #endregion private methods
+
+        #region OnPropertyChanged handlers
         partial void OnTankerKönigApiKeyChanged(string value)
         {
             ValidateButtonIsEnabled = !string.IsNullOrEmpty(value);
         }
+        #endregion OnPropertyChanged handlers
 
-        protected void OnBackPressed()
-        {
-            _navigationService.Navigate<AddressSelectionViewModel>();
-        }
-
+        #region public overrides
         public override void Dispose()
         {
             ((App)Application.Current!).BackPressed -= OnBackPressed;
         }
+        #endregion public overrides
     }
 }

@@ -66,10 +66,4 @@
 		<ProjectReference Include="..\HttpClient\HttpClient.csproj" />
 		<ProjectReference Include="..\SettingsFile\SettingsFile.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Update="Views\AddressSelectionView.axaml.cs">
-			<DependentUpon>AddressSelectionView.axaml</DependentUpon>
-		</Compile>
-	</ItemGroup>
 </Project>

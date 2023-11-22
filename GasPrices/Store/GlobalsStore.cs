@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GasPrices
+namespace GasPrices.Store
 {
-    public class Globals
+    public class GlobalsStore
     {
-        public Globals(string? settingsFolderName, string? settingsFileName)
+        public GlobalsStore(string? settingsFolderName, string? settingsFileName)
         {
             ApplicationDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             SettingsFolderFullPath = Path.Combine(ApplicationDataFolder, settingsFolderName!);

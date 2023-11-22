@@ -18,6 +18,7 @@ namespace GasPrices.ViewModels
 {
     public partial class ResultsViewModel : ViewModelBase
     {
+        #region constructors
         public ResultsViewModel(
             NavigationService navigationService,
             AppStateStore appStateStore)
@@ -34,11 +35,14 @@ namespace GasPrices.ViewModels
 
             ((App)Application.Current!).BackPressed += OnBackPressed;
         }
+        #endregion constructors
 
+        #region private fields
         private readonly NavigationService _navigationService;
         private readonly AppStateStore _appStateStore;
+        #endregion privat fields
 
-
+        #region bindable properties
         [ObservableProperty]
         private ObservableCollection<DisplayStation>? stations;
 
@@ -74,7 +78,9 @@ namespace GasPrices.ViewModels
 
         [ObservableProperty]
         private string detailsDiesel = "";
+        #endregion bindable properties
 
+        #region commands
         [RelayCommand]
         public void TappedCommand()
         {
@@ -133,18 +139,15 @@ namespace GasPrices.ViewModels
         {
             _navigationService.Navigate<AddressSelectionViewModel>();
         }
+        #endregion commands
 
+        #region private methods
         private void OnBackPressed()
         {
             _navigationService.Navigate<AddressSelectionViewModel>();
         }
 
-        public override void Dispose()
-        {
-            ((App)Application.Current!).BackPressed -= OnBackPressed;
-        }
-
-        private async Task OpenBrowser(Uri uri)
+        private static async Task OpenBrowser(Uri uri)
         {
             if (OperatingSystem.IsAndroid())
             {
@@ -173,5 +176,13 @@ namespace GasPrices.ViewModels
                 }
             }
         }
+        #endregion private methods
+
+        #region public overrides
+        public override void Dispose()
+        {
+            ((App)Application.Current!).BackPressed -= OnBackPressed;
+        }
+        #endregion public overrides
     }
 }

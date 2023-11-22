@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:progRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
              x:Class="GasPrices.Views.SettingsView"
 		     MaxWidth="{Binding $parent[Window].Width}"
@@ -20,6 +21,20 @@
 	<Grid
 		RowDefinitions="auto, auto, auto, *, auto, auto"
 		Margin="5, 15, 5, 15">
+
+		<progRing:ProgressRing
+			Grid.Column="0"
+			Grid.Row="0"
+			Grid.RowSpan="6"
+			Width="80"
+			Height="80"
+			IsActive="{Binding ProgressRingIsActive, FallbackValue=False}"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+			Foreground="LightGray"
+			Margin="0, 0, 0, 0">
+		</progRing:ProgressRing>
+		
 		<TextBlock
 			Grid.Row="0"
 			Margin="0, 0, 0, 10"

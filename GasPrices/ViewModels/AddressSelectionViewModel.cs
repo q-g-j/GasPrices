@@ -555,10 +555,10 @@ namespace GasPrices.ViewModels
         }
         #endregion private methods
 
-        #region public methods
+        #region public overrides
         public override void Dispose()
         {
         }
-        #endregion public methods
+        #endregion public overrides
     }
 }

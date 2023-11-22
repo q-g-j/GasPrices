@@ -8,9 +8,7 @@ namespace GasPrices.ViewModels
 {
     public partial class LocationPickerViewModel : ViewModelBase
     {
-        private readonly NavigationService _navigationService;
-        private readonly AppStateStore _appStateStore;
-
+        #region constructors
         public LocationPickerViewModel(
             NavigationService navigationService,
             AppStateStore appStateStore)
@@ -22,10 +20,19 @@ namespace GasPrices.ViewModels
 
             ((App)Application.Current!).BackPressed += OnBackPressed;
         }
+        #endregion constructors
 
+        #region private fields
+        private readonly NavigationService _navigationService;
+        private readonly AppStateStore _appStateStore;
+        #endregion private fields
+
+        #region bindable properties
         [ObservableProperty]
         private bool applyButtonIsEnabled;
+        #endregion bindable properties
 
+        #region commands
         [RelayCommand]
         public void ApplyCommand()
         {
@@ -38,16 +45,21 @@ namespace GasPrices.ViewModels
             _appStateStore.CoordsFromMapClient = null;
             _navigationService.Navigate<AddressSelectionViewModel>();
         }
+        #endregion commands
 
+        #region private methods
         private void OnBackPressed()
         {
             _appStateStore.CoordsFromMapClient = null;
             _navigationService.Navigate<AddressSelectionViewModel>();
         }
+        #endregion private methods
 
+        #region public overrides
         public override void Dispose()
         {
             ((App)Application.Current!).BackPressed -= OnBackPressed;
         }
+        #endregion public overrides
     }
 }
