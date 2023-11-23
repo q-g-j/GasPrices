@@ -21,18 +21,21 @@ namespace GasPrices.Models
                 Street += " " + station.HouseNumber;
             }
             PostalCode = station.PostalCode!.ToString()!;
-            City = station.City!.ToString();
-            if (station.Diesel != 0)
-            {
-                Diesel = station.Diesel.ToString() + " €";
-            }
+            City = station.City!;
+
+            FullAddress = Street + ", " + PostalCode + " " + City;
+            
             if (station.E5 != 0)
             {
-                E5 = station.E5.ToString() + " €";
+                E5 = station.E5;
             }
             if (station.E10 != 0)
             {
-                E10 = station.E10.ToString() + " €";
+                E10 = station.E10;
+            }
+            if (station.Diesel != 0)
+            {
+                Diesel = station.Diesel;
             }
             IsOpen = station.IsOpen;
 
@@ -47,22 +50,32 @@ namespace GasPrices.Models
                 case "Diesel":
                     Price = Diesel;
                     break;
-                default:
-                    break;
             }
+
+            if (Distance < 1)
+            {
+                DistanceUnit = "m";
+                Distance *= 1000;
+            }
+            
+            PriceThousandth = int.Parse(Price.ToString()![4].ToString());
+            Price = double.Parse(Price.ToString()![..4]);
         }
 
-        public string Name { get; set; } = string.Empty;
-        public string Brand { get; set; } = string.Empty;
+        public string Name { get; set; }
+        public string Brand { get; set; }
         public double Distance { get; set; }
-        public string Street { get; set; } = string.Empty;
-        public string PostalCode { get; set; } = string.Empty;
-        public string City { get; set; } = string.Empty;
-        public string Diesel { get; set; } = string.Empty;
-        public string E5 { get; set; } = string.Empty;
-        public string E10 { get; set; } = string.Empty;
-        public string Price { get; set; } = string.Empty;
-        public bool? IsOpen { get; set; } = false;
+        public string? DistanceUnit { get; set; } = "km";
+        public string Street { get; set; }
+        public string PostalCode { get; set; }
+        public string City { get; set; }
+        public string FullAddress { get; set; }
+        public double? Diesel { get; set; }
+        public double? E5 { get; set; }
+        public double? E10 { get; set; }
+        public double? Price { get; set; }
+        public int PriceThousandth { get; set; }
+        public bool? IsOpen { get; set; }
 
         public string GetUriData()
         {

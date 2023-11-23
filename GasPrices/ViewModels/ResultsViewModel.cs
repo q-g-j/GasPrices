@@ -19,16 +19,20 @@ namespace GasPrices.ViewModels
     public partial class ResultsViewModel : ViewModelBase
     {
         #region constructors
+
+        public ResultsViewModel()
+        {
+        }
+        
         public ResultsViewModel(
             NavigationService navigationService,
             AppStateStore appStateStore)
         {
             _navigationService = navigationService;
-            _appStateStore = appStateStore;
             Stations = [];
-            foreach (var station in _appStateStore.Stations!.Where(s => s.E5 > 0 && s.E10 > 0 && s.Diesel > 0))
+            foreach (var station in appStateStore.Stations!.Where(s => s.E5 > 0 && s.E10 > 0 && s.Diesel > 0))
             {
-                Stations.Add(new DisplayStation(station, _appStateStore.SelectedGasType!));
+                Stations.Add(new DisplayStation(station, appStateStore.SelectedGasType!));
             }
             PriceFor = appStateStore!.SelectedGasType!.ToString()!;
 
@@ -38,8 +42,7 @@ namespace GasPrices.ViewModels
         #endregion constructors
 
         #region private fields
-        private readonly NavigationService _navigationService;
-        private readonly AppStateStore _appStateStore;
+        private readonly NavigationService? _navigationService;
         #endregion privat fields
 
         #region bindable properties
@@ -99,9 +102,9 @@ namespace GasPrices.ViewModels
                     DetailsBrand = station!.Brand;
                     DetailsStreet = station!.Street;
                     DetailsCity = station!.PostalCode + " " + station!.City;
-                    DetailsE5 = station!.E5;
-                    DetailsE10 = station!.E10;
-                    DetailsDiesel = station!.Diesel;
+                    DetailsE5 = station!.E5.ToString() ?? "";
+                    DetailsE10 = station!.E10.ToString() ?? "";
+                    DetailsDiesel = station!.Diesel.ToString() ?? "";
 
                     DetailsIsVisible = true;
                 }

@@ -9,6 +9,11 @@ namespace GasPrices.ViewModels
     public partial class LocationPickerViewModel : ViewModelBase
     {
         #region constructors
+
+        public LocationPickerViewModel()
+        {
+        }
+        
         public LocationPickerViewModel(
             NavigationService navigationService,
             AppStateStore appStateStore)
@@ -23,8 +28,8 @@ namespace GasPrices.ViewModels
         #endregion constructors
 
         #region private fields
-        private readonly NavigationService _navigationService;
-        private readonly AppStateStore _appStateStore;
+        private readonly NavigationService? _navigationService;
+        private readonly AppStateStore? _appStateStore;
         #endregion private fields
 
         #region bindable properties

@@ -23,6 +23,11 @@ namespace GasPrices.ViewModels
     public partial class AddressSelectionViewModel : ViewModelBase
     {
         #region constructors
+
+        public AddressSelectionViewModel()
+        {
+        }
+        
         public AddressSelectionViewModel(
             IMapClient mapClient,
             IGasPricesClient gasPricesClient,
@@ -64,12 +69,13 @@ namespace GasPrices.ViewModels
         #endregion constructors
 
         #region private fields
-        private readonly NavigationService _navigationService;
-        private readonly AppStateStore _appStateStore;
-        private readonly IMapClient _mapClient;
-        private readonly IGasPricesClient _gasPricesClient;
-        private readonly SettingsFileReader _settingsFileReader;
-        private readonly SettingsFileWriter _settingsFileWriter;
+        private readonly NavigationService? _navigationService;
+        private readonly AppStateStore? _appStateStore;
+        private readonly IMapClient? _mapClient;
+        private readonly IGasPricesClient? _gasPricesClient;
+        private readonly SettingsFileReader? _settingsFileReader;
+        private readonly SettingsFileWriter? _settingsFileWriter;
+        
         private Settings? _settings = null;
         private bool _hasStreetFocus = false;
         private bool _hasPostalCodeFocus = false;
@@ -78,6 +84,7 @@ namespace GasPrices.ViewModels
         #endregion private fields
 
         #region private properties
+
         private int RadiusInt
         {
             get
@@ -102,7 +109,7 @@ namespace GasPrices.ViewModels
         private string radius = "5";
 
         [ObservableProperty]
-        private ObservableCollection<GasType> gasTypes;
+        private ObservableCollection<GasType>? gasTypes;
 
         [ObservableProperty]
         private GasType? gasTypeSelectedItem;

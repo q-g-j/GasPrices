@@ -21,6 +21,11 @@ namespace GasPrices.ViewModels
     public partial class SettingsViewModel : ViewModelBase
     {
         #region constructors
+
+        public SettingsViewModel()
+        {
+        }
+        
         public SettingsViewModel(
             NavigationService navigationService,
             SettingsFileReader? settingsFileReader,
@@ -28,7 +33,6 @@ namespace GasPrices.ViewModels
             IGasPricesClient gasPricesClient)
         {
             _navigationService = navigationService;
-            _settingsFileReader = settingsFileReader;
             _settingsFileWriter = settingsFileWriter;
             _gasPricesClient = gasPricesClient;
 
@@ -36,7 +40,7 @@ namespace GasPrices.ViewModels
 
             Task.Run(async () =>
             {
-                var settings = await _settingsFileReader!.ReadAsync();
+                var settings = await settingsFileReader!.ReadAsync();
                 if (settings != null && !string.IsNullOrEmpty(settings.TankerkönigApiKey))
                 {
                     TankerKönigApiKey = settings.TankerkönigApiKey;
@@ -46,10 +50,9 @@ namespace GasPrices.ViewModels
         #endregion constructors
 
         #region private fields
-        private readonly NavigationService _navigationService;
-        private readonly SettingsFileReader? _settingsFileReader;
+        private readonly NavigationService? _navigationService;
         private readonly SettingsFileWriter? _settingsFileWriter;
-        private readonly IGasPricesClient _gasPricesClient;
+        private readonly IGasPricesClient? _gasPricesClient;
 
         private CancellationTokenSource? _cancellationTokenSource;
         private bool isValidated = false;
