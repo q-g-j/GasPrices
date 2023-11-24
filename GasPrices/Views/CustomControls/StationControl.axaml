@@ -32,12 +32,14 @@
     </Style>
     
     <Style Selector="Border.border_station:pointerover">
-        <Setter Property="Background" Value="DarkKhaki" />
+        <Setter Property="Background" Value="{StaticResource StationPointerOverBackground}" />
     </Style>
     
     <Style Selector="Border.border_station:pointerover Border.border_distance">
-        <Setter Property="Background" Value="DarkKhaki" />
+        <Setter Property="Background" Value="{StaticResource StationPointerOverBackground}" />
     </Style>
+    
+    <Style Selector="Border.border_common" />
     
     <Design.PreviewWith>
         <controls:StationControl />
@@ -48,11 +50,11 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border
-                    x:Name="BorderStation"
+                    x:Name="StationBorder"
                     Padding="5, 3, 5, 3"
-                    Background="Beige"
+                    Background="{StaticResource StationBackground}"
                     CornerRadius="10"
-                    Classes="border_station">
+                    Classes="border_common border_station">
                     <Grid
                         ColumnDefinitions="Auto, *, Auto"
                         RowDefinitions="Auto">
@@ -78,13 +80,13 @@
                                 Classes="tb_brand">
                             </TextBlock>
                             <TextBlock
-                                Margin="8, 3, 0, 0"
+                                Margin="0, 3, 0, 0"
                                 Text="{Binding Station.FullAddress, RelativeSource={RelativeSource TemplatedParent}}"
                                 Classes="tb_full_address">
                             </TextBlock>
                         </StackPanel>
                         <Border
-                            x:Name="BorderDistance"
+                            x:Name="StationDistanceBorder"
                             Grid.Column="2"
                             Grid.Row="0"
                             Background="White"
@@ -93,7 +95,7 @@
                             CornerRadius="50"
                             Width="40"
                             Height="40"
-                            Classes="border_distance">
+                            Classes="border_common border_distance">
                             <StackPanel
                                 VerticalAlignment="Center">
                                 <TextBlock

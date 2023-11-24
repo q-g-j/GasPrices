@@ -8,7 +8,8 @@
 	<Application.Styles>
         <FluentTheme />
 		<StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
-		<StyleInclude Source="/Resources/Styles.axaml" />
+        <StyleInclude Source="/Resources/Colors.axaml" />
+        <StyleInclude Source="/Resources/Styles.axaml" />
 		<StyleInclude Source="/Views/CustomControls/StationControl.axaml" />
 		<StyleInclude Source="avares://AvaloniaProgressRing/Styles/ProgressRing.xaml" />
 	</Application.Styles>
