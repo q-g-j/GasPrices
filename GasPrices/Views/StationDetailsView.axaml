@@ -7,16 +7,19 @@
              d:DesignWidth="{Binding $parent[Window].Width}"
              d:DesignHeight="{Binding $parent[Window].Height}">
 
-<Grid>
-    <!-- Back button: -->
-    <Button
-        Grid.Column="0"
-        Grid.Row="0"
-        HorizontalAlignment="Stretch"
-        HorizontalContentAlignment="Center"
-        Content="Zurück"
-        Command="{Binding BackCommand}">
-    </Button>
-</Grid>
-    
+    <Grid
+        ColumnDefinitions="*"
+        RowDefinitions="Auto, *, Auto"
+        Margin="5, 15, 5, 15">
+
+        <Button
+            Grid.Column="0"
+            Grid.Row="2"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Content="Zurück"
+            Command="{Binding BackCommand}">
+        </Button>
+    </Grid>
+
 </UserControl>
