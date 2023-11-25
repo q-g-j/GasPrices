@@ -1,7 +1,4 @@
 using Avalonia.Controls;
-using GasPrices.Models;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace GasPrices.Views
 {

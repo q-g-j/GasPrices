@@ -8,14 +8,14 @@ using GasPrices.Services;
 using GasPrices.Store;
 using HttpClient.Exceptions;
 using SettingsFile.Models;
-using SettingsFile.SettingsFile;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Animation;
+using SettingsFile;
 using Xamarin.Essentials;
 
 namespace GasPrices.ViewModels
@@ -27,7 +27,7 @@ namespace GasPrices.ViewModels
         public AddressSelectionViewModel()
         {
         }
-        
+
         public AddressSelectionViewModel(
             IMapClient mapClient,
             IGasPricesClient gasPricesClient,
@@ -44,14 +44,14 @@ namespace GasPrices.ViewModels
             _settingsFileReader = settingsFileReader;
             _settingsFileWriter = settingsFileWriter;
 
-            gasTypes =
+            _gasTypes =
             [
                 new GasType("E5"),
                 new GasType("E10"),
                 new GasType("Diesel")
             ];
 
-            gasTypeSelectedItem = gasTypes[0];
+            _gasTypeSelectedItem = _gasTypes[0];
 
             if (OperatingSystem.IsAndroid())
             {
@@ -66,21 +66,24 @@ namespace GasPrices.ViewModels
                 await ProcessSettingsAsync();
             });
         }
+
         #endregion constructors
 
         #region private fields
+
         private readonly NavigationService? _navigationService;
         private readonly AppStateStore? _appStateStore;
         private readonly IMapClient? _mapClient;
         private readonly IGasPricesClient? _gasPricesClient;
         private readonly SettingsFileReader? _settingsFileReader;
         private readonly SettingsFileWriter? _settingsFileWriter;
-        
-        private Settings? _settings = null;
-        private bool _hasStreetFocus = false;
-        private bool _hasPostalCodeFocus = false;
-        private bool _hasCityFocus = false;
+
+        private Settings? _settings;
+        private bool _hasStreetFocus;
+        private bool _hasPostalCodeFocus;
+        private bool _hasCityFocus;
         private CancellationTokenSource? _cancellationTokenSource;
+
         #endregion private fields
 
         #region private properties
@@ -93,65 +96,32 @@ namespace GasPrices.ViewModels
                 return isDigit ? intValue : 5;
             }
         }
+
         #endregion
 
         #region bindable properties
-        [ObservableProperty]
-        private string street = string.Empty;
-
-        [ObservableProperty]
-        private string postalCode = string.Empty;
-
-        [ObservableProperty]
-        private string city = string.Empty;
-
-        [ObservableProperty]
-        private string radius = "5";
-
-        [ObservableProperty]
-        private ObservableCollection<GasType>? gasTypes;
-
-        [ObservableProperty]
-        private GasType? gasTypeSelectedItem;
-
-        [ObservableProperty]
-        private string? mapCoordinates;
-
-        [ObservableProperty]
-        private bool mapCoordinatesIsVisible;
-
-        [ObservableProperty]
-        private bool geolocationButtonIsVisible = false;
-
-        [ObservableProperty]
-        private bool geolocationButtonIsEnabled = true;
-
-        [ObservableProperty]
-        private bool locationPickerButtonIsEnabled = true;
-
-        [ObservableProperty]
-        private int locationPickerButtonGridColumn = 0;
-
-        [ObservableProperty]
-        private bool searchButtonIsEnabled = true;
-
-        [ObservableProperty]
-        private bool progressRingIsActive = false;
-
-        [ObservableProperty]
-        private bool warningTextIsVisible = false;
-
-        [ObservableProperty]
-        private bool errorTextIsVisible = false;
-
-        [ObservableProperty]
-        private string warningText = string.Empty;
-
-        [ObservableProperty]
-        private string errorText = string.Empty;
+        [ObservableProperty] private string _street = string.Empty;
+        [ObservableProperty] private string _postalCode = string.Empty;
+        [ObservableProperty] private string _city = string.Empty;
+        [ObservableProperty] private string _radius = "5";
+        [ObservableProperty] private ObservableCollection<GasType>? _gasTypes;
+        [ObservableProperty] private GasType? _gasTypeSelectedItem;
+        [ObservableProperty] private string? _mapCoordinates;
+        [ObservableProperty] private bool _mapCoordinatesIsVisible;
+        [ObservableProperty] private bool _geolocationButtonIsVisible;
+        [ObservableProperty] private bool _geolocationButtonIsEnabled = true;
+        [ObservableProperty] private bool _locationPickerButtonIsEnabled = true;
+        [ObservableProperty] private int _locationPickerButtonGridColumn;
+        [ObservableProperty] private bool _searchButtonIsEnabled = true;
+        [ObservableProperty] private bool _progressRingIsActive;
+        [ObservableProperty] private bool _warningTextIsVisible;
+        [ObservableProperty] private bool _errorTextIsVisible;
+        [ObservableProperty] private string _warningText = string.Empty;
+        [ObservableProperty] private string _errorText = string.Empty;
         #endregion bindable properties
-
+        
         #region commands
+
         [RelayCommand]
         public void StreetFocusChangedCommand(object value) => _hasStreetFocus = value.ToString() == "True";
 
@@ -192,7 +162,7 @@ namespace GasPrices.ViewModels
 
             if (location != null)
             {
-                _appStateStore.CoordsFromMapClient = new Coords(location.Latitude, location.Longitude);
+                _appStateStore!.CoordsFromMapClient = new Coords(location.Latitude, location.Longitude);
                 await ProcessCoordsAsync();
             }
         }
@@ -206,8 +176,8 @@ namespace GasPrices.ViewModels
 
             try
             {
-                _appStateStore.CoordsFromMapClient = await GetCoordsFromAddressFields();
-                _navigationService.Navigate<LocationPickerViewModel>();
+                _appStateStore!.CoordsFromMapClient = await GetCoordsFromAddressFields();
+                _navigationService!.Navigate<LocationPickerViewModel, CrossFade>();
             }
             catch (HttpClientException ex)
             {
@@ -242,6 +212,7 @@ namespace GasPrices.ViewModels
                 ShowWarning("Der Umkreis muss mindestens 1 km betragen!", 5000);
                 return;
             }
+
             var isDigit = int.TryParse(Radius, out int _);
             if (!isDigit)
             {
@@ -252,11 +223,10 @@ namespace GasPrices.ViewModels
             SearchButtonIsEnabled = false;
             ProgressRingIsActive = true;
 
-            Coords? coords;
-
             try
             {
-                if (_appStateStore.CoordsFromMapClient != null)
+                Coords? coords;
+                if (_appStateStore!.CoordsFromMapClient != null)
                 {
                     coords = _appStateStore.CoordsFromMapClient;
                 }
@@ -267,15 +237,15 @@ namespace GasPrices.ViewModels
 
                 if (coords != null)
                 {
-                    List<Station>? stations = null;
-                    stations = await _gasPricesClient.GetStationsAsync(_settings!.TankerkönigApiKey!, coords, RadiusInt);
+                    var stations =
+                        await _gasPricesClient?.GetStationsAsync(_settings!.TankerkönigApiKey!, coords, RadiusInt)!;
 
-                    if (stations != null && stations?.Count > 0)
+                    if (stations is { Count: > 0 })
                     {
                         _appStateStore!.Stations = stations;
                         await SaveCurrentAddressAsync();
                         _appStateStore.CoordsFromMapClient = null;
-                        _navigationService.Navigate<ResultsViewModel>();
+                        _navigationService?.Navigate<ResultsViewModel, CrossFade>();
                     }
                     else
                     {
@@ -308,7 +278,6 @@ namespace GasPrices.ViewModels
             }
             finally
             {
-
                 ProgressRingIsActive = false;
                 SearchButtonIsEnabled = true;
             }
@@ -318,14 +287,14 @@ namespace GasPrices.ViewModels
         public async Task OpenSettingsCommand()
         {
             await SaveCurrentAddressAsync();
-            _navigationService.Navigate<SettingsViewModel>();
+            _navigationService?.Navigate<SettingsViewModel, CrossFade>();
         }
 
         [RelayCommand]
         public async Task KeyDownCommand(object o)
         {
             var e = o as KeyEventArgs;
-            if (e?.Key == Key.Enter || e?.Key == Key.Return)
+            if (e?.Key is Key.Enter or Key.Return)
             {
                 if (SearchButtonIsEnabled)
                 {
@@ -334,18 +303,22 @@ namespace GasPrices.ViewModels
                 }
             }
         }
+
         #endregion commands
 
         #region OnPropertyChangedHandlers
+
         partial void OnStreetChanged(string value) => ResetCachedCoords();
         partial void OnCityChanged(string value) => ResetCachedCoords();
         partial void OnPostalCodeChanged(string value) => ResetCachedCoords();
+
         #endregion OnPropertyChangedHandlers
 
         #region private methods
+
         private async Task ProcessApiKeyAsync()
         {
-            _settings = await _settingsFileReader.ReadAsync();
+            _settings = await _settingsFileReader!.ReadAsync();
             if (_settings == null || string.IsNullOrEmpty(_settings?.TankerkönigApiKey))
             {
                 SearchButtonIsEnabled = false;
@@ -359,37 +332,39 @@ namespace GasPrices.ViewModels
 
         private async Task ProcessSettingsAsync()
         {
-            _settings = await _settingsFileReader.ReadAsync();
+            _settings = await _settingsFileReader?.ReadAsync()!;
 
-            if (_appStateStore.SelectedGasType != null)
+            if (_appStateStore?.SelectedGasType != null)
             {
-                GasTypeSelectedItem = GasTypes.FirstOrDefault(gt => gt.ToString() == _appStateStore.SelectedGasType.ToString());
+                GasTypeSelectedItem =
+                    GasTypes!.FirstOrDefault(gt => gt.ToString() == _appStateStore.SelectedGasType.ToString());
             }
-            else if (_settings != null && _settings.LastKnownGasType != null)
+            else if (_settings is { LastKnownGasType: not null })
             {
-                GasTypeSelectedItem = GasTypes.FirstOrDefault(gt => gt.ToString() == _settings.LastKnownGasType.ToString());
+                GasTypeSelectedItem =
+                    GasTypes!.FirstOrDefault(gt => gt.ToString() == _settings.LastKnownGasType);
             }
 
-            if (_appStateStore.Distance != null)
+            if (_appStateStore?.Distance != null)
             {
                 Radius = _appStateStore.Distance.Value.ToString();
             }
-            else if (_settings != null && _settings.LastKnownRadius != null)
+            else if (_settings is { LastKnownRadius: not null })
             {
                 Radius = _settings.LastKnownRadius;
             }
 
-            if (_appStateStore.CoordsFromMapClient != null) return;
+            if (_appStateStore?.CoordsFromMapClient != null) return;
 
-            if (_settings?.LastKnownLatitude != null && _settings.LastKnownLongitude != null)
+            if (_settings is { LastKnownLatitude: not null, LastKnownLongitude: not null })
             {
-                _appStateStore.CoordsFromMapClient = new Coords(
+                _appStateStore!.CoordsFromMapClient = new Coords(
                     _settings.LastKnownLatitude.Value, _settings.LastKnownLongitude.Value);
                 MapCoordinates = _appStateStore.CoordsFromMapClient!.ToString();
                 MapCoordinatesIsVisible = true;
             }
 
-            if (_appStateStore.Address != null)
+            if (_appStateStore?.Address != null)
             {
                 Street = _appStateStore.Address.Street!;
                 PostalCode = _appStateStore.Address.PostalCode!;
@@ -405,7 +380,7 @@ namespace GasPrices.ViewModels
 
         private async Task ProcessCoordsAsync()
         {
-            if (_appStateStore.CoordsFromMapClient == null)
+            if (_appStateStore?.CoordsFromMapClient == null)
             {
                 return;
             }
@@ -416,7 +391,7 @@ namespace GasPrices.ViewModels
 
             try
             {
-                address = await _mapClient.GetAddressAsync(_appStateStore.CoordsFromMapClient!);
+                address = await _mapClient?.GetAddressAsync(_appStateStore.CoordsFromMapClient!)!;
             }
             catch (HttpClientException ex)
             {
@@ -436,12 +411,13 @@ namespace GasPrices.ViewModels
             catch (Exception)
             {
                 ShowWarning("Fehler beim Auswerten der Koordinaten!", 5000);
-            } finally
+            }
+            finally
             {
                 ProgressRingIsActive = false;
             }
 
-            bool isWrongPosition = false;
+            var isWrongPosition = false;
             var wrongPosWarningMsg = new StringBuilder();
             if (address == null)
             {
@@ -474,11 +450,11 @@ namespace GasPrices.ViewModels
         private async Task SaveCurrentAddressAsync(Coords? coords = null)
         {
             var address = new Address(Street, City, PostalCode);
-            _appStateStore.Address = address;
+            _appStateStore!.Address = address;
             _appStateStore.SelectedGasType = GasTypeSelectedItem;
             _appStateStore.Distance = RadiusInt;
 
-            var settings = await _settingsFileReader.ReadAsync();
+            var settings = await _settingsFileReader?.ReadAsync()!;
             settings ??= new Settings();
 
             settings.LastKnownStreet = Street;
@@ -506,14 +482,14 @@ namespace GasPrices.ViewModels
                 }
             }
 
-            await _settingsFileWriter.WriteAsync(settings);
+            await _settingsFileWriter!.WriteAsync(settings);
         }
 
         private void ResetCachedCoords()
         {
             if (_hasStreetFocus || _hasPostalCodeFocus || _hasCityFocus)
             {
-                _appStateStore.CoordsFromMapClient = null;
+                _appStateStore!.CoordsFromMapClient = null;
                 MapCoordinates = null;
                 MapCoordinatesIsVisible = false;
             }
@@ -522,16 +498,7 @@ namespace GasPrices.ViewModels
         private async Task<Coords?> GetCoordsFromAddressFields()
         {
             var address = new Address(Street, City, PostalCode);
-            Coords? coords;
-
-            try
-            {
-                coords = await _mapClient.GetCoordsAsync(address);
-            }
-            catch
-            {
-                throw;
-            }
+            var coords = await _mapClient?.GetCoordsAsync(address)!;
 
             return coords;
         }
@@ -552,7 +519,7 @@ namespace GasPrices.ViewModels
                 WarningText = message;
                 WarningTextIsVisible = true;
 
-                await Task.Delay(duration);
+                await Task.Delay(duration, token);
 
                 token.ThrowIfCancellationRequested();
 
@@ -560,12 +527,15 @@ namespace GasPrices.ViewModels
                 WarningTextIsVisible = false;
             }, token);
         }
+
         #endregion private methods
 
         #region public overrides
+
         public override void Dispose()
         {
         }
+
         #endregion public overrides
     }
 }

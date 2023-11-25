@@ -1,7 +1,5 @@
-﻿using ApiClients.Models;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GasPrices.Models;
@@ -12,6 +10,8 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Animation;
+using GasPrices.PageTransitions;
 using Xamarin.Essentials;
 
 namespace GasPrices.ViewModels
@@ -29,12 +29,13 @@ namespace GasPrices.ViewModels
             AppStateStore appStateStore)
         {
             _navigationService = navigationService;
+            
             Stations = [];
-            foreach (var station in appStateStore.Stations!.Where(s => s.E5 > 0 && s.E10 > 0 && s.Diesel > 0))
+            foreach (var station in appStateStore.Stations!.Where(s => s is { E5: > 0, E10: > 0, Diesel: > 0 }))
             {
                 Stations.Add(new DisplayStation(station, appStateStore.SelectedGasType!));
             }
-            PriceFor = appStateStore!.SelectedGasType!.ToString()!;
+            PriceFor = appStateStore.SelectedGasType!.ToString()!;
 
 
             ((App)Application.Current!).BackPressed += OnBackPressed;
@@ -46,41 +47,18 @@ namespace GasPrices.ViewModels
         #endregion privat fields
 
         #region bindable properties
-        [ObservableProperty]
-        private ObservableCollection<DisplayStation>? stations;
-
-        [ObservableProperty]
-        private int selectedIndex = -1;
-
-        [ObservableProperty]
-        private object? selectedItem = null;
-
-        [ObservableProperty]
-        private string priceFor = "Preis";
-
-        [ObservableProperty]
-        private bool detailsIsVisible = false;
-
-        [ObservableProperty]
-        private string detailsName = "";
-
-        [ObservableProperty]
-        private string detailsBrand = "";
-
-        [ObservableProperty]
-        private string detailsStreet = "";
-
-        [ObservableProperty]
-        private string detailsCity = "";
-
-        [ObservableProperty]
-        private string detailsE5 = "";
-
-        [ObservableProperty]
-        private string detailsE10 = "";
-
-        [ObservableProperty]
-        private string detailsDiesel = "";
+        [ObservableProperty] private ObservableCollection<DisplayStation>? _stations;
+        [ObservableProperty] private int _selectedIndex = -1;
+        [ObservableProperty] private object? _selectedItem;
+        [ObservableProperty] private string _priceFor = "Preis";
+        [ObservableProperty] private bool _detailsIsVisible;
+        [ObservableProperty] private string _detailsName = string.Empty;
+        [ObservableProperty] private string _detailsBrand = string.Empty;
+        [ObservableProperty] private string _detailsStreet = string.Empty;
+        [ObservableProperty] private string _detailsCity = string.Empty;
+        [ObservableProperty] private string _detailsE5 = string.Empty;
+        [ObservableProperty] private string _detailsE10 = string.Empty;
+        [ObservableProperty] private string _detailsDiesel = string.Empty;
         #endregion bindable properties
 
         #region commands
@@ -93,38 +71,8 @@ namespace GasPrices.ViewModels
         [RelayCommand]
         public void StationsSelectionChangedCommand(object o)
         {
-            if (o is SelectionChangedEventArgs e)
-            {
-                if (e.AddedItems.Count > 0)
-                {
-                    var station = e.AddedItems[0] as DisplayStation;
-                    DetailsName = station!.Name;
-                    DetailsBrand = station!.Brand;
-                    DetailsStreet = station!.Street;
-                    DetailsCity = station!.PostalCode + " " + station!.City;
-                    DetailsE5 = station!.E5.ToString() ?? "";
-                    DetailsE10 = station!.E10.ToString() ?? "";
-                    DetailsDiesel = station!.Diesel.ToString() ?? "";
-
-                    DetailsIsVisible = true;
-                }
-                else
-                {
-                    DetailsIsVisible = false;
-                }
-            }
-        }
-
-        [RelayCommand]
-        public void StationsSortingCommand()
-        {
-            if (SelectedItem != null) return;
-
-            if (Stations?.Count > 0)
-            {
-                SelectedItem = 0;
-                SelectedItem = -1;
-            }
+            if (o is not SelectionChangedEventArgs) return;
+            _navigationService!.Navigate<StationDetailsViewModel, SlideLeftPageTransition>();
         }
 
         [RelayCommand]
@@ -140,14 +88,14 @@ namespace GasPrices.ViewModels
         [RelayCommand]
         public void BackCommand()
         {
-            _navigationService.Navigate<AddressSelectionViewModel>();
+            _navigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
         }
         #endregion commands
 
         #region private methods
         private void OnBackPressed()
         {
-            _navigationService.Navigate<AddressSelectionViewModel>();
+            _navigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
         }
 
         private static async Task OpenBrowser(Uri uri)
@@ -160,6 +108,7 @@ namespace GasPrices.ViewModels
                 }
                 catch (Exception)
                 {
+                    // ignore
                 }
             }
             else
@@ -176,6 +125,7 @@ namespace GasPrices.ViewModels
                 }
                 catch (Exception)
                 {
+                    // ignore
                 }
             }
         }

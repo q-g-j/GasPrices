@@ -68,8 +68,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\CustomControls\StationControl.axaml.cs">
-	    <DependentUpon>StationControl.axaml</DependentUpon>
-	  </Compile>
+	  <AdditionalFiles Include="CustomControls\StationControl.axaml" />
 	</ItemGroup>
 </Project>

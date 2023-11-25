@@ -1,14 +1,10 @@
-﻿using Newtonsoft.Json;
-using SettingsFile.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using SettingsFile.Models;
 
-namespace SettingsFile.SettingsFile
+namespace SettingsFile
 {
     public class SettingsFileWriter
     {
@@ -21,11 +17,11 @@ namespace SettingsFile.SettingsFile
             _settingsFileFullPath = settingsFileFullPath;
         }
 
-        public async Task WriteAsync(Settings settings)
+        public async Task WriteAsync(Settings? settings)
         {
             if (!Directory.Exists(_settingsFolderFullPath))
             {
-                Directory.CreateDirectory(_settingsFolderFullPath);
+                Directory.CreateDirectory(_settingsFolderFullPath!);
             }
 
             if (settings != null)
@@ -34,12 +30,12 @@ namespace SettingsFile.SettingsFile
 
                 try
                 {
-                    using var streamWriter = new StreamWriter(_settingsFileFullPath);
+                    await using var streamWriter = new StreamWriter(_settingsFileFullPath!);
                     await streamWriter.WriteAsync(settingsJson);
                 }
-                catch (Exception)
+                catch (Exception _)
                 {
-
+                    // ignored
                 }
             }
         }

@@ -3,8 +3,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:GasPrices.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:pagetransitions="using:GasPrices.PageTransitions"
              x:Class="GasPrices.Views.MainView"
+             mc:Ignorable="d"
+             d:DesignWidth="{Binding $parent[Window].Width}"
+             d:DesignHeight="{Binding $parent[Window].Height}"
              x:DataType="vm:MainViewModel">
 
     <Design.DataContext>
@@ -17,11 +20,9 @@
         <TransitioningContentControl
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Content="{Binding CurrentViewModel}"
-                MaxWidth="600">
-            <TransitioningContentControl.PageTransition>
-                <CrossFade Duration="0:00:00.300" />
-            </TransitioningContentControl.PageTransition>
+            MaxWidth="600"
+            Content="{Binding CurrentViewModel, Mode=OneWay}"
+            PageTransition="{Binding CurrentPageTransition}">
         </TransitioningContentControl>
     </ScrollViewer>
 </UserControl>

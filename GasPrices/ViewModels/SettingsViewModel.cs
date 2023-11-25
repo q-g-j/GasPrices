@@ -3,18 +3,17 @@ using ApiClients.Models;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Media;
-using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GasPrices.Services;
 using HttpClient.Exceptions;
 using SettingsFile.Models;
-using SettingsFile.SettingsFile;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Animation;
+using SettingsFile;
 
 namespace GasPrices.ViewModels
 {
@@ -55,33 +54,18 @@ namespace GasPrices.ViewModels
         private readonly IGasPricesClient? _gasPricesClient;
 
         private CancellationTokenSource? _cancellationTokenSource;
-        private bool isValidated = false;
+        private bool _isValidated;
         #endregion private fields
 
         #region bindable properties
-        [ObservableProperty]
-        private string tankerKönigApiKey = string.Empty;
-
-        [ObservableProperty]
-        private bool validateButtonIsEnabled = false;
-
-        [ObservableProperty]
-        private bool saveButtonIsEnabled = false;
-
-        [ObservableProperty]
-        private string noticeTitleText = string.Empty;
-
-        [ObservableProperty]
-        private string noticeText = string.Empty;
-
-        [ObservableProperty]
-        private IBrush noticeTextColor = new SolidColorBrush(Color.Parse("Orange"));
-
-        [ObservableProperty]
-        private bool noticeTextIsVisible = false;
-
-        [ObservableProperty]
-        private bool progressRingIsActive = false;
+        [ObservableProperty] private string _tankerKönigApiKey = string.Empty;
+        [ObservableProperty] private bool _validateButtonIsEnabled;
+        [ObservableProperty] private bool _saveButtonIsEnabled;
+        [ObservableProperty] private string _noticeTitleText = string.Empty;
+        [ObservableProperty] private string _noticeText = string.Empty;
+        [ObservableProperty] private IBrush _noticeTextColor = new SolidColorBrush(Color.Parse("Orange"));
+        [ObservableProperty] private bool _noticeTextIsVisible;
+        [ObservableProperty] private bool _progressRingIsActive;
         #endregion bindable properties
 
         #region commands
@@ -92,7 +76,7 @@ namespace GasPrices.ViewModels
             if (e?.Key == Key.Enter || e?.Key == Key.Return)
             {
                 e.Handled = true;
-                if (isValidated)
+                if (_isValidated)
                 {
                     await SaveCommand();
                 }
@@ -108,13 +92,11 @@ namespace GasPrices.ViewModels
         {
             var coords = new Coords(11.601314, 48.135788);
 
-            List<Station>? stations;
-
             ProgressRingIsActive = true;
 
             try
             {
-                stations = await _gasPricesClient.GetStationsAsync(TankerKönigApiKey, coords, 1);
+                var stations = await _gasPricesClient!.GetStationsAsync(TankerKönigApiKey, coords, 1);
 
                 if (stations == null)
                 {
@@ -122,7 +104,7 @@ namespace GasPrices.ViewModels
                 }
                 else
                 {
-                    isValidated = true;
+                    _isValidated = true;
                     SaveButtonIsEnabled = true;
                     ShowWarning(false, "Der API-Schlüssel wurde angenommen!", 2000);                 
                 }
@@ -160,13 +142,13 @@ namespace GasPrices.ViewModels
                 TankerkönigApiKey = TankerKönigApiKey
             };
             await _settingsFileWriter!.WriteAsync(settings);
-            _navigationService.Navigate<AddressSelectionViewModel>();
+            _navigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
         }
 
         [RelayCommand]
         public void CancelCommand()
         {
-            _navigationService.Navigate<AddressSelectionViewModel>();
+            _navigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
         }
         #endregion commands
 
@@ -198,7 +180,7 @@ namespace GasPrices.ViewModels
                 NoticeText = message;
                 NoticeTextIsVisible = true;
 
-                await Task.Delay(duration);
+                await Task.Delay(duration, token);
 
                 token.ThrowIfCancellationRequested();
 
@@ -210,7 +192,7 @@ namespace GasPrices.ViewModels
 
         private void OnBackPressed()
         {
-            _navigationService.Navigate<AddressSelectionViewModel>();
+            _navigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
         }
         #endregion private methods
 

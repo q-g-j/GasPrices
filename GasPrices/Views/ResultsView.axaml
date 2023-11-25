@@ -5,14 +5,21 @@
              xmlns:i="using:Avalonia.Xaml.Interactivity"
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:vm="using:GasPrices.ViewModels"
-             xmlns:controls="using:GasPrices.Views.CustomControls"
-             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
+             xmlns:converters="using:GasPrices.Converters"
+             xmlns:controls="clr-namespace:GasPrices.CustomControls"
              x:Class="GasPrices.Views.ResultsView"
+             mc:Ignorable="d"
+             d:DesignWidth="{Binding $parent[Window].Width}" 
+             d:DesignHeight="{Binding $parent[Window].Height}"
              MaxWidth="{Binding $parent[Window].Width}"
              MaxHeight="{Binding $parent[Window].Height}"
              MinWidth="400"
              MinHeight="600">
 
+    <UserControl.Resources>
+        <converters:ListViewCalculateMaxHeightConverter x:Key="ListViewCalculateMaxHeightConverter" />
+    </UserControl.Resources>
+    
     <Design.DataContext>
         <vm:ResultsViewModel />
     </Design.DataContext>
@@ -51,16 +58,18 @@
 
     <Grid
         ColumnDefinitions="*"
-        RowDefinitions="7*, 1*, auto"
+        RowDefinitions="auto, *, auto"
         Margin="5, 15, 5, 15">
 
         <ListBox
             Grid.Column="0"
             Grid.Row="0"
+            Background="Transparent"
             ItemsSource="{Binding Stations}"
             SelectionMode="Single"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
+            VerticalAlignment="Top"
+            MaxHeight="{Binding $parent[Window].Height, Converter={StaticResource ListViewCalculateMaxHeightConverter}, ConverterParameter=0.6}"
             SelectedIndex="{Binding SelectedIndex}"
             SelectedItem="{Binding SelectedItem}">
             <ListBox.ItemTemplate>

@@ -7,8 +7,8 @@ namespace GasPrices.Utilities
     {
         public static void Invoke(Action action)
         {
-            Dispatcher dispatchObject = Dispatcher.UIThread;
-            if (dispatchObject == null || dispatchObject.CheckAccess())
+            var dispatchObject = Dispatcher.UIThread;
+            if (dispatchObject.CheckAccess())
             {
                 action();
             }

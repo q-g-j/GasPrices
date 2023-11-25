@@ -1,10 +1,6 @@
 ﻿using ApiClients.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace GasPrices.Models
 {
@@ -13,7 +9,7 @@ namespace GasPrices.Models
         public DisplayStation(Station station, GasType selectedGasType)
         {
             Name = station.Name!;
-            Brand = string.IsNullOrEmpty(station!.Brand!) ? station!.Name! : station!.Brand!;
+            Brand = string.IsNullOrEmpty(station.Brand!) ? station.Name! : station.Brand!;
             Distance = Math.Round(station.Distance!.Value, 2);
             Street = station.Street!;
             if (!string.IsNullOrEmpty(station.Street) && !string.IsNullOrEmpty(station.HouseNumber))

@@ -1,6 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="using:GasPrices.Views.CustomControls">
+        xmlns:customControls="clr-namespace:GasPrices.CustomControls">
 
 
     <Style Selector="TextBlock.tb_price">
@@ -42,10 +42,10 @@
     <Style Selector="Border.border_common" />
     
     <Design.PreviewWith>
-        <controls:StationControl />
+        <customControls:StationControl />
     </Design.PreviewWith>
 
-    <Style Selector="controls|StationControl">
+    <Style Selector="customControls|StationControl">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>

@@ -1,10 +1,7 @@
 ﻿using ApiClients.Models;
 using HttpClient;
-using HttpClient.Exceptions;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace ApiClients
@@ -20,51 +17,39 @@ namespace ApiClients
 
         public async Task<List<Station>?> GetStationsAsync(string apiKey, Coords coords, int radius)
         {
-            List<Station>? stations = null;
+            var url = $@"https://creativecommons.tankerkoenig.de/json/list.php?lat={coords.Latitude}&lng={coords.Longitude}&rad={radius}&sort=dist&type=all&apikey={apiKey}";
 
-            string url = $@"https://creativecommons.tankerkoenig.de/json/list.php?lat={coords.Latitude}&lng={coords.Longitude}&rad={radius}&sort=dist&type=all&apikey={apiKey}";
+            var result = await _httpClientRepository.GetAsync(url);
 
-            string? result;
-
-            try
+            if (string.IsNullOrEmpty(result))
             {
-                result = await _httpClientRepository.GetAsync(url);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            if (result == null)
-            {
-                return stations;
+                return null;
             }
 
             dynamic? jsonObject = JsonConvert.DeserializeObject(result);
 
-            if (jsonObject != null && jsonObject?.stations != null)
+            if (jsonObject == null || jsonObject?.stations == null) return null;
+            
+            var stations = new List<Station>();
+            var stationsObject = JsonConvert.DeserializeObject<List<dynamic>>(jsonObject?.stations.ToString());
+            foreach (var station in stationsObject)
             {
-                stations = new List<Station>();
-                var stationsObject = JsonConvert.DeserializeObject<List<dynamic>>(jsonObject?.stations.ToString());
-                foreach (var station in stationsObject)
+                var stationModel = new Station
                 {
-                    var stationModel = new Station
-                    {
-                        Name = station.name,
-                        Brand = station.brand,
-                        Distance = station.dist,
-                        Street = station.street,
-                        HouseNumber = station.houseNumber,
-                        City = station.place,
-                        IsOpen = station.isOpen,
-                        PostalCode = station.postCode,
-                        E5 = station.e5,
-                        E10 = station.e10,
-                        Diesel = station.diesel
-                    };
+                    Name = station.name,
+                    Brand = station.brand,
+                    Distance = station.dist,
+                    Street = station.street,
+                    HouseNumber = station.houseNumber,
+                    City = station.place,
+                    IsOpen = station.isOpen,
+                    PostalCode = station.postCode,
+                    E5 = station.e5,
+                    E10 = station.e10,
+                    Diesel = station.diesel
+                };
 
-                    stations.Add(stationModel);
-                }
+                stations.Add(stationModel);
             }
 
             return stations;

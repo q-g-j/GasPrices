@@ -1,0 +1,22 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Class="GasPrices.Views.StationDetailsView"
+             mc:Ignorable="d"
+             d:DesignWidth="{Binding $parent[Window].Width}"
+             d:DesignHeight="{Binding $parent[Window].Height}">
+
+<Grid>
+    <!-- Back button: -->
+    <Button
+        Grid.Column="0"
+        Grid.Row="0"
+        HorizontalAlignment="Stretch"
+        HorizontalContentAlignment="Center"
+        Content="Zurück"
+        Command="{Binding BackCommand}">
+    </Button>
+</Grid>
+    
+</UserControl>

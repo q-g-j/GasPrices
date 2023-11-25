@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Animation;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GasPrices.Services;
@@ -33,30 +34,28 @@ namespace GasPrices.ViewModels
         #endregion private fields
 
         #region bindable properties
-        [ObservableProperty]
-        private bool applyButtonIsEnabled;
+        [ObservableProperty] private bool _applyButtonIsEnabled;
         #endregion bindable properties
 
         #region commands
         [RelayCommand]
         public void ApplyCommand()
         {
-            _navigationService.Navigate<AddressSelectionViewModel>();
+            _navigationService?.Navigate<AddressSelectionViewModel, CrossFade>();
         }
 
         [RelayCommand]
         public void BackCommand()
         {
-            _appStateStore.CoordsFromMapClient = null;
-            _navigationService.Navigate<AddressSelectionViewModel>();
+            OnBackPressed();
         }
         #endregion commands
 
         #region private methods
         private void OnBackPressed()
         {
-            _appStateStore.CoordsFromMapClient = null;
-            _navigationService.Navigate<AddressSelectionViewModel>();
+            _appStateStore!.CoordsFromMapClient = null;
+            _navigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
         }
         #endregion private methods
 

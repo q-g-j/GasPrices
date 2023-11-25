@@ -1,6 +1,4 @@
 ﻿using Avalonia.Controls;
-using GasPrices.ViewModels;
-using Xamarin.Essentials;
 
 namespace GasPrices.Views;
 

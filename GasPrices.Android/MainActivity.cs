@@ -1,11 +1,9 @@
 ﻿using Android.App;
 using Android.Content.PM;
-using Android.Content.Res;
 using Android.OS;
 using Android.Runtime;
 using Avalonia;
 using Avalonia.Android;
-using System;
 
 namespace GasPrices.Android;
 
@@ -23,7 +21,7 @@ public class MainActivity : AvaloniaMainActivity<App>
         return base.CustomizeAppBuilder(builder)
             .WithInterFont();
     }
-    protected override void OnCreate(Bundle savedInstanceState)
+    protected override void OnCreate(Bundle? savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
 
@@ -39,8 +37,7 @@ public class MainActivity : AvaloniaMainActivity<App>
 
     public override void OnBackPressed()
     {
-        var app = (App)Avalonia.Application.Current!;
-        if (app != null && app.IsBackPressedSubscribed())
+        if (Avalonia.Application.Current is App app && app.IsBackPressedSubscribed())
         {
             app.OnBackPressed();
         }
@@ -48,10 +45,5 @@ public class MainActivity : AvaloniaMainActivity<App>
         {
             base.OnBackPressed();
         }
-    }
-
-    public override void OnConfigurationChanged(Configuration newConfig)
-    {
-        base.OnConfigurationChanged(newConfig);
     }
 }

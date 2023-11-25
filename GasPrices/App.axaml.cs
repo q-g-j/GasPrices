@@ -1,21 +1,19 @@
-﻿using ApiClients;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using GasPrices.Extensions;
 using GasPrices.Services;
-using GasPrices.Store;
 using GasPrices.ViewModels;
 using GasPrices.Views;
-using HttpClient;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using Avalonia.Animation;
 
 namespace GasPrices;
 
-public partial class App : Application
+public class App : Application
 {
     private readonly IHost? _host;
 
@@ -41,7 +39,7 @@ public partial class App : Application
         DataTemplates.Add(viewLocator!);
 
         var navigationService = _host?.Services.GetRequiredService<NavigationService>();
-        navigationService?.Navigate<AddressSelectionViewModel>();
+        navigationService?.Navigate<AddressSelectionViewModel, CrossFade>();
 
         // Line below is needed to remove Avalonia data validation.
         // Without this line you will get duplicate validations from both Avalonia and CT

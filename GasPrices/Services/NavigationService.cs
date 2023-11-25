@@ -1,22 +1,21 @@
 ﻿using GasPrices.Store;
 using GasPrices.ViewModels;
-using GasPrices.Views;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Avalonia.Animation;
 
 namespace GasPrices.Services
 {
-    public class NavigationService(NavigationStore navigationStore, Func<Type, ViewModelBase> viewModelCreator)
+    public class NavigationService(
+        NavigationStore navigationStore,
+        PageTransitionStore pageTransitionStore,
+        Func<Type, ViewModelBase> viewModelCreator,
+        Func<Type, IPageTransition> pageTransitionCreator
+        )
     {
-        private readonly NavigationStore _navigationStore = navigationStore;
-        private readonly Func<Type, ViewModelBase> _viewModelCreator = viewModelCreator;
-
-        public void Navigate<TViewModel>()
+        public void Navigate<TViewModel, TPageTransition>()
         {
-            _navigationStore.CurrentViewModel = _viewModelCreator(typeof(TViewModel));
+            pageTransitionStore.CurrentPageTransition = pageTransitionCreator(typeof(TPageTransition));
+            navigationStore.CurrentViewModel = viewModelCreator(typeof(TViewModel));
         }
     }
 }
