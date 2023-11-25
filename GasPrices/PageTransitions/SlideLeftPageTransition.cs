@@ -2,7 +2,4 @@
 
 namespace GasPrices.PageTransitions;
 
-public class SlideLeftPageTransition : PageSlide
-{
-    
-}
+public class SlideLeftPageTransition : PageSlide;
