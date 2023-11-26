@@ -40,7 +40,7 @@ public class App : Application
 
         var navigationService = _host?.Services.GetRequiredService<NavigationService>();
         navigationService?.Navigate<AddressSelectionViewModel, CrossFade>();
-
+        
         // Line below is needed to remove Avalonia data validation.
         // Without this line you will get duplicate validations from both Avalonia and CT
         BindingPlugins.DataValidators.RemoveAt(0);

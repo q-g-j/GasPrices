@@ -16,6 +16,12 @@
              MinWidth="400"
              MinHeight="600">
 
+    <i:Interaction.Behaviors>
+        <ia:EventTriggerBehavior EventName="Initialized">
+            <ia:InvokeCommandAction Command="{Binding InitializedCommand}" />
+        </ia:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
     <UserControl.Resources>
         <converters:ListViewCalculateMaxHeightConverter x:Key="ListViewCalculateMaxHeightConverter" />
     </UserControl.Resources>
@@ -58,39 +64,34 @@
 
     <Grid
         ColumnDefinitions="*"
-        RowDefinitions="auto, *, auto"
+        RowDefinitions="*, auto"
         Margin="5, 15, 5, 15">
 
         <ListBox
             Grid.Column="0"
             Grid.Row="0"
-            Background="Transparent"
+            Margin="0, 0, 0, 10"
             ItemsSource="{Binding Stations}"
+            Background="Transparent"
             SelectionMode="Single"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Top"
-            MaxHeight="{Binding $parent[Window].Height, Converter={StaticResource ListViewCalculateMaxHeightConverter}, ConverterParameter=0.6}"
-            SelectedIndex="{Binding SelectedIndex, Mode=OneWay}">
+            VerticalAlignment="Stretch"
+            SelectedIndex="{Binding SelectedIndex}">
+            
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <controls:StationControl
                         Station="{Binding}"
-                        Margin="0" />
+                        Margin="0">
+                    </controls:StationControl>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-
-            <i:Interaction.Behaviors>
-                <ia:EventTriggerBehavior EventName="SelectionChanged">
-                    <ia:InvokeCommandAction Command="{Binding StationsSelectionChangedCommand}"
-                                            PassEventArgsToCommand="True" />
-                </ia:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
         </ListBox>
 
         <!-- Back button: -->
         <Button
             Grid.Column="0"
-            Grid.Row="2"
+            Grid.Row="1"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Center"
             Content="Zurück"

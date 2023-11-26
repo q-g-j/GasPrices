@@ -2,16 +2,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+             xmlns:vm="using:GasPrices.ViewModels"
              x:Class="GasPrices.Views.StationDetailsView"
              mc:Ignorable="d"
-             d:DesignWidth="{Binding $parent[Window].Width}"
-             d:DesignHeight="{Binding $parent[Window].Height}">
+             d:DesignWidth="{Binding $parent[Window].Width}" 
+             d:DesignHeight="{Binding $parent[Window].Height}"
+             MaxWidth="{Binding $parent[Window].Width}"
+             MaxHeight="{Binding $parent[Window].Height}"
+             MinWidth="400"
+             MinHeight="600">
 
+    <Design.DataContext>
+        <vm:StationDetailsViewModel />
+    </Design.DataContext>
+    
     <Grid
         ColumnDefinitions="*"
         RowDefinitions="Auto, *, Auto"
         Margin="5, 15, 5, 15">
-
+        
         <Button
             Grid.Column="0"
             Grid.Row="2"
@@ -21,5 +32,4 @@
             Command="{Binding BackCommand}">
         </Button>
     </Grid>
-
 </UserControl>

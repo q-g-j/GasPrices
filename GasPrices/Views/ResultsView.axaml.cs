@@ -7,11 +7,6 @@ namespace GasPrices.Views
         public ResultsView()
         {
             InitializeComponent();
-
-            //    dgStations.Loaded += (o, e) =>
-            //    {
-            //        dgStations.Columns[2].Sort(System.ComponentModel.ListSortDirection.Ascending);
-            //    };
         }
     }
 }

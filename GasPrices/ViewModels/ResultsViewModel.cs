@@ -1,19 +1,14 @@
 ﻿using Avalonia;
-using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GasPrices.Models;
 using GasPrices.Services;
 using GasPrices.Store;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Animation;
 using GasPrices.PageTransitions;
-using Xamarin.Essentials;
 
 namespace GasPrices.ViewModels
 {
@@ -38,18 +33,6 @@ namespace GasPrices.ViewModels
                 Stations.Add(new DisplayStation(station, appStateStore.SelectedGasType!));
             }
 
-            if (appStateStore.IsFromStationDetailsView)
-            {
-                Task.Run(async () =>
-                {
-                    SelectedIndex = appStateStore.LastSelectedStationIndex;
-                    appStateStore.LastSelectedStationIndex = -1;
-                    await Task.Delay(500);
-                    appStateStore.IsFromStationDetailsView = true;
-                    SelectedIndex = -1;
-                });
-            }
-
             ((App)Application.Current!).BackPressed += OnBackPressed;
         }
 
@@ -66,24 +49,24 @@ namespace GasPrices.ViewModels
 
         [ObservableProperty] private ObservableCollection<DisplayStation>? _stations;
         [ObservableProperty] private int _selectedIndex = -1;
-        [ObservableProperty] private object _selectedItem;
+
         #endregion bindable properties
 
         #region commands
 
         [RelayCommand]
-        public void StationsSelectionChangedCommand(object o)
+        public void InitializedCommand()
         {
             if (_appStateStore!.IsFromStationDetailsView)
             {
-                _appStateStore!.IsFromStationDetailsView = false;
-                return;
+                Task.Run(async () =>
+                {
+                    await Task.Delay(200);
+                    SelectedIndex = _appStateStore!.SelectedStationIndex;
+                    await Task.Delay(600);
+                    SelectedIndex = -1;
+                });
             }
-
-            if (o is not SelectionChangedEventArgs e) return;
-            _appStateStore!.LastSelectedStationIndex = ((ListBox)e.Source!).SelectedIndex;
-            _appStateStore!.LastSelectedStation = ((ListBox)e.Source!).SelectedItem as DisplayStation;
-            _navigationService!.Navigate<StationDetailsViewModel, SlideLeftPageTransition>();
         }
 
         [RelayCommand]
@@ -100,6 +83,7 @@ namespace GasPrices.ViewModels
         {
             _navigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
         }
+
         #endregion private methods
 
         #region public overrides
@@ -110,5 +94,18 @@ namespace GasPrices.ViewModels
         }
 
         #endregion public overrides
+
+        partial void OnSelectedIndexChanged(int value)
+        {
+            if (_appStateStore!.IsFromStationDetailsView)
+            {
+                _appStateStore!.IsFromStationDetailsView = false;
+                return;
+            }
+            
+            _appStateStore!.SelectedStation = Stations![value];
+            _appStateStore!.SelectedStationIndex = value;
+            _navigationService!.Navigate<StationDetailsViewModel, SlideLeftPageTransition>();
+        }
     }
 }

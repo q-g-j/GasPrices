@@ -15,8 +15,20 @@ namespace GasPrices.Services
         {
             var name = data?.GetType().FullName?.Replace("ViewModel", "View");
             var type = Type.GetType(name!);
+            if (type == null)
+            {
+                return new TextBlock { Text = "Not Found: " + name };
+            }
 
-            return type != null ? _viewCreator(type) : new TextBlock { Text = "Not Found: " + name };
+            try
+            {
+                var view = _viewCreator(type);
+                return view;
+            }
+            catch (Exception ex)
+            {
+                return new TextBlock { Text = ex.GetType() + ", " + ex.Message };
+            }
         }
 
         public bool Match(object? data)

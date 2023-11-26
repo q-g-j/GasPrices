@@ -3,26 +3,26 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:GasPrices.ViewModels"
-             xmlns:pagetransitions="using:GasPrices.PageTransitions"
              x:Class="GasPrices.Views.MainView"
              mc:Ignorable="d"
              d:DesignWidth="{Binding $parent[Window].Width}"
              d:DesignHeight="{Binding $parent[Window].Height}"
              x:DataType="vm:MainViewModel">
 
-    <Design.DataContext>
-        <vm:MainViewModel />
-    </Design.DataContext>
+	<Design.DataContext>
+		<vm:MainViewModel />
+	</Design.DataContext>
 
-    <ScrollViewer
-        HorizontalScrollBarVisibility="Auto"
-        VerticalScrollBarVisibility="Auto">
-        <TransitioningContentControl
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            MaxWidth="600"
-            Content="{Binding CurrentViewModel, Mode=OneWay}"
-            PageTransition="{Binding CurrentPageTransition}">
-        </TransitioningContentControl>
-    </ScrollViewer>
+	<Grid>
+		<ScrollViewer
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto">
+			<TransitioningContentControl
+                Content="{Binding CurrentViewModel}">
+				<TransitioningContentControl.PageTransition>
+					<Binding Path="CompositePageTransition" />
+				</TransitioningContentControl.PageTransition>
+			</TransitioningContentControl>
+		</ScrollViewer>
+	</Grid>
 </UserControl>

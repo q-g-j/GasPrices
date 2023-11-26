@@ -11,8 +11,8 @@ namespace GasPrices.Store
         public Address? Address { get; set; }
         public Coords? CoordsFromMapClient { get; set; }
         public int? Distance { get; set; }
-        public int LastSelectedStationIndex { get; set; }
-        public DisplayStation? LastSelectedStation { get; set; }
-        public bool IsFromStationDetailsView { get; set; }
+        public DisplayStation? SelectedStation { get; set; }
+        public int SelectedStationIndex { get; set; }
+        public bool IsFromStationDetailsView  { get; set; }
     }
 }

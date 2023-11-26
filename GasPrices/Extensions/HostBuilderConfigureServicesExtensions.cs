@@ -8,8 +8,6 @@ using HttpClient;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using Avalonia.Animation;
-using GasPrices.PageTransitions;
 using SettingsFile;
 
 namespace GasPrices.Extensions
@@ -23,7 +21,6 @@ namespace GasPrices.Extensions
                 // Add Singletons (global variables and store):
                 services.AddSingleton(new GlobalsStore("GasPricesApp", "settings.json"));
                 services.AddSingleton<NavigationStore>();
-                services.AddSingleton<PageTransitionStore>();
                 services.AddSingleton<AppStateStore>();
 
                 // Add HttpClient functionality:
@@ -38,17 +35,13 @@ namespace GasPrices.Extensions
                 services.AddTransient<LocationPickerView>();
 
                 // Add ViewModels:
-                services.AddTransient<MainViewModel>();
+                services.AddSingleton<MainViewModel>();
                 services.AddTransient<AddressSelectionViewModel>();
                 services.AddTransient<LocationPickerViewModel>();
                 services.AddTransient<ResultsViewModel>();
                 services.AddTransient<StationDetailsViewModel>();
                 services.AddTransient<SettingsViewModel>();
 
-                services.AddSingleton(new CrossFade() { Duration = TimeSpan.FromMilliseconds(300) });
-                services.AddSingleton(new SlideLeftPageTransition() { Duration = TimeSpan.FromMilliseconds(300) });
-                services.AddSingleton(new SlideRightPageTransition() { Duration = TimeSpan.FromMilliseconds(300) });
-                
                 // Add the ViewLocator service:
                 services.AddTransient<ViewLocatorService>();
 
@@ -62,11 +55,7 @@ namespace GasPrices.Extensions
                 // Add ViewModel factory function:
                 services.AddTransient<Func<Type, ViewModelBase?>>(sp =>
                     type => sp.GetRequiredService(type) as ViewModelBase);
-
-                // Add PageTransition factor function:
-                services.AddTransient<Func<Type, IPageTransition>>(sp =>
-                    type => (sp.GetRequiredService(type) as IPageTransition)!);
-
+                
                 // Add API clients:
                 services.AddTransient<IGasPricesClient, TankerkönigClient>();
                 services.AddTransient<IMapClient, OpenStreetMapClient>();
