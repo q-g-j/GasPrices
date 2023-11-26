@@ -1,12 +1,9 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using GasPrices.Models;
 using GasPrices.Services;
 using GasPrices.Store;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using Avalonia.Animation;
 using GasPrices.PageTransitions;
 
@@ -21,18 +18,29 @@ namespace GasPrices.ViewModels
         }
 
         public ResultsViewModel(
-            NavigationService navigationService,
-            AppStateStore appStateStore)
+            MainNavigationService mainNavigationService,
+            ResultsNavigationService resultsNavigationService,
+            ResultsNavigationStore resultsNavigationStore)
         {
-            _navigationService = navigationService;
-            _appStateStore = appStateStore;
+            _mainNavigationService = mainNavigationService;
+            _resultsNavigationService = resultsNavigationService;
+            _resultsNavigationStore = resultsNavigationStore;
 
-            Stations = [];
-            foreach (var station in appStateStore.Stations!.Where(s => s is { E5: > 0, E10: > 0, Diesel: > 0 }))
+            _resultsNavigationStore.CurrentViewModelChanged += () =>
             {
-                Stations.Add(new DisplayStation(station, appStateStore.SelectedGasType!));
-            }
-
+                CurrentViewModel = _resultsNavigationStore.CurrentViewModel;
+                if (_resultsNavigationStore.CurrentPageTransition == typeof(SlideLeftPageTransition))
+                {
+                    CurrentPageTransition = new SlideLeftPageTransition(TimeSpan.FromMilliseconds(300));
+                }
+                else
+                {
+                    CurrentPageTransition = new SlideRightPageTransition(TimeSpan.FromMilliseconds(300));
+                }
+            };
+            
+            _resultsNavigationService.Navigate<StationListViewModel, SlideLeftPageTransition>();
+            
             ((App)Application.Current!).BackPressed += OnBackPressed;
         }
 
@@ -40,39 +48,25 @@ namespace GasPrices.ViewModels
 
         #region private fields
 
-        private readonly NavigationService? _navigationService;
-        private readonly AppStateStore? _appStateStore;
+        private readonly MainNavigationService? _mainNavigationService;
+        private readonly ResultsNavigationService? _resultsNavigationService;
+        private readonly ResultsNavigationStore? _resultsNavigationStore;
 
         #endregion privat fields
 
         #region bindable properties
 
-        [ObservableProperty] private ObservableCollection<DisplayStation>? _stations;
-        [ObservableProperty] private int _selectedIndex = -1;
+        [ObservableProperty] private ViewModelBase? _currentViewModel;
+        [ObservableProperty] private IPageTransition? _currentPageTransition;
 
         #endregion bindable properties
 
         #region commands
 
         [RelayCommand]
-        public void InitializedCommand()
-        {
-            if (_appStateStore!.IsFromStationDetailsView)
-            {
-                Task.Run(async () =>
-                {
-                    await Task.Delay(200);
-                    SelectedIndex = _appStateStore!.SelectedStationIndex;
-                    await Task.Delay(600);
-                    SelectedIndex = -1;
-                });
-            }
-        }
-
-        [RelayCommand]
         public void BackCommand()
         {
-            _navigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
+            OnBackPressed();
         }
 
         #endregion commands
@@ -81,7 +75,14 @@ namespace GasPrices.ViewModels
 
         private void OnBackPressed()
         {
-            _navigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
+            if (CurrentViewModel!.GetType() == typeof(StationDetailsViewModel))
+            {
+                _resultsNavigationService!.Navigate<StationListViewModel, SlideRightPageTransition>();
+            }
+            else
+            {
+                _mainNavigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
+            }
         }
 
         #endregion private methods
@@ -94,18 +95,5 @@ namespace GasPrices.ViewModels
         }
 
         #endregion public overrides
-
-        partial void OnSelectedIndexChanged(int value)
-        {
-            if (_appStateStore!.IsFromStationDetailsView)
-            {
-                _appStateStore!.IsFromStationDetailsView = false;
-                return;
-            }
-            
-            _appStateStore!.SelectedStation = Stations![value];
-            _appStateStore!.SelectedStationIndex = value;
-            _navigationService!.Navigate<StationDetailsViewModel, SlideLeftPageTransition>();
-        }
     }
 }

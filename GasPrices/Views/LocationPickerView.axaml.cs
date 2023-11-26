@@ -91,21 +91,19 @@ namespace GasPrices.Views
                 MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint!, zoomLevel, duration);
             };
 
-            MapControl.Tapped += (s, e) =>
+            MapControl.Tapped += (_, e) =>
             {
                 e.Handled = true;
                 var tapPosition = e.GetPosition(MapControl).ToMapsui();
                 var mapInfo = MapControl.GetMapInfo(tapPosition);
 
-                if (mapInfo != null && mapInfo.WorldPosition != null)
-                {
-                    PlacePin(mapInfo.WorldPosition!);
+                if (mapInfo?.WorldPosition == null) return;
+                PlacePin(mapInfo.WorldPosition!);
 
-                    var pos = SphericalMercator.ToLonLat(mapInfo.WorldPosition!);
-                    var coords = new Coords(pos.Y, pos.X);
-                    _appStateStore!.CoordsFromMapClient = coords;
-                    ((LocationPickerViewModel)DataContext!).ApplyButtonIsEnabled = true;
-                }
+                var pos = SphericalMercator.ToLonLat(mapInfo.WorldPosition!);
+                var coords = new Coords(pos.Y, pos.X);
+                _appStateStore!.CoordsFromMapClient = coords;
+                ((LocationPickerViewModel)DataContext!).ApplyButtonIsEnabled = true;
             };
         }
         private void PlacePin(MPoint mPoint)

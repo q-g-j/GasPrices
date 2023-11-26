@@ -26,12 +26,12 @@ namespace GasPrices.ViewModels
         }
         
         public SettingsViewModel(
-            NavigationService navigationService,
+            MainNavigationService mainNavigationService,
             SettingsFileReader? settingsFileReader,
             SettingsFileWriter? settingsFileWriter,
             IGasPricesClient gasPricesClient)
         {
-            _navigationService = navigationService;
+            _mainNavigationService = mainNavigationService;
             _settingsFileWriter = settingsFileWriter;
             _gasPricesClient = gasPricesClient;
 
@@ -49,7 +49,7 @@ namespace GasPrices.ViewModels
         #endregion constructors
 
         #region private fields
-        private readonly NavigationService? _navigationService;
+        private readonly MainNavigationService? _mainNavigationService;
         private readonly SettingsFileWriter? _settingsFileWriter;
         private readonly IGasPricesClient? _gasPricesClient;
 
@@ -142,13 +142,13 @@ namespace GasPrices.ViewModels
                 TankerkönigApiKey = TankerKönigApiKey
             };
             await _settingsFileWriter!.WriteAsync(settings);
-            _navigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
+            _mainNavigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
         }
 
         [RelayCommand]
         public void CancelCommand()
         {
-            _navigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
+            _mainNavigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
         }
         #endregion commands
 
@@ -192,7 +192,7 @@ namespace GasPrices.ViewModels
 
         private void OnBackPressed()
         {
-            _navigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
+            _mainNavigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
         }
         #endregion private methods
 

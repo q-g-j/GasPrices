@@ -2,11 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:i="using:Avalonia.Xaml.Interactivity"
-             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:vm="using:GasPrices.ViewModels"
-             xmlns:converters="using:GasPrices.Converters"
-             xmlns:controls="clr-namespace:GasPrices.CustomControls"
              x:Class="GasPrices.Views.ResultsView"
              mc:Ignorable="d"
              d:DesignWidth="{Binding $parent[Window].Width}"
@@ -16,77 +12,21 @@
              MinWidth="400"
              MinHeight="600">
 
-    <i:Interaction.Behaviors>
-        <ia:EventTriggerBehavior EventName="Initialized">
-            <ia:InvokeCommandAction Command="{Binding InitializedCommand}" />
-        </ia:EventTriggerBehavior>
-    </i:Interaction.Behaviors>
-
-    <UserControl.Resources>
-        <converters:ListViewCalculateMaxHeightConverter x:Key="ListViewCalculateMaxHeightConverter" />
-    </UserControl.Resources>
-
     <Design.DataContext>
         <vm:ResultsViewModel />
     </Design.DataContext>
-
-    <UserControl.Styles>
-        <Style Selector="TextBox">
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="MinHeight" Value="0" />
-            <Setter Property="BorderThickness" Value="0" />
-        </Style>
-        <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
-            <Setter Property="BorderThickness" Value="0" />
-        </Style>
-        <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
-            <Setter Property="BorderThickness" Value="0" />
-        </Style>
-        <Style Selector="TextBox:pressed /template/ Border#PART_BorderElement">
-            <Setter Property="BorderThickness" Value="0" />
-        </Style>
-        <Style Selector="DataGridCell Rectangle">
-            <Setter Property="IsVisible" Value="False"></Setter>
-        </Style>
-        <Style Selector="DataGridCell.column_align_right">
-            <Setter Property="HorizontalAlignment" Value="Right"></Setter>
-        </Style>
-        <Style Selector="ListBoxItem">
-            <Setter Property="Padding" Value="2"></Setter>
-        </Style>
-        <Style Selector="ListBoxItem:selected > controls|StationControl Border.border_common">
-            <Setter Property="Background" Value="{StaticResource StationSelectedBackground}"></Setter>
-        </Style>
-        <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
-            <Setter Property="Background" Value="Transparent"></Setter>
-        </Style>
-    </UserControl.Styles>
 
     <Grid
         ColumnDefinitions="*"
         RowDefinitions="*, auto"
         Margin="5, 15, 5, 15">
-
-        <ListBox
-            Grid.Column="0"
-            Grid.Row="0"
-            Margin="0, 0, 0, 10"
-            ItemsSource="{Binding Stations}"
-            Background="Transparent"
-            SelectionMode="Single"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            SelectedIndex="{Binding SelectedIndex}">
-            
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <controls:StationControl
-                        Station="{Binding}"
-                        Margin="0">
-                    </controls:StationControl>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        
+        <TransitioningContentControl
+            Content="{Binding CurrentViewModel}">
+            <TransitioningContentControl.PageTransition>
+                <Binding Path="CurrentPageTransition" />
+            </TransitioningContentControl.PageTransition>
+        </TransitioningContentControl>
 
         <!-- Back button: -->
         <Button

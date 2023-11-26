@@ -34,9 +34,9 @@ namespace GasPrices.ViewModels
             AppStateStore appStateStore,
             SettingsFileReader settingsFileReader,
             SettingsFileWriter settingsFileWriter,
-            NavigationService navigationService)
+            MainNavigationService mainNavigationService)
         {
-            _navigationService = navigationService;
+            _mainNavigationService = mainNavigationService;
 
             _mapClient = mapClient;
             _appStateStore = appStateStore;
@@ -71,7 +71,7 @@ namespace GasPrices.ViewModels
 
         #region private fields
 
-        private readonly NavigationService? _navigationService;
+        private readonly MainNavigationService? _mainNavigationService;
         private readonly AppStateStore? _appStateStore;
         private readonly IMapClient? _mapClient;
         private readonly IGasPricesClient? _gasPricesClient;
@@ -177,7 +177,7 @@ namespace GasPrices.ViewModels
             try
             {
                 _appStateStore!.CoordsFromMapClient = await GetCoordsFromAddressFields();
-                _navigationService!.Navigate<LocationPickerViewModel, CrossFade>();
+                _mainNavigationService!.Navigate<LocationPickerViewModel, CrossFade>();
             }
             catch (HttpClientException ex)
             {
@@ -245,7 +245,7 @@ namespace GasPrices.ViewModels
                         _appStateStore!.Stations = stations;
                         await SaveCurrentAddressAsync();
                         _appStateStore.CoordsFromMapClient = null;
-                        _navigationService?.Navigate<ResultsViewModel, CrossFade>();
+                        _mainNavigationService?.Navigate<ResultsViewModel, CrossFade>();
                     }
                     else
                     {
@@ -287,7 +287,7 @@ namespace GasPrices.ViewModels
         public async Task OpenSettingsCommand()
         {
             await SaveCurrentAddressAsync();
-            _navigationService?.Navigate<SettingsViewModel, CrossFade>();
+            _mainNavigationService?.Navigate<SettingsViewModel, CrossFade>();
         }
 
         [RelayCommand]

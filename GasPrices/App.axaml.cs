@@ -38,7 +38,7 @@ public class App : Application
         var viewLocator = _host?.Services.GetService<ViewLocatorService>();
         DataTemplates.Add(viewLocator!);
 
-        var navigationService = _host?.Services.GetRequiredService<NavigationService>();
+        var navigationService = _host?.Services.GetRequiredService<MainNavigationService>();
         navigationService?.Navigate<AddressSelectionViewModel, CrossFade>();
         
         // Line below is needed to remove Avalonia data validation.

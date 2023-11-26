@@ -33,20 +33,8 @@ public class DummyCrossFadePageTransition : IPageTransition
                             }
                         },
                         Cue = new Cue(1d)
-                    },
-                    new KeyFrame()
-                    {
-                        Setters =
-                        {
-                            new Setter
-                            {
-                                Property = Visual.OpacityProperty,
-                                Value = 1d
-                            }
-                        },
-                        Cue = new Cue(1d)
                     }
-
+                
                 }
             };
             _fadeInAnimation = new Animation
@@ -64,20 +52,8 @@ public class DummyCrossFadePageTransition : IPageTransition
                             }
                         },
                         Cue = new Cue(1d)
-                    },
-                    new KeyFrame()
-                    {
-                        Setters =
-                        {
-                            new Setter
-                            {
-                                Property = Visual.OpacityProperty,
-                                Value = 1d
-                            }
-                        },
-                        Cue = new Cue(1d)
                     }
-
+                
                 }
             };
             _fadeOutAnimation.Duration = _fadeInAnimation.Duration = duration;
@@ -112,7 +88,7 @@ public class DummyCrossFadePageTransition : IPageTransition
             using var disposables = new CompositeDisposable(1);
             if (to != null)
             {
-                disposables.Add(to.SetValue(Visual.OpacityProperty, 0, BindingPriority.Animation)!);
+                disposables.Add(to.SetValue(Visual.OpacityProperty, 1, BindingPriority.Animation)!);
             }
 
             if (from != null)

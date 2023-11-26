@@ -16,10 +16,10 @@ namespace GasPrices.ViewModels
         }
         
         public LocationPickerViewModel(
-            NavigationService navigationService,
+            MainNavigationService mainNavigationService,
             AppStateStore appStateStore)
         {
-            _navigationService = navigationService;
+            _mainNavigationService = mainNavigationService;
             _appStateStore = appStateStore;
 
             ApplyButtonIsEnabled = _appStateStore.CoordsFromMapClient != null;
@@ -29,7 +29,7 @@ namespace GasPrices.ViewModels
         #endregion constructors
 
         #region private fields
-        private readonly NavigationService? _navigationService;
+        private readonly MainNavigationService? _mainNavigationService;
         private readonly AppStateStore? _appStateStore;
         #endregion private fields
 
@@ -41,7 +41,7 @@ namespace GasPrices.ViewModels
         [RelayCommand]
         public void ApplyCommand()
         {
-            _navigationService?.Navigate<AddressSelectionViewModel, CrossFade>();
+            _mainNavigationService?.Navigate<AddressSelectionViewModel, CrossFade>();
         }
 
         [RelayCommand]
@@ -55,7 +55,7 @@ namespace GasPrices.ViewModels
         private void OnBackPressed()
         {
             _appStateStore!.CoordsFromMapClient = null;
-            _navigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
+            _mainNavigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
         }
         #endregion private methods
 

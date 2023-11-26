@@ -5,7 +5,7 @@ using GasPrices.PageTransitions;
 
 namespace GasPrices.Store
 {
-    public class NavigationStore
+    public class MainNavigationStore
     {
         private ViewModelBase? _currentViewModel;
         public Type? CurrentPageTransition { get; set; }

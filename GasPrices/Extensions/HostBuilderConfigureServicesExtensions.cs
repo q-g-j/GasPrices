@@ -20,7 +20,8 @@ namespace GasPrices.Extensions
             {
                 // Add Singletons (global variables and store):
                 services.AddSingleton(new GlobalsStore("GasPricesApp", "settings.json"));
-                services.AddSingleton<NavigationStore>();
+                services.AddSingleton<MainNavigationStore>();
+                services.AddSingleton<ResultsNavigationStore>();
                 services.AddSingleton<AppStateStore>();
 
                 // Add HttpClient functionality:
@@ -29,24 +30,27 @@ namespace GasPrices.Extensions
 
                 // Add Views:
                 services.AddTransient<AddressSelectionView>();
+                services.AddTransient<LocationPickerView>();
                 services.AddTransient<ResultsView>();
+                services.AddTransient<StationListView>();
                 services.AddTransient<StationDetailsView>();
                 services.AddTransient<SettingsView>();
-                services.AddTransient<LocationPickerView>();
 
                 // Add ViewModels:
                 services.AddSingleton<MainViewModel>();
                 services.AddTransient<AddressSelectionViewModel>();
                 services.AddTransient<LocationPickerViewModel>();
                 services.AddTransient<ResultsViewModel>();
+                services.AddTransient<StationListViewModel>();
                 services.AddTransient<StationDetailsViewModel>();
                 services.AddTransient<SettingsViewModel>();
 
                 // Add the ViewLocator service:
                 services.AddTransient<ViewLocatorService>();
 
-                // Add ViewModel navigation service:
-                services.AddTransient<NavigationService>();
+                // Add ViewModel navigation services:
+                services.AddTransient<MainNavigationService>();
+                services.AddTransient<ResultsNavigationService>();
 
                 // Add View factory function for the ViewLocator:
                 services.AddTransient<Func<Type, Control?>>(sp =>

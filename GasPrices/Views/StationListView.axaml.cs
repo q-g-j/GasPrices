@@ -2,9 +2,9 @@
 
 namespace GasPrices.Views;
 
-public partial class StationDetailsView : UserControl
+public partial class StationListView : UserControl
 {
-    public StationDetailsView()
+    public StationListView()
     {
         InitializeComponent();
     }

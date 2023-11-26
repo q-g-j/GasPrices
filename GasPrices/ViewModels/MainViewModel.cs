@@ -8,54 +8,71 @@ namespace GasPrices.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
+    #region constructors
+
     public MainViewModel()
     {
     }
 
-    public MainViewModel(NavigationStore navigationStore)
+    public MainViewModel(MainNavigationStore mainNavigationStore)
     {
         var crossFade = new CrossFade(TimeSpan.FromMilliseconds(500));
         var dummyCrossFade = new DummyCrossFadePageTransition(TimeSpan.FromMilliseconds(500));
         var slideLeft = new SlideLeftPageTransition(TimeSpan.FromMilliseconds(300));
         var slideRight = new SlideRightPageTransition(TimeSpan.FromMilliseconds(300));
-        
-        _navigationStore = navigationStore;
-        _currentViewModel = _navigationStore.CurrentViewModel;
+
+        _mainNavigationStore = mainNavigationStore;
+        _currentViewModel = _mainNavigationStore.CurrentViewModel;
 
         _compositePageTransition = new CompositePageTransition();
         _compositePageTransition.PageTransitions.Add(crossFade);
 
-        _navigationStore.CurrentViewModelChanged += () =>
+        _mainNavigationStore.CurrentViewModelChanged += () =>
         {
             if (CompositePageTransition!.PageTransitions.Count > 1)
             {
                 CompositePageTransition!.PageTransitions.RemoveAt(1);
             }
-            if (_navigationStore.CurrentPageTransition == typeof(CrossFade))
+
+            if (_mainNavigationStore.CurrentPageTransition == typeof(CrossFade))
             {
                 CompositePageTransition!.PageTransitions[0] = crossFade;
             }
-            else if (_navigationStore.CurrentPageTransition == typeof(SlideLeftPageTransition))
+            else if (_mainNavigationStore.CurrentPageTransition == typeof(SlideLeftPageTransition))
             {
                 CompositePageTransition!.PageTransitions[0] = dummyCrossFade;
                 CompositePageTransition!.PageTransitions.Add(slideLeft);
             }
-            else if (_navigationStore.CurrentPageTransition == typeof(SlideRightPageTransition))
+            else if (_mainNavigationStore.CurrentPageTransition == typeof(SlideRightPageTransition))
             {
                 CompositePageTransition!.PageTransitions[0] = dummyCrossFade;
                 CompositePageTransition!.PageTransitions.Add(slideRight);
             }
 
-            CurrentViewModel = _navigationStore!.CurrentViewModel;
+            CurrentViewModel = _mainNavigationStore!.CurrentViewModel;
         };
     }
 
-    private readonly NavigationStore? _navigationStore;
+    #endregion constructors
+
+    #region private fields
+
+    private readonly MainNavigationStore? _mainNavigationStore;
+
+    #endregion private fields
+
+    #region bindable properties
 
     [ObservableProperty] private ViewModelBase? _currentViewModel;
     [ObservableProperty] private CompositePageTransition? _compositePageTransition;
 
+    #endregion bindable properties
+
+    #region public overrides
+
     public override void Dispose()
     {
     }
+
+    #endregion public overrides
 }
