@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Animation;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GasPrices.Services;
@@ -9,11 +10,16 @@ namespace GasPrices.ViewModels
     public partial class LocationPickerViewModel : ViewModelBase
     {
         #region constructors
+
+        public LocationPickerViewModel()
+        {
+        }
+        
         public LocationPickerViewModel(
-            NavigationService navigationService,
+            MainNavigationService mainNavigationService,
             AppStateStore appStateStore)
         {
-            _navigationService = navigationService;
+            _mainNavigationService = mainNavigationService;
             _appStateStore = appStateStore;
 
             ApplyButtonIsEnabled = _appStateStore.CoordsFromMapClient != null;
@@ -23,35 +29,33 @@ namespace GasPrices.ViewModels
         #endregion constructors
 
         #region private fields
-        private readonly NavigationService _navigationService;
-        private readonly AppStateStore _appStateStore;
+        private readonly MainNavigationService? _mainNavigationService;
+        private readonly AppStateStore? _appStateStore;
         #endregion private fields
 
         #region bindable properties
-        [ObservableProperty]
-        private bool applyButtonIsEnabled;
+        [ObservableProperty] private bool _applyButtonIsEnabled;
         #endregion bindable properties
 
         #region commands
         [RelayCommand]
         public void ApplyCommand()
         {
-            _navigationService.Navigate<AddressSelectionViewModel>();
+            _mainNavigationService?.Navigate<AddressSelectionViewModel, CrossFade>();
         }
 
         [RelayCommand]
         public void BackCommand()
         {
-            _appStateStore.CoordsFromMapClient = null;
-            _navigationService.Navigate<AddressSelectionViewModel>();
+            OnBackPressed();
         }
         #endregion commands
 
         #region private methods
         private void OnBackPressed()
         {
-            _appStateStore.CoordsFromMapClient = null;
-            _navigationService.Navigate<AddressSelectionViewModel>();
+            _appStateStore!.CoordsFromMapClient = null;
+            _mainNavigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
         }
         #endregion private methods
 

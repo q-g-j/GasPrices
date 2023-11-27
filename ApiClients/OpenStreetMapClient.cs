@@ -1,8 +1,6 @@
 ﻿using ApiClients.Models;
 using HttpClient;
-using HttpClient.Exceptions;
 using Newtonsoft.Json;
-using System;
 using System.Globalization;
 using System.Threading.Tasks;
 
@@ -20,28 +18,19 @@ namespace ApiClients
         public async Task<Coords?> GetCoordsAsync(Address address)
         {
             Coords? coords = null;
-            string url = $"https://nominatim.openstreetmap.org/search?q={address.GetUriData()}&format=json&polygon=1&addressdetails=1";
+            var url = $"https://nominatim.openstreetmap.org/search?q={address.GetUriData()}&format=json&polygon=1&addressdetails=1";
 
-            string? result;
+            var result = await _httpClientRepository.GetAsync(url);
 
-            try
+            if (string.IsNullOrEmpty(result))
             {
-                result = await _httpClientRepository.GetAsync(url);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            if (result == null)
-            {
-                return coords;
+                return null;
             }
 
             dynamic? coordsObject = JsonConvert.DeserializeObject(result);
             if (coordsObject?.Count == 0)
             {
-                return coords;
+                return null;
             }
             var isValidLon = double.TryParse(coordsObject?[0]?.lon?.ToString(), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out double lon);
             var isValidLat = double.TryParse(coordsObject?[0]?.lat?.ToString(), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out double lat);
@@ -58,21 +47,13 @@ namespace ApiClients
         {
             Address? address = null;
 
-            string url = string.Format(CultureInfo.InvariantCulture, "https://nominatim.openstreetmap.org/reverse?lat={0}&lon={1}&format=geocodejson&addressdetails=1", coords.Latitude, coords.Longitude);
+            var url = string.Format(CultureInfo.InvariantCulture, "https://nominatim.openstreetmap.org/reverse?lat={0}&lon={1}&format=geocodejson&addressdetails=1", coords.Latitude, coords.Longitude);
 
-            string? result;
-            try
-            {
-                result = await _httpClientRepository.GetAsync(url);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            var result = await _httpClientRepository.GetAsync(url);
 
-            if (result == null)
+            if (string.IsNullOrEmpty(result))
             {
-                return address;
+                return null;
             }
 
             dynamic? addressObject = JsonConvert.DeserializeObject(result);
@@ -89,12 +70,8 @@ namespace ApiClients
                 street += " " + houseNumber;
             }
 
-            if (string.IsNullOrEmpty(street) && string.IsNullOrEmpty(postalCode) &&
-                string.IsNullOrEmpty(city))
-            {
-                address = null;
-            }
-            else
+            if (!string.IsNullOrEmpty(street) && !string.IsNullOrEmpty(postalCode) &&
+                !string.IsNullOrEmpty(city))
             {
                 address = new Address(street, city, postalCode, country);
             }

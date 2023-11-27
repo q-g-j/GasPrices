@@ -1,0 +1,56 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:GasPrices.CustomControls"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:vm="using:GasPrices.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
+             x:Class="GasPrices.Views.StationListView">
+
+    <Design.DataContext>
+        <vm:StationListViewModel />
+    </Design.DataContext>
+
+    <i:Interaction.Behaviors>
+        <ia:EventTriggerBehavior EventName="Initialized">
+            <ia:InvokeCommandAction Command="{Binding InitializedCommand}" />
+        </ia:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
+    <UserControl.Styles>
+        <Style Selector="ListBoxItem">
+            <Setter Property="Padding" Value="2"></Setter>
+        </Style>
+        <Style Selector="ListBoxItem:selected > controls|StationControl Border.border_common">
+            <Setter Property="Background" Value="{StaticResource StationSelectedBackground}"></Setter>
+        </Style>
+        <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent"></Setter>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid>
+        <ListBox
+            Grid.Column="0"
+            Grid.Row="0"
+            Margin="0, 0, 0, 10"
+            ItemsSource="{Binding Stations}"
+            Background="Transparent"
+            SelectionMode="Single"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            SelectedIndex="{Binding SelectedIndex}">
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <controls:StationControl
+                        Station="{Binding}"
+                        Margin="0">
+                    </controls:StationControl>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

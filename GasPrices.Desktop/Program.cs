@@ -20,11 +20,11 @@ class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .LogToTrace()
+            .LogToTrace();
 
-            // Fix crash in Linux (provide a default font):
-            .With(new FontManagerOptions
-            {
-                DefaultFamilyName = "avares://GasPrices/Assets/Fonts/Inter-Light.otf#Inter"
-            });
+    // Fix crash in Linux (provide a default font):
+    // .With(new FontManagerOptions
+    // {
+    //     DefaultFamilyName = "avares://GasPrices/Assets/Fonts/GeneralSans_Complete/Fonts/OTF/GeneralSans-Regular.otf#General Sans"
+    // });
 }

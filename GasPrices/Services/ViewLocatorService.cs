@@ -13,16 +13,21 @@ namespace GasPrices.Services
 
         public Control Build(object? data)
         {
-            string? name = data?.GetType().FullName?.Replace("ViewModel", "View");
-            Type? type = Type.GetType(name!);
-
-            if (type != null)
-            {
-                return _viewCreator(type);
-            }
-            else
+            var name = data?.GetType().FullName?.Replace("ViewModel", "View");
+            var type = Type.GetType(name!);
+            if (type == null)
             {
                 return new TextBlock { Text = "Not Found: " + name };
+            }
+
+            try
+            {
+                var view = _viewCreator(type);
+                return view;
+            }
+            catch (Exception ex)
+            {
+                return new TextBlock { Text = ex.GetType() + ", " + ex.Message };
             }
         }
 

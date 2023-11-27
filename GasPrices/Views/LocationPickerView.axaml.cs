@@ -9,12 +9,9 @@ using Mapsui.Layers;
 using Mapsui.Styles;
 using System.Collections.Generic;
 using Mapsui.Nts;
-using Mapsui.UI.Avalonia;
 using Mapsui.UI.Avalonia.Extensions;
 using GasPrices.ViewModels;
-using SettingsFile.SettingsFile;
-using Xamarin.Essentials;
-using ApiClients;
+using SettingsFile;
 
 namespace GasPrices.Views
 {
@@ -28,11 +25,10 @@ namespace GasPrices.Views
         public LocationPickerView(AppStateStore appStateStore, SettingsFileReader settingsFileReader)
         {
             _appStateStore = appStateStore;
-            _settingsFileReader = settingsFileReader;
             InitializeComponent();
 
-            var settings = _settingsFileReader.Read();
-            if (settings?.LastKnownLatitude != null && settings?.LastKnownLongitude != null)
+            var settings = settingsFileReader.Read();
+            if (settings is { LastKnownLatitude: not null, LastKnownLongitude: not null })
             {
                 _cachedPoint = new MPoint(settings.LastKnownLongitude.Value, settings.LastKnownLatitude.Value);
             }
@@ -45,7 +41,6 @@ namespace GasPrices.Views
         }
 
         private readonly AppStateStore? _appStateStore;
-        private readonly SettingsFileReader? _settingsFileReader;
         private GenericCollectionLayer<List<IFeature>>? _pinLayer;
         private readonly MPoint? _cachedPoint;
         private MPoint? _cachedMapPoint;
@@ -78,10 +73,10 @@ namespace GasPrices.Views
 
             _cachedMapPoint = SphericalMercator.FromLonLat(pointLonLat);
 
-            MapControl.Map.Home += n =>
+            MapControl.Map.Home += _ =>
             {
-                int zoomLevel = 2;
-                int duration = 1000;
+                var zoomLevel = 2;
+                var duration = 1000;
                 if (_cachedPoint == null)
                 {
                     zoomLevel = 3000;
@@ -96,21 +91,19 @@ namespace GasPrices.Views
                 MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint!, zoomLevel, duration);
             };
 
-            MapControl.Tapped += (s, e) =>
+            MapControl.Tapped += (_, e) =>
             {
                 e.Handled = true;
                 var tapPosition = e.GetPosition(MapControl).ToMapsui();
                 var mapInfo = MapControl.GetMapInfo(tapPosition);
 
-                if (mapInfo != null && mapInfo.WorldPosition != null)
-                {
-                    PlacePin(mapInfo.WorldPosition!);
+                if (mapInfo?.WorldPosition == null) return;
+                PlacePin(mapInfo.WorldPosition!);
 
-                    var pos = SphericalMercator.ToLonLat(mapInfo.WorldPosition!);
-                    var coords = new Coords(pos.Y, pos.X);
-                    _appStateStore!.CoordsFromMapClient = coords;
-                    ((LocationPickerViewModel)DataContext!).ApplyButtonIsEnabled = true;
-                }
+                var pos = SphericalMercator.ToLonLat(mapInfo.WorldPosition!);
+                var coords = new Coords(pos.Y, pos.X);
+                _appStateStore!.CoordsFromMapClient = coords;
+                ((LocationPickerViewModel)DataContext!).ApplyButtonIsEnabled = true;
             };
         }
         private void PlacePin(MPoint mPoint)

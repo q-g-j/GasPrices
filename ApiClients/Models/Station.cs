@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ApiClients.Models
+﻿namespace ApiClients.Models
 {
     public class Station
     {

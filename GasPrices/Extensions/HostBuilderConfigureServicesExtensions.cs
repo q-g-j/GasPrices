@@ -1,20 +1,14 @@
 ﻿using ApiClients;
-using ApiClients.Models;
 using Avalonia.Controls;
 using GasPrices.Services;
 using GasPrices.Store;
 using GasPrices.ViewModels;
 using GasPrices.Views;
 using HttpClient;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SettingsFile.SettingsFile;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SettingsFile;
 
 namespace GasPrices.Extensions
 {
@@ -22,11 +16,12 @@ namespace GasPrices.Extensions
     {
         public static IHostBuilder AddServices(this IHostBuilder hostBuilder)
         {
-            hostBuilder.ConfigureServices((context, services) =>
+            hostBuilder.ConfigureServices((_, services) =>
             {
                 // Add Singletons (global variables and store):
                 services.AddSingleton(new GlobalsStore("GasPricesApp", "settings.json"));
-                services.AddSingleton<NavigationStore>();
+                services.AddSingleton<MainNavigationStore>();
+                services.AddSingleton<ResultsNavigationStore>();
                 services.AddSingleton<AppStateStore>();
 
                 // Add HttpClient functionality:
@@ -35,29 +30,36 @@ namespace GasPrices.Extensions
 
                 // Add Views:
                 services.AddTransient<AddressSelectionView>();
-                services.AddTransient<ResultsView>();
-                services.AddTransient<SettingsView>();
                 services.AddTransient<LocationPickerView>();
+                services.AddTransient<ResultsView>();
+                services.AddTransient<StationListView>();
+                services.AddTransient<StationDetailsView>();
+                services.AddTransient<SettingsView>();
 
                 // Add ViewModels:
-                services.AddTransient<MainViewModel>();
+                services.AddSingleton<MainViewModel>();
                 services.AddTransient<AddressSelectionViewModel>();
                 services.AddTransient<LocationPickerViewModel>();
                 services.AddTransient<ResultsViewModel>();
+                services.AddTransient<StationListViewModel>();
+                services.AddTransient<StationDetailsViewModel>();
                 services.AddTransient<SettingsViewModel>();
 
                 // Add the ViewLocator service:
                 services.AddTransient<ViewLocatorService>();
-                
-                // Add ViewModel navigation service:
-                services.AddTransient<NavigationService>();
+
+                // Add ViewModel navigation services:
+                services.AddTransient<MainNavigationService>();
+                services.AddTransient<ResultsNavigationService>();
 
                 // Add View factory function for the ViewLocator:
-                services.AddTransient<Func<Type, Control?>>(sp => type => sp.GetRequiredService(type) as Control);
+                services.AddTransient<Func<Type, Control?>>(sp =>
+                    type => sp.GetRequiredService(type) as Control);
 
                 // Add ViewModel factory function:
-                services.AddTransient<Func<Type, ViewModelBase?>>(sp => type => sp.GetRequiredService(type) as ViewModelBase);
-
+                services.AddTransient<Func<Type, ViewModelBase?>>(sp =>
+                    type => sp.GetRequiredService(type) as ViewModelBase);
+                
                 // Add API clients:
                 services.AddTransient<IGasPricesClient, TankerkönigClient>();
                 services.AddTransient<IMapClient, OpenStreetMapClient>();

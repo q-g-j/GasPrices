@@ -2,12 +2,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:map="clr-namespace:Mapsui.UI.Avalonia;assembly=Mapsui.UI.Avalonia"
-             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
+             xmlns:map="using:Mapsui.UI.Avalonia"
+             xmlns:vm="using:GasPrices.ViewModels"
              x:Class="GasPrices.Views.LocationPickerView"
+             mc:Ignorable="d"
+             d:DesignWidth="{Binding $parent[Window].Width}" 
+             d:DesignHeight="{Binding $parent[Window].Height}"
 			 MinWidth="400"
-			 MinHeight="600">
+			 MinHeight="600"
+             MaxWidth="600"
+             MaxHeight="800">
 
+	<Design.DataContext>
+		<vm:LocationPickerViewModel />
+	</Design.DataContext>
+	
 	<Grid
 		Margin="5, 15, 5, 15"
 		RowDefinitions="*, auto, auto">

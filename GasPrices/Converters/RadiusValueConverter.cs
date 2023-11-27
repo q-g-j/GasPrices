@@ -6,9 +6,9 @@ namespace GasPrices.Converters
 {
     public class RadiusValueConverter : IValueConverter
     {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            var isValid = int.TryParse(value?.ToString(), out int radiusInt);
+            var isValid = int.TryParse(value?.ToString(), out var radiusInt);
 
             return isValid ? radiusInt : 1;
         }

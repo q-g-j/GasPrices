@@ -1,7 +1,4 @@
 using Avalonia.Controls;
-using GasPrices.Models;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace GasPrices.Views
 {
@@ -10,11 +7,6 @@ namespace GasPrices.Views
         public ResultsView()
         {
             InitializeComponent();
-
-            dgStations.Loaded += (o, e) =>
-            {
-                dgStations.Columns[2].Sort(System.ComponentModel.ListSortDirection.Ascending);
-            };
         }
     }
 }

@@ -1,188 +1,113 @@
-﻿using ApiClients.Models;
+﻿using System;
 using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using GasPrices.Models;
 using GasPrices.Services;
 using GasPrices.Store;
-using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Xamarin.Essentials;
+using Avalonia.Animation;
+using Avalonia.Animation.Easings;
+using ExCSS;
+using GasPrices.PageTransitions;
 
 namespace GasPrices.ViewModels
 {
     public partial class ResultsViewModel : ViewModelBase
     {
         #region constructors
+
+        public ResultsViewModel()
+        {
+        }
+
         public ResultsViewModel(
-            NavigationService navigationService,
-            AppStateStore appStateStore)
+            MainNavigationService mainNavigationService,
+            ResultsNavigationService resultsNavigationService,
+            ResultsNavigationStore resultsNavigationStore)
         {
-            _navigationService = navigationService;
-            _appStateStore = appStateStore;
-            Stations = [];
-            foreach (var station in _appStateStore.Stations!.Where(s => s.E5 > 0 && s.E10 > 0 && s.Diesel > 0))
+            _mainNavigationService = mainNavigationService;
+            _resultsNavigationService = resultsNavigationService;
+            _resultsNavigationStore = resultsNavigationStore;
+
+            var timeSpan300 = TimeSpan.FromMilliseconds(300);
+            var crossFade = new CrossFade(timeSpan300)
             {
-                Stations.Add(new DisplayStation(station, _appStateStore.SelectedGasType!));
-            }
-            PriceFor = appStateStore!.SelectedGasType!.ToString()!;
+                FadeOutEasing = new QuadraticEaseIn()
+            };
+            var slideLeft = new SlideLeftPageTransition(timeSpan300);
+            var slideRight = new SlideRightPageTransition(timeSpan300);
 
-
-            ((App)Application.Current!).BackPressed += OnBackPressed;
-        }
-        #endregion constructors
-
-        #region private fields
-        private readonly NavigationService _navigationService;
-        private readonly AppStateStore _appStateStore;
-        #endregion privat fields
-
-        #region bindable properties
-        [ObservableProperty]
-        private ObservableCollection<DisplayStation>? stations;
-
-        [ObservableProperty]
-        private int selectedIndex = -1;
-
-        [ObservableProperty]
-        private object? selectedItem = null;
-
-        [ObservableProperty]
-        private string priceFor = "Preis";
-
-        [ObservableProperty]
-        private bool detailsIsVisible = false;
-
-        [ObservableProperty]
-        private string detailsName = "";
-
-        [ObservableProperty]
-        private string detailsBrand = "";
-
-        [ObservableProperty]
-        private string detailsStreet = "";
-
-        [ObservableProperty]
-        private string detailsCity = "";
-
-        [ObservableProperty]
-        private string detailsE5 = "";
-
-        [ObservableProperty]
-        private string detailsE10 = "";
-
-        [ObservableProperty]
-        private string detailsDiesel = "";
-        #endregion bindable properties
-
-        #region commands
-        [RelayCommand]
-        public void TappedCommand()
-        {
-            SelectedIndex = -1;
-        }
-
-        [RelayCommand]
-        public void StationsSelectionChangedCommand(object o)
-        {
-            if (o is SelectionChangedEventArgs e)
+            CurrentPageTransition = new CompositePageTransition();
+            CurrentPageTransition.PageTransitions.Add(crossFade);
+            CurrentPageTransition.PageTransitions.Add(slideLeft);
+            
+            _resultsNavigationStore.CurrentViewModelChanged += () =>
             {
-                if (e.AddedItems.Count > 0)
+                CurrentViewModel = _resultsNavigationStore.CurrentViewModel;
+                if (_resultsNavigationStore.CurrentPageTransition == typeof(SlideLeftPageTransition))
                 {
-                    var station = e.AddedItems[0] as DisplayStation;
-                    DetailsName = station!.Name;
-                    DetailsBrand = station!.Brand;
-                    DetailsStreet = station!.Street;
-                    DetailsCity = station!.PostalCode + " " + station!.City;
-                    DetailsE5 = station!.E5;
-                    DetailsE10 = station!.E10;
-                    DetailsDiesel = station!.Diesel;
-
-                    DetailsIsVisible = true;
+                    CurrentPageTransition.PageTransitions[1] = slideLeft;
                 }
                 else
                 {
-                    DetailsIsVisible = false;
+                    CurrentPageTransition.PageTransitions[1] = slideRight;
                 }
-            }
+            };
+            
+            _resultsNavigationService.Navigate<StationListViewModel, SlideLeftPageTransition>();
+            
+            ((App)Application.Current!).BackPressed += OnBackPressed;
         }
 
-        [RelayCommand]
-        public void StationsSortingCommand()
-        {
-            if (SelectedItem != null) return;
+        #endregion constructors
 
-            if (Stations?.Count > 0)
-            {
-                SelectedItem = 0;
-                SelectedItem = -1;
-            }
-        }
+        #region private fields
 
-        [RelayCommand]
-        public async Task OpenInMapCommand()
-        {
-            if (SelectedItem is DisplayStation selectedStation)
-            {
-                var url = $"https://www.google.com/maps/search/{selectedStation.GetUriData()}";
-                await OpenBrowser(new Uri(url));
-            }
-        }
+        private readonly MainNavigationService? _mainNavigationService;
+        private readonly ResultsNavigationService? _resultsNavigationService;
+        private readonly ResultsNavigationStore? _resultsNavigationStore;
+
+        #endregion privat fields
+
+        #region bindable properties
+
+        [ObservableProperty] private ViewModelBase? _currentViewModel;
+        [ObservableProperty] private CompositePageTransition? _currentPageTransition;
+
+        #endregion bindable properties
+
+        #region commands
 
         [RelayCommand]
         public void BackCommand()
         {
-            _navigationService.Navigate<AddressSelectionViewModel>();
+            OnBackPressed();
         }
+
         #endregion commands
 
         #region private methods
+
         private void OnBackPressed()
         {
-            _navigationService.Navigate<AddressSelectionViewModel>();
-        }
-
-        private static async Task OpenBrowser(Uri uri)
-        {
-            if (OperatingSystem.IsAndroid())
+            if (CurrentViewModel!.GetType() == typeof(StationDetailsViewModel))
             {
-                try
-                {
-                    await Browser.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
-                }
-                catch (Exception)
-                {
-                }
+                _resultsNavigationService!.Navigate<StationListViewModel, SlideRightPageTransition>();
             }
             else
             {
-                try
-                {
-                    var processStartInfo = new ProcessStartInfo
-                    {
-                        FileName = uri.ToString(),
-                        UseShellExecute = true
-                    };
-
-                    Process.Start(processStartInfo);
-                }
-                catch (Exception)
-                {
-                }
+                _mainNavigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
             }
         }
+
         #endregion private methods
 
         #region public overrides
+
         public override void Dispose()
         {
             ((App)Application.Current!).BackPressed -= OnBackPressed;
         }
+
         #endregion public overrides
     }
 }

@@ -1,30 +1,71 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System;
+using Avalonia.Animation;
+using CommunityToolkit.Mvvm.ComponentModel;
+using GasPrices.PageTransitions;
 using GasPrices.Store;
 
 namespace GasPrices.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
-    private readonly NavigationStore? _navigationStore;
-
-
-    [ObservableProperty]
-    private ViewModelBase? currentViewModel;
+    #region constructors
 
     public MainViewModel()
     {
     }
 
-    public MainViewModel(NavigationStore navigationStore)
+    public MainViewModel(MainNavigationStore mainNavigationStore)
     {
-        _navigationStore = navigationStore;
-        currentViewModel = _navigationStore.CurrentViewModel;
+        var crossFade = new CrossFade(TimeSpan.FromMilliseconds(500));
+        var slideLeft = new SlideLeftPageTransition(TimeSpan.FromMilliseconds(300));
+        var slideRight = new SlideRightPageTransition(TimeSpan.FromMilliseconds(300));
 
-        _navigationStore.CurrentViewModelChanged += () =>
-            CurrentViewModel = _navigationStore.CurrentViewModel;
+        _mainNavigationStore = mainNavigationStore;
+        _currentViewModel = _mainNavigationStore.CurrentViewModel;
+
+        _compositePageTransition = new CompositePageTransition();
+        _compositePageTransition.PageTransitions.Add(crossFade);
+
+        _mainNavigationStore.CurrentViewModelChanged += () =>
+        {
+            if (_mainNavigationStore.CurrentPageTransition == typeof(CrossFade))
+            {
+                CurrentPageTransition = crossFade;
+            }
+            else if (_mainNavigationStore.CurrentPageTransition == typeof(SlideLeftPageTransition))
+            {
+                CurrentPageTransition = slideLeft;
+            }
+            else if (_mainNavigationStore.CurrentPageTransition == typeof(SlideRightPageTransition))
+            {
+                CurrentPageTransition = slideRight;
+            }
+            CurrentViewModel = _mainNavigationStore!.CurrentViewModel;
+        };
     }
+
+    #endregion constructors
+
+    #region private fields
+
+    private readonly MainNavigationStore? _mainNavigationStore;
+
+    #endregion private fields
+
+    #region bindable properties
+
+    [ObservableProperty] private ViewModelBase? _currentViewModel;
+    [ObservableProperty] private CompositePageTransition? _compositePageTransition;
+
+    [ObservableProperty] private IPageTransition? _currentPageTransition;
+
+    #endregion bindable properties
+
+    #region public overrides
 
     public override void Dispose()
     {
     }
+
+    #endregion public overrides
 }
