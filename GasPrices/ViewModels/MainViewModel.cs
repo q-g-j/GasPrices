@@ -17,7 +17,6 @@ public partial class MainViewModel : ViewModelBase
     public MainViewModel(MainNavigationStore mainNavigationStore)
     {
         var crossFade = new CrossFade(TimeSpan.FromMilliseconds(500));
-        var dummyCrossFade = new DummyCrossFadePageTransition(TimeSpan.FromMilliseconds(500));
         var slideLeft = new SlideLeftPageTransition(TimeSpan.FromMilliseconds(300));
         var slideRight = new SlideRightPageTransition(TimeSpan.FromMilliseconds(300));
 
@@ -29,26 +28,18 @@ public partial class MainViewModel : ViewModelBase
 
         _mainNavigationStore.CurrentViewModelChanged += () =>
         {
-            if (CompositePageTransition!.PageTransitions.Count > 1)
-            {
-                CompositePageTransition!.PageTransitions.RemoveAt(1);
-            }
-
             if (_mainNavigationStore.CurrentPageTransition == typeof(CrossFade))
             {
-                CompositePageTransition!.PageTransitions[0] = crossFade;
+                CurrentPageTransition = crossFade;
             }
             else if (_mainNavigationStore.CurrentPageTransition == typeof(SlideLeftPageTransition))
             {
-                CompositePageTransition!.PageTransitions[0] = dummyCrossFade;
-                CompositePageTransition!.PageTransitions.Add(slideLeft);
+                CurrentPageTransition = slideLeft;
             }
             else if (_mainNavigationStore.CurrentPageTransition == typeof(SlideRightPageTransition))
             {
-                CompositePageTransition!.PageTransitions[0] = dummyCrossFade;
-                CompositePageTransition!.PageTransitions.Add(slideRight);
+                CurrentPageTransition = slideRight;
             }
-
             CurrentViewModel = _mainNavigationStore!.CurrentViewModel;
         };
     }
@@ -65,6 +56,8 @@ public partial class MainViewModel : ViewModelBase
 
     [ObservableProperty] private ViewModelBase? _currentViewModel;
     [ObservableProperty] private CompositePageTransition? _compositePageTransition;
+
+    [ObservableProperty] private IPageTransition? _currentPageTransition;
 
     #endregion bindable properties
 

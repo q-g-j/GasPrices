@@ -22,6 +22,7 @@ namespace GasPrices.PageTransitions
             bool forward,
             CancellationToken cancellationToken)
         {
+            to!.Opacity = 1;
             await base.Start(from, to, false, cancellationToken);
         }
     }

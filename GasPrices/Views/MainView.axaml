@@ -18,10 +18,8 @@
             HorizontalScrollBarVisibility="Auto"
             VerticalScrollBarVisibility="Auto">
 			<TransitioningContentControl
-                Content="{Binding CurrentViewModel}">
-				<TransitioningContentControl.PageTransition>
-					<Binding Path="CompositePageTransition" />
-				</TransitioningContentControl.PageTransition>
+                Content="{Binding CurrentViewModel}"
+                PageTransition="{Binding CurrentPageTransition}">
 			</TransitioningContentControl>
 		</ScrollViewer>
 	</Grid>
