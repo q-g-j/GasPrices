@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SettingsFile.Models;
@@ -24,17 +23,10 @@ namespace SettingsFile
                 return settings;
             }
 
-            try
-            {
-                using var streamReader = new StreamReader(_settingsFileFullPath);
-                var settingsJson = streamReader.ReadToEnd();
+            using var streamReader = new StreamReader(_settingsFileFullPath!);
+            var settingsJson = streamReader.ReadToEnd();
 
-                settings = JsonConvert.DeserializeObject<Settings>(settingsJson);
-            }
-            catch (Exception)
-            {
-
-            }
+            settings = JsonConvert.DeserializeObject<Settings>(settingsJson);
 
             return settings;
         }
@@ -48,17 +40,10 @@ namespace SettingsFile
                 return settings;
             }
 
-            try
-            {
-                using var streamReader = new StreamReader(_settingsFileFullPath);
-                var settingsJson = await streamReader.ReadToEndAsync();
+            using var streamReader = new StreamReader(_settingsFileFullPath!);
+            var settingsJson = await streamReader.ReadToEndAsync();
 
-                settings = JsonConvert.DeserializeObject<Settings>(settingsJson);
-            }
-            catch (Exception)
-            {
-
-            }
+            settings = JsonConvert.DeserializeObject<Settings>(settingsJson);
 
             return settings;
         }

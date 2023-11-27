@@ -6,10 +6,18 @@
         </Border>
     </Design.PreviewWith>
 
+    <Style Selector="Button">
+        <Setter Property="FontFamily" Value="{StaticResource Normal}" />
+    </Style>
+    <Style Selector="Label">
+        <Setter Property="FontFamily" Value="{StaticResource Normal}" />
+    </Style>
     <Style Selector="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Normal}" />
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
     <Style Selector="TextBox">
+        <Setter Property="FontFamily" Value="{StaticResource Normal}" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>

@@ -15,7 +15,7 @@
 
 	<Grid>
 		<ScrollViewer
-            HorizontalScrollBarVisibility="Auto"
+            HorizontalScrollBarVisibility="Disabled"
             VerticalScrollBarVisibility="Auto">
 			<TransitioningContentControl
                 Content="{Binding CurrentViewModel}"

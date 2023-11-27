@@ -2,9 +2,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Styles.Resources>
-        <SolidColorBrush x:Key="StationBackground" Color="Beige" />
-        <SolidColorBrush x:Key="StationPointerOverBackground" Color="DarkKhaki" />
+        <SolidColorBrush x:Key="StationBackground" Color="Azure" />
+        <SolidColorBrush x:Key="StationPointerOverBackground" Color="LightSteelBlue" />
         <SolidColorBrush x:Key="StationSelectedBackground" Color="Orange" />
+        <SolidColorBrush x:Key="StationCardBackground" Color="Azure" />
     </Styles.Resources>
 
 </Styles>

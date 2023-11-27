@@ -5,15 +5,15 @@
         xmlns:views="clr-namespace:GasPrices.Views"
         xmlns:vm="using:GasPrices.ViewModels"
         x:Class="GasPrices.Views.MainWindow"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
         Icon="/Assets/avalonia-logo.ico"
         Title="OpenSpritpreise"
-		Width="400"
-		Height="800">
+        Width="400"
+        Height="800">
 
-	<Design.DataContext>
-		<vm:MainViewModel />
-	</Design.DataContext>
-	
-		<views:MainView />
+    <Design.DataContext>
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <views:MainView />
 </Window>

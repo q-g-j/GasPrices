@@ -3,21 +3,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:GasPrices.ViewModels"
+             xmlns:controls="using:GasPrices.CustomControls"
              x:Class="GasPrices.Views.StationDetailsView"
-             mc:Ignorable="d"
-             d:DesignWidth="{Binding $parent[Window].Width}" 
-             d:DesignHeight="{Binding $parent[Window].Height}"
-             MaxWidth="{Binding $parent[Window].Width}"
-             MaxHeight="{Binding $parent[Window].Height}"
-             MinWidth="400"
-             MinHeight="600">
+             mc:Ignorable="d">
 
     <Design.DataContext>
         <vm:StationDetailsViewModel />
     </Design.DataContext>
-    
+
     <Grid
         ColumnDefinitions="*"
-        RowDefinitions="Auto, *, Auto">
+        RowDefinitions="auto, auto"
+        Margin="5, 5, 5, 5">
+        <controls:StationCardControl
+            Grid.Column="0"
+            Grid.Row="0"
+            Margin="0, 0, 0, 15"
+            Station="{Binding Station}">
+        </controls:StationCardControl >
+
+        <!-- open in browser button: -->
+        <Button
+            Grid.Column="0"
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Content="Im Browser öffnen"
+            Command="{Binding OpenInBrowser}">
+        </Button>
     </Grid>
 </UserControl>

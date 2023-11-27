@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -56,7 +57,19 @@ public partial class StationListViewModel : ViewModelBase
     {
         if (_appStateStore!.IsFromStationDetailsView)
         {
-            _appStateStore!.IsFromStationDetailsView = false;
+            if (SelectedIndex == -1)
+            {
+                _appStateStore!.IsFromStationDetailsView = false;
+            }
+            else
+            {
+                Task.Run(() =>
+                {
+                    Thread.Sleep(400);
+                    SelectedIndex = -1;
+                });
+            }
+
             return;
         }
 
@@ -74,12 +87,11 @@ public partial class StationListViewModel : ViewModelBase
     {
         if (_appStateStore!.IsFromStationDetailsView)
         {
-            Task.Run(async () =>
+            
+            Task.Run(() =>
             {
-                await Task.Delay(200);
+                Thread.Sleep(100);
                 SelectedIndex = _appStateStore!.SelectedStationIndex;
-                await Task.Delay(600);
-                SelectedIndex = -1;
             });
         }
     }

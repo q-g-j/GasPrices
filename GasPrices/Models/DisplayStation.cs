@@ -1,6 +1,7 @@
 ﻿using ApiClients.Models;
 using System;
 using System.Text;
+using DynamicData.Kernel;
 
 namespace GasPrices.Models
 {
@@ -18,7 +19,7 @@ namespace GasPrices.Models
             }
             PostalCode = station.PostalCode!.ToString()!;
             City = station.City!;
-
+            PostalCodeAndCity = station.PostalCode! + " " + station.City!;
             FullAddress = Street + ", " + PostalCode + " " + City;
             
             if (station.E5 != 0)
@@ -33,20 +34,15 @@ namespace GasPrices.Models
             {
                 Diesel = station.Diesel;
             }
-            IsOpen = station.IsOpen;
+            IsOpen = station.IsOpen!.Value ? "Ja" : "Nein";
 
-            switch (selectedGasType.ToString())
+            Price = selectedGasType.ToString() switch
             {
-                case "E5":
-                    Price = E5;
-                    break;
-                case "E10":
-                    Price = E10;
-                    break;
-                case "Diesel":
-                    Price = Diesel;
-                    break;
-            }
+                "E5" => E5,
+                "E10" => E10,
+                "Diesel" => Diesel,
+                _ => Price
+            };
 
             if (Distance < 1)
             {
@@ -65,13 +61,14 @@ namespace GasPrices.Models
         public string Street { get; set; }
         public string PostalCode { get; set; }
         public string City { get; set; }
+        public string PostalCodeAndCity { get; set; }
         public string FullAddress { get; set; }
         public double? Diesel { get; set; }
         public double? E5 { get; set; }
         public double? E10 { get; set; }
         public double? Price { get; set; }
         public int PriceThousandth { get; set; }
-        public bool? IsOpen { get; set; }
+        public string IsOpen { get; set; }
 
         public string GetUriData()
         {

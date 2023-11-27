@@ -5,6 +5,8 @@ using CommunityToolkit.Mvvm.Input;
 using GasPrices.Services;
 using GasPrices.Store;
 using Avalonia.Animation;
+using Avalonia.Animation.Easings;
+using ExCSS;
 using GasPrices.PageTransitions;
 
 namespace GasPrices.ViewModels
@@ -26,16 +28,28 @@ namespace GasPrices.ViewModels
             _resultsNavigationService = resultsNavigationService;
             _resultsNavigationStore = resultsNavigationStore;
 
+            var timeSpan300 = TimeSpan.FromMilliseconds(300);
+            var crossFade = new CrossFade(timeSpan300)
+            {
+                FadeOutEasing = new QuadraticEaseIn()
+            };
+            var slideLeft = new SlideLeftPageTransition(timeSpan300);
+            var slideRight = new SlideRightPageTransition(timeSpan300);
+
+            CurrentPageTransition = new CompositePageTransition();
+            CurrentPageTransition.PageTransitions.Add(crossFade);
+            CurrentPageTransition.PageTransitions.Add(slideLeft);
+            
             _resultsNavigationStore.CurrentViewModelChanged += () =>
             {
                 CurrentViewModel = _resultsNavigationStore.CurrentViewModel;
                 if (_resultsNavigationStore.CurrentPageTransition == typeof(SlideLeftPageTransition))
                 {
-                    CurrentPageTransition = new SlideLeftPageTransition(TimeSpan.FromMilliseconds(300));
+                    CurrentPageTransition.PageTransitions[1] = slideLeft;
                 }
                 else
                 {
-                    CurrentPageTransition = new SlideRightPageTransition(TimeSpan.FromMilliseconds(300));
+                    CurrentPageTransition.PageTransitions[1] = slideRight;
                 }
             };
             
@@ -57,7 +71,7 @@ namespace GasPrices.ViewModels
         #region bindable properties
 
         [ObservableProperty] private ViewModelBase? _currentViewModel;
-        [ObservableProperty] private IPageTransition? _currentPageTransition;
+        [ObservableProperty] private CompositePageTransition? _currentPageTransition;
 
         #endregion bindable properties
 

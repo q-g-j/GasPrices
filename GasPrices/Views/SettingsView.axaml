@@ -10,10 +10,10 @@
              mc:Ignorable="d"
              d:DesignWidth="{Binding $parent[Window].Width}" 
              d:DesignHeight="{Binding $parent[Window].Height}"
-		     MaxWidth="{Binding $parent[Window].Width}"
-		     MaxHeight="{Binding $parent[Window].Height}"
 			 MinWidth="400"
-			 MinHeight="600">
+			 MinHeight="600"
+             MaxWidth="600"
+             MaxHeight="800">
 
 	<Design.DataContext>
 		<vm:SettingsViewModel />
@@ -50,6 +50,7 @@
 		<TextBox
 			Grid.Row="1"
 			Margin="0, 0, 0, 20"
+			FontFamily="{StaticResource Mono}"
 			Text="{Binding TankerKönigApiKey}">
 		</TextBox>
 		<Button

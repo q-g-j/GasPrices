@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SettingsFile.Models;
@@ -28,15 +27,8 @@ namespace SettingsFile
             {
                 var settingsJson = JsonConvert.SerializeObject(settings, Formatting.Indented);
 
-                try
-                {
-                    await using var streamWriter = new StreamWriter(_settingsFileFullPath!);
-                    await streamWriter.WriteAsync(settingsJson);
-                }
-                catch (Exception _)
-                {
-                    // ignored
-                }
+                await using var streamWriter = new StreamWriter(_settingsFileFullPath!);
+                await streamWriter.WriteAsync(settingsJson);
             }
         }
     }
