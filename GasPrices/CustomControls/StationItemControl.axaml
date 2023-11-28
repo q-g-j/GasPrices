@@ -19,11 +19,13 @@
         <Setter Property="FontSize" Value="15" />
         <Setter Property="FontFamily" Value="{StaticResource SemiBold}" />
         <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="TextAlignment" Value="Left" />
     </Style>
 
     <Style Selector="controls|StationItemControl TextBlock.tb_full_address">
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontSize" Value="11" />
+        <Setter Property="TextAlignment" Value="Left" />
     </Style>
     
     <Style Selector="controls|StationItemControl TextBlock.tb_distance">
@@ -53,7 +55,7 @@
             <ControlTemplate>
                 <Border
                     x:Name="StationBorder"
-                    Padding="5, 3, 5, 3"
+                    Padding="5, 4, 5, 3"
                     Background="{StaticResource StationBackground}"
                     CornerRadius="10"
                     Classes="border_common border_station">

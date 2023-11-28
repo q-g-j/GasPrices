@@ -66,8 +66,4 @@
 		<ProjectReference Include="..\HttpClient\HttpClient.csproj" />
 		<ProjectReference Include="..\SettingsFile\SettingsFile.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <AdditionalFiles Include="CustomControls\StationControl.axaml" />
-	</ItemGroup>
 </Project>

@@ -3,8 +3,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:GasPrices.CustomControls"
-             xmlns:i="using:Avalonia.Xaml.Interactivity"
-             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:vm="using:GasPrices.ViewModels"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
              x:Class="GasPrices.Views.StationListView">
@@ -22,6 +20,9 @@
         </Style>
         <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
             <Setter Property="Background" Value="Transparent"></Setter>
+        </Style>
+        <Style Selector="ComboBoxItem TextBlock" >
+            <Setter Property="Background" Value="Transparent" />
         </Style>
     </UserControl.Styles>
 
@@ -65,9 +66,9 @@
                 Grid.Row="0"
                 Margin="0, 0, 10, 0"
                 SelectedIndex="{Binding SelectedSortingIndex}">
-                <ListBoxItem>Name</ListBoxItem>
-                <ListBoxItem>Preis</ListBoxItem>
-                <ListBoxItem>Entfernung</ListBoxItem>
+                <ComboBoxItem>Name</ComboBoxItem>
+                <ComboBoxItem>Preis</ComboBoxItem>
+                <ComboBoxItem>Entfernung</ComboBoxItem>
             </ComboBox>
         </Grid>
         
