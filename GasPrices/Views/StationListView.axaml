@@ -29,23 +29,47 @@
         ColumnDefinitions="*"
         RowDefinitions="Auto, *">
         
-        <StackPanel
+        <Grid
             Grid.Column="0"
             Grid.Row="0"
-            Margin="10, 0, 0, 10"
-            Orientation="Horizontal">
+            ColumnDefinitions="Auto, Auto, *, Auto, Auto"
+            Margin="10, 0, 0, 10">
             <TextBlock
+                Grid.Column="0"
+                Grid.Row="0"
+                Text="Spritsorte:"
+                FontFamily="{StaticResource SemiBold}"
+                FontWeight="SemiBold"
+                FontSize="18"
+                Margin="0, 0, 10, 0"
+            >
+            </TextBlock>
+            <TextBlock
+                Grid.Column="1"
+                Grid.Row="0"
+                Text="{Binding SelectedGasType}"
+                FontFamily="{StaticResource SemiBold}"
+                FontWeight="SemiBold"
+                FontSize="18"
+            >
+            </TextBlock>
+            <TextBlock
+                Grid.Column="3"
+                Grid.Row="0"
                 Text="Sortieren nach:"
                 Margin="0, 0, 10, 0"
                 >
             </TextBlock>
             <ComboBox
+                Grid.Column="4"
+                Grid.Row="0"
+                Margin="0, 0, 10, 0"
                 SelectedIndex="{Binding SelectedSortingIndex}">
                 <ListBoxItem>Name</ListBoxItem>
                 <ListBoxItem>Preis</ListBoxItem>
                 <ListBoxItem>Entfernung</ListBoxItem>
             </ComboBox>
-        </StackPanel>
+        </Grid>
         
         <ListBox
             Grid.Column="0"

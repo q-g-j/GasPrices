@@ -52,6 +52,8 @@ public partial class StationListViewModel : ViewModelBase
             _ => 1
         };
 
+        SelectedGasType = _appStateStore!.SelectedGasType!.ToString()!;
+
         SelectedSortingIndex = sortingIndex;
     }
 
@@ -71,6 +73,7 @@ public partial class StationListViewModel : ViewModelBase
     [ObservableProperty] private List<DisplayStation>? _stations;
     [ObservableProperty] private int _selectedIndex = -1;
     [ObservableProperty] private int _selectedSortingIndex = -1;
+    [ObservableProperty] private string _selectedGasType;
 
     #endregion bindable properties
 
