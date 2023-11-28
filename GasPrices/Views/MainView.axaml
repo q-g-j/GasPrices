@@ -9,18 +9,14 @@
              d:DesignHeight="{Binding $parent[Window].Height}"
              x:DataType="vm:MainViewModel">
 
-	<Design.DataContext>
-		<vm:MainViewModel />
-	</Design.DataContext>
+    <Design.DataContext>
+        <vm:MainViewModel />
+    </Design.DataContext>
 
-	<Grid>
-		<ScrollViewer
-            HorizontalScrollBarVisibility="Disabled"
-            VerticalScrollBarVisibility="Auto">
-			<TransitioningContentControl
-                Content="{Binding CurrentViewModel}"
-                PageTransition="{Binding CurrentPageTransition}">
-			</TransitioningContentControl>
-		</ScrollViewer>
-	</Grid>
+    <Grid>
+        <TransitioningContentControl
+            Content="{Binding CurrentViewModel}"
+            PageTransition="{Binding CurrentPageTransition}">
+        </TransitioningContentControl>
+    </Grid>
 </UserControl>
