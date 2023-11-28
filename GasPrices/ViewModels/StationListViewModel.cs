@@ -81,24 +81,6 @@ public partial class StationListViewModel : ViewModelBase
 
     partial void OnSelectedIndexChanged(int value)
     {
-        if (_appStateStore!.IsFromStationDetailsView)
-        {
-            if (SelectedIndex == -1)
-            {
-                _appStateStore!.IsFromStationDetailsView = false;
-            }
-            else
-            {
-                Task.Run(() =>
-                {
-                    Thread.Sleep(400);
-                    SelectedIndex = -1;
-                });
-            }
-
-            return;
-        }
-
         _appStateStore!.SelectedStation = Stations![value];
         _appStateStore!.SelectedStationIndex = value;
         _resultsNavigationService!.Navigate<StationDetailsViewModel, SlideLeftPageTransition>();
@@ -126,22 +108,6 @@ public partial class StationListViewModel : ViewModelBase
 
     #endregion OnPropertyChanged handlers
 
-    #region commands
-
-    [RelayCommand]
-    public void InitializedCommand()
-    {
-        if (_appStateStore!.IsFromStationDetailsView)
-        {
-            Task.Run(() =>
-            {
-                Thread.Sleep(150);
-                SelectedIndex = _appStateStore!.SelectedStationIndex;
-            });
-        }
-    }
-
-    #endregion commands
 
     #region private methods
 

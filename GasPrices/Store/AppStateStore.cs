@@ -13,5 +13,4 @@ public class AppStateStore
     public int? Distance { get; set; }
     public DisplayStation? SelectedStation { get; set; }
     public int SelectedStationIndex { get; set; }
-    public bool IsFromStationDetailsView  { get; set; }
 }

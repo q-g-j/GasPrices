@@ -19,8 +19,6 @@ public partial class StationDetailsViewModel : ViewModelBase
 
     public StationDetailsViewModel(AppStateStore appStateStore)
     {
-        appStateStore.IsFromStationDetailsView = true;
-
         Station = appStateStore.SelectedStation;
     }
 
