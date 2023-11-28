@@ -6,7 +6,6 @@ using GasPrices.Services;
 using GasPrices.Store;
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
-using ExCSS;
 using GasPrices.PageTransitions;
 
 namespace GasPrices.ViewModels
@@ -28,13 +27,13 @@ namespace GasPrices.ViewModels
             _resultsNavigationService = resultsNavigationService;
             _resultsNavigationStore = resultsNavigationStore;
 
-            var timeSpan300 = TimeSpan.FromMilliseconds(300);
-            var crossFade = new CrossFade(timeSpan300)
+            var timeSpan500 = TimeSpan.FromMilliseconds(500);
+            var crossFade = new CrossFade(timeSpan500)
             {
                 FadeOutEasing = new QuadraticEaseIn()
             };
-            var slideLeft = new SlideLeftPageTransition(timeSpan300);
-            var slideRight = new SlideRightPageTransition(timeSpan300);
+            var slideLeft = new SlideLeftPageTransition(timeSpan500);
+            var slideRight = new SlideRightPageTransition(timeSpan500);
 
             CurrentPageTransition = new CompositePageTransition();
             CurrentPageTransition.PageTransitions.Add(crossFade);

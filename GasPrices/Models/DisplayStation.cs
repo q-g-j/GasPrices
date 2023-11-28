@@ -1,7 +1,6 @@
 ﻿using ApiClients.Models;
 using System;
 using System.Text;
-using DynamicData.Kernel;
 
 namespace GasPrices.Models
 {

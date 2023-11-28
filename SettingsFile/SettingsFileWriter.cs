@@ -31,5 +31,21 @@ namespace SettingsFile
                 await streamWriter.WriteAsync(settingsJson);
             }
         }
+
+        public void Write(Settings? settings)
+        {
+            if (!Directory.Exists(_settingsFolderFullPath))
+            {
+                Directory.CreateDirectory(_settingsFolderFullPath!);
+            }
+
+            if (settings != null)
+            {
+                var settingsJson = JsonConvert.SerializeObject(settings, Formatting.Indented);
+
+                using var streamWriter = new StreamWriter(_settingsFileFullPath!);
+                streamWriter.Write(settingsJson);
+            }
+        }
     }
 }
