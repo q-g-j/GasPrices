@@ -14,6 +14,7 @@
     <Grid
         ColumnDefinitions="*"
         RowDefinitions="auto, auto"
+        VerticalAlignment="Center"
         Margin="5, 5, 5, 5">
         <controls:StationCardControl
             Grid.Column="0"
@@ -26,7 +27,8 @@
         <Button
             Grid.Column="0"
             Grid.Row="1"
-            HorizontalAlignment="Stretch"
+            Width="180"
+            HorizontalAlignment="Center"
             HorizontalContentAlignment="Center"
             Content="Im Browser öffnen"
             Command="{Binding OpenInBrowser}">

@@ -13,12 +13,6 @@
         <vm:StationListViewModel />
     </Design.DataContext>
 
-    <i:Interaction.Behaviors>
-        <ia:EventTriggerBehavior EventName="Initialized">
-            <ia:InvokeCommandAction Command="{Binding InitializedCommand}" />
-        </ia:EventTriggerBehavior>
-    </i:Interaction.Behaviors>
-
     <UserControl.Styles>
         <Style Selector="ListBoxItem">
             <Setter Property="Padding" Value="2"></Setter>
@@ -31,16 +25,35 @@
         </Style>
     </UserControl.Styles>
 
-    <Grid>
-        <ListBox
+    <Grid
+        ColumnDefinitions="*"
+        RowDefinitions="Auto, *">
+        
+        <StackPanel
             Grid.Column="0"
             Grid.Row="0"
-            Margin="0, 0, 0, 10"
+            Margin="10, 0, 0, 10"
+            Orientation="Horizontal">
+            <TextBlock
+                Text="Sortieren nach:"
+                Margin="0, 0, 10, 0"
+                >
+            </TextBlock>
+            <ComboBox
+                SelectedIndex="{Binding SelectedSortingIndex}">
+                <ListBoxItem>Name</ListBoxItem>
+                <ListBoxItem>Preis</ListBoxItem>
+                <ListBoxItem>Entfernung</ListBoxItem>
+            </ComboBox>
+        </StackPanel>
+        
+        <ListBox
+            Grid.Column="0"
+            Grid.Row="1"
             ItemsSource="{Binding Stations}"
             Background="Transparent"
             SelectionMode="Single"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
             SelectedIndex="{Binding SelectedIndex}">
 
             <ListBox.ItemTemplate>
@@ -51,6 +64,12 @@
                     </controls:StationControl>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+
+            <i:Interaction.Behaviors>
+                <ia:EventTriggerBehavior EventName="Initialized">
+                    <ia:InvokeCommandAction Command="{Binding InitializedCommand}" />
+                </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
         </ListBox>
     </Grid>
 </UserControl>

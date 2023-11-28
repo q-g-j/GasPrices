@@ -19,19 +19,12 @@ public partial class StationDetailsViewModel : ViewModelBase
 
     public StationDetailsViewModel(AppStateStore appStateStore)
     {
-        _appStateStore = appStateStore;
-        _appStateStore.IsFromStationDetailsView = true;
-        
+        appStateStore.IsFromStationDetailsView = true;
+
         Station = appStateStore.SelectedStation;
     }
 
     #endregion constructors
-
-    #region private fields
-
-    private readonly AppStateStore? _appStateStore;
-
-    #endregion private fields
 
     #region bindable properties
 
@@ -56,30 +49,17 @@ public partial class StationDetailsViewModel : ViewModelBase
     {
         if (OperatingSystem.IsAndroid())
         {
-            try
-            {
-                await Browser.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
-            }
-            catch (Exception _)
-            {
-                // ignore
-            }
+            await Browser.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
         }
         else
         {
-            try
+            var processStartInfo = new ProcessStartInfo
             {
-                var processStartInfo = new ProcessStartInfo
-                {
-                    FileName = uri.ToString(),
-                    UseShellExecute = true
-                };
+                FileName = uri.ToString(),
+                UseShellExecute = true
+            };
 
-                Process.Start(processStartInfo);
-            }
-            catch (Exception)
-            {
-            }
+            Process.Start(processStartInfo);
         }
     }
 

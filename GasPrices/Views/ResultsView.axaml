@@ -22,6 +22,9 @@
         Margin="5, 15, 5, 15">
 
         <TransitioningContentControl
+            Grid.Column="0"
+            Grid.Row="0"
+            Margin="0, 0, 0, 10"
             Content="{Binding CurrentViewModel}">
             <TransitioningContentControl.PageTransition>
                 <Binding Path="CurrentPageTransition" />

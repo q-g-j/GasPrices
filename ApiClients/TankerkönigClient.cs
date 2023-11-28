@@ -17,7 +17,7 @@ namespace ApiClients
 
         public async Task<List<Station>?> GetStationsAsync(string apiKey, Coords coords, int radius)
         {
-            var url = $@"https://creativecommons.tankerkoenig.de/json/list.php?lat={coords.Latitude}&lng={coords.Longitude}&rad={radius}&sort=dist&type=all&apikey={apiKey}";
+            var url = $@"https://creativecommons.tankerkoenig.de/json/list.php?lat={coords.Latitude}&lng={coords.Longitude}&rad={radius}&type=all&apikey={apiKey}";
 
             var result = await _httpClientRepository.GetAsync(url);
 
