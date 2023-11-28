@@ -2,52 +2,52 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:GasPrices.CustomControls">
 
-    <Style Selector="controls|StationControl TextBlock.tb_price">
+    <Style Selector="controls|StationItemControl TextBlock.tb_price">
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="FontFamily" Value="{StaticResource SemiBold}" />
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
-    <Style Selector="controls|StationControl TextBlock.tb_price_thousandth">
+    <Style Selector="controls|StationItemControl TextBlock.tb_price_thousandth">
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontSize" Value="9" />
         <Setter Property="Margin" Value="0, -5, 0, 0" />
     </Style>
 
-    <Style Selector="controls|StationControl TextBlock.tb_brand">
+    <Style Selector="controls|StationItemControl TextBlock.tb_brand">
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="FontFamily" Value="{StaticResource SemiBold}" />
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
 
-    <Style Selector="controls|StationControl TextBlock.tb_full_address">
+    <Style Selector="controls|StationItemControl TextBlock.tb_full_address">
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontSize" Value="11" />
     </Style>
     
-    <Style Selector="controls|StationControl TextBlock.tb_distance">
+    <Style Selector="controls|StationItemControl TextBlock.tb_distance">
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontFamily" Value="{StaticResource SemiBold}" />
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
     
-    <Style Selector="controls|StationControl Border.border_station:pointerover">
+    <Style Selector="controls|StationItemControl Border.border_station:pointerover">
         <Setter Property="Background" Value="{StaticResource StationPointerOverBackground}" />
     </Style>
     
-    <Style Selector="controls|StationControl Border.border_station:pointerover Border.border_distance">
+    <Style Selector="controls|StationItemControl Border.border_station:pointerover Border.border_distance">
         <Setter Property="Background" Value="{StaticResource StationPointerOverBackground}" />
     </Style>
     
-    <Style Selector="controls|StationControl Border.border_common" />
+    <Style Selector="controls|StationItemControl Border.border_common" />
     
     <Design.PreviewWith>
-        <controls:StationControl />
+        <controls:StationItemControl />
     </Design.PreviewWith>
 
-    <Style Selector="controls|StationControl">
+    <Style Selector="controls|StationItemControl">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
@@ -101,7 +101,7 @@
                             <StackPanel
                                 VerticalAlignment="Center">
                                 <TextBlock
-                                    Text="{Binding Station.Distance, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Text="{Binding Station.DistanceInUnit, RelativeSource={RelativeSource TemplatedParent}}"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Classes="tb_distance">

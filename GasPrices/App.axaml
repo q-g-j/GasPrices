@@ -17,6 +17,6 @@
         <StyleInclude Source="/Resources/Colors.axaml" />
         <StyleInclude Source="/Resources/Styles.axaml" />
         <StyleInclude Source="/CustomControls/StationCardControl.axaml" />
-        <StyleInclude Source="/CustomControls/StationControl.axaml" />
+        <StyleInclude Source="/CustomControls/StationItemControl.axaml" />
 	</Application.Styles>
 </Application>

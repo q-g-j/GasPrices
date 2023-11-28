@@ -7,7 +7,7 @@ namespace GasPrices.CustomControls;
 public class StationCardControl : TemplatedControl
 {
     public static readonly StyledProperty<DisplayStation> StationProperty =
-        AvaloniaProperty.Register<StationControl, DisplayStation>(nameof(Station));
+        AvaloniaProperty.Register<StationItemControl, DisplayStation>(nameof(Station));
 
     public DisplayStation Station
     {

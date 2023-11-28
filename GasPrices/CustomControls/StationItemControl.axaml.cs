@@ -4,10 +4,10 @@ using GasPrices.Models;
 
 namespace GasPrices.CustomControls;
 
-public class StationControl : TemplatedControl
+public class StationItemControl : TemplatedControl
 {
     public static readonly StyledProperty<DisplayStation> StationProperty =
-        AvaloniaProperty.Register<StationControl, DisplayStation>(nameof(Station));
+        AvaloniaProperty.Register<StationItemControl, DisplayStation>(nameof(Station));
 
     public DisplayStation Station
     {

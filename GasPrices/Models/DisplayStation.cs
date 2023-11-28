@@ -46,7 +46,11 @@ namespace GasPrices.Models
             if (Distance < 1)
             {
                 DistanceUnit = "m";
-                Distance *= 1000;
+                DistanceInUnit = Distance * 1000;
+            }
+            else
+            {
+                DistanceInUnit = Distance;
             }
             
             PriceThousandth = int.Parse(Price.ToString()![4].ToString());
@@ -56,6 +60,7 @@ namespace GasPrices.Models
         public string Name { get; set; }
         public string Brand { get; set; }
         public double Distance { get; set; }
+        public double DistanceInUnit { get; set; }
         public string? DistanceUnit { get; set; } = "km";
         public string Street { get; set; }
         public string PostalCode { get; set; }

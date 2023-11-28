@@ -17,7 +17,7 @@
         <Style Selector="ListBoxItem">
             <Setter Property="Padding" Value="2"></Setter>
         </Style>
-        <Style Selector="ListBoxItem:selected > controls|StationControl Border.border_common">
+        <Style Selector="ListBoxItem:selected > controls|StationItemControl Border.border_common">
             <Setter Property="Background" Value="{StaticResource StationSelectedBackground}"></Setter>
         </Style>
         <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
@@ -82,10 +82,10 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <controls:StationControl
+                    <controls:StationItemControl
                         Station="{Binding}"
                         Margin="0">
-                    </controls:StationControl>
+                    </controls:StationItemControl>
                 </DataTemplate>
             </ListBox.ItemTemplate>
 
