@@ -8,6 +8,7 @@
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<Platforms>AnyCPU;ARM64</Platforms>
+		<ApplicationIcon>..\GasPrices\Assets\avalonia-logo.ico</ApplicationIcon>
 	</PropertyGroup>
 	
 	<ItemGroup>
@@ -16,5 +17,11 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\GasPrices\GasPrices.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\GasPrices\Assets\avalonia-logo.ico">
+	    <Link>avalonia-logo.ico</Link>
+	  </None>
 	</ItemGroup>
 </Project>
