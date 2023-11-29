@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using GasPrices.Extensions;
 using GasPrices.Models;
 using GasPrices.PageTransitions;
@@ -34,7 +33,7 @@ public partial class StationListViewModel : ViewModelBase
         _settingsFileWriter = settingsFileWriter;
 
         SelectedGasType = _appStateStore!.SelectedGasType!.ToString()!;
-        
+
         InitializeStations().FireAndForget();
     }
 
@@ -77,7 +76,19 @@ public partial class StationListViewModel : ViewModelBase
             _ => "Price"
         };
 
-        SortStations([..Stations], sortBy);
+        if (Stations == null)
+        {
+            var stations = _appStateStore!.Stations!
+                .Where(s => s is { E5: > 0, E10: > 0, Diesel: > 0 })
+                .Select(station => new DisplayStation(station, _appStateStore!.SelectedGasType!))
+                .ToList();
+
+            SortStations(stations, sortBy);
+        }
+        else
+        {
+            SortStations([..Stations], sortBy);
+        }
 
         UpdateSettingsAsync(sortBy).FireAndForget();
     }
@@ -94,11 +105,6 @@ public partial class StationListViewModel : ViewModelBase
         {
             sortBy = settings.SortBy;
         }
-
-        Stations = _appStateStore!.Stations!
-            .Where(s => s is { E5: > 0, E10: > 0, Diesel: > 0 })
-            .Select(station => new DisplayStation(station, _appStateStore!.SelectedGasType!))
-            .ToList();
 
         var sortingIndex = sortBy switch
         {
@@ -121,7 +127,7 @@ public partial class StationListViewModel : ViewModelBase
         }
         catch (Exception)
         {
-            // Handle exceptions appropriately
+            // ignore
         }
     }
 
