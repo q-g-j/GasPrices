@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace GasPrices.Views
+namespace GasPrices.Views;
+
+public partial class AddressSelectionView : UserControl
 {
-    public partial class AddressSelectionView : UserControl
+    public AddressSelectionView()
     {
-        public AddressSelectionView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

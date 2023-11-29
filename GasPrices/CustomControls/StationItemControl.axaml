@@ -2,6 +2,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:GasPrices.CustomControls">
 
+    <Design.PreviewWith>
+        <Grid
+            Width="380">
+            <controls:StationItemControl />
+        </Grid>
+    </Design.PreviewWith>
+
     <Style Selector="controls|StationItemControl TextBlock.tb_price">
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontSize" Value="15" />
@@ -27,27 +34,23 @@
         <Setter Property="FontSize" Value="11" />
         <Setter Property="TextAlignment" Value="Left" />
     </Style>
-    
+
     <Style Selector="controls|StationItemControl TextBlock.tb_distance">
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontFamily" Value="{StaticResource SemiBold}" />
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
-    
+
     <Style Selector="controls|StationItemControl Border.border_station:pointerover">
         <Setter Property="Background" Value="{StaticResource StationPointerOverBackground}" />
     </Style>
-    
+
     <Style Selector="controls|StationItemControl Border.border_station:pointerover Border.border_distance">
         <Setter Property="Background" Value="{StaticResource StationPointerOverBackground}" />
     </Style>
-    
+
     <Style Selector="controls|StationItemControl Border.border_common" />
-    
-    <Design.PreviewWith>
-        <controls:StationItemControl />
-    </Design.PreviewWith>
 
     <Style Selector="controls|StationItemControl">
         <!-- Set Defaults -->

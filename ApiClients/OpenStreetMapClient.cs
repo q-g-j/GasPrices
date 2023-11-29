@@ -18,7 +18,8 @@ namespace ApiClients
         public async Task<Coords?> GetCoordsAsync(Address address)
         {
             Coords? coords = null;
-            var url = $"https://nominatim.openstreetmap.org/search?q={address.GetUriData()}&format=json&polygon=1&addressdetails=1";
+            var url =
+                $"https://nominatim.openstreetmap.org/search?q={address.GetUriData()}&format=json&polygon=1&addressdetails=1";
 
             var result = await _httpClientRepository.GetAsync(url);
 
@@ -32,8 +33,11 @@ namespace ApiClients
             {
                 return null;
             }
-            var isValidLon = double.TryParse(coordsObject?[0]?.lon?.ToString(), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out double lon);
-            var isValidLat = double.TryParse(coordsObject?[0]?.lat?.ToString(), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out double lat);
+
+            var isValidLon = double.TryParse(coordsObject?[0]?.lon?.ToString(), NumberStyles.AllowDecimalPoint,
+                CultureInfo.InvariantCulture, out double lon);
+            var isValidLat = double.TryParse(coordsObject?[0]?.lat?.ToString(), NumberStyles.AllowDecimalPoint,
+                CultureInfo.InvariantCulture, out double lat);
 
             if (isValidLon && isValidLat)
             {
@@ -45,9 +49,9 @@ namespace ApiClients
 
         public async Task<Address?> GetAddressAsync(Coords coords)
         {
-            Address? address = null;
-
-            var url = string.Format(CultureInfo.InvariantCulture, "https://nominatim.openstreetmap.org/reverse?lat={0}&lon={1}&format=geocodejson&addressdetails=1", coords.Latitude, coords.Longitude);
+            var url = string.Format(CultureInfo.InvariantCulture,
+                "https://nominatim.openstreetmap.org/reverse?lat={0}&lon={1}&format=geocodejson&addressdetails=1",
+                coords.Latitude, coords.Longitude);
 
             var result = await _httpClientRepository.GetAsync(url);
 
@@ -57,7 +61,7 @@ namespace ApiClients
             }
 
             dynamic? addressObject = JsonConvert.DeserializeObject(result);
-            dynamic? geoData = addressObject?.features?[0]?.properties?.geocoding;
+            var geoData = addressObject?.features?[0]?.properties?.geocoding;
 
             string? street = geoData?.street?.ToString();
             string? houseNumber = geoData?.housenumber?.ToString();
@@ -70,13 +74,7 @@ namespace ApiClients
                 street += " " + houseNumber;
             }
 
-            if (!string.IsNullOrEmpty(street) && !string.IsNullOrEmpty(postalCode) &&
-                !string.IsNullOrEmpty(city))
-            {
-                address = new Address(street, city, postalCode, country);
-            }
-
-            return address;
+            return new Address(street, city, postalCode, country);
         }
     }
 }

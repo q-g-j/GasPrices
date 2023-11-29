@@ -7,6 +7,7 @@ public class ResultsNavigationStore
 {
     private ViewModelBase? _currentViewModel;
     public Type? CurrentPageTransition { get; set; }
+
     public ViewModelBase CurrentViewModel
     {
         get => _currentViewModel!;
@@ -19,7 +20,7 @@ public class ResultsNavigationStore
     }
 
     public event Action? CurrentViewModelChanged;
-        
+
     private void OnCurrentViewModelChanged()
     {
         CurrentViewModelChanged?.Invoke();

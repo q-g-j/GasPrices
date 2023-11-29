@@ -21,14 +21,16 @@ public class MainActivity : AvaloniaMainActivity<App>
         return base.CustomizeAppBuilder(builder)
             .WithInterFont();
     }
+
     protected override void OnCreate(Bundle? savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
 
-        Xamarin.Essentials.Platform.Init(this, savedInstanceState); 
+        Xamarin.Essentials.Platform.Init(this, savedInstanceState);
     }
 
-    public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum]Permission[] grantResults)
+    public override void OnRequestPermissionsResult(int requestCode, string[] permissions,
+        [GeneratedEnum] Permission[] grantResults)
     {
         Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 

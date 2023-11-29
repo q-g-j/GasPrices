@@ -2,23 +2,15 @@
 using GasPrices.ViewModels;
 using System;
 
-namespace GasPrices.Services
+namespace GasPrices.Services;
+
+public class MainNavigationService(
+    MainNavigationStore mainNavigationStore,
+    Func<Type, ViewModelBase> viewModelCreator)
 {
-    public class MainNavigationService
+    public void Navigate<TViewModel, TPageTransition>()
     {
-        private readonly MainNavigationStore _mainNavigationStore;
-        private readonly Func<Type, ViewModelBase> _viewModelCreator;
-
-        public MainNavigationService(MainNavigationStore mainNavigationStore, Func<Type, ViewModelBase> viewModelCreator)
-        {
-            _mainNavigationStore = mainNavigationStore;
-            _viewModelCreator = viewModelCreator;
-        }
-
-        public void Navigate<TViewModel, TPageTransition>()
-        {
-            _mainNavigationStore.CurrentPageTransition = typeof(TPageTransition);
-            _mainNavigationStore.CurrentViewModel = _viewModelCreator(typeof(TViewModel));
-        }
+        mainNavigationStore.CurrentPageTransition = typeof(TPageTransition);
+        mainNavigationStore.CurrentViewModel = viewModelCreator(typeof(TViewModel));
     }
 }

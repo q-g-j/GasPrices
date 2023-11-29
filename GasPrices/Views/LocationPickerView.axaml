@@ -6,51 +6,51 @@
              xmlns:vm="using:GasPrices.ViewModels"
              x:Class="GasPrices.Views.LocationPickerView"
              mc:Ignorable="d"
-             d:DesignWidth="{Binding $parent[Window].Width}" 
+             d:DesignWidth="{Binding $parent[Window].Width}"
              d:DesignHeight="{Binding $parent[Window].Height}"
-			 MinWidth="400"
-			 MinHeight="600"
+             MinWidth="400"
+             MinHeight="600"
              MaxWidth="600"
              MaxHeight="800">
 
-	<Design.DataContext>
-		<vm:LocationPickerViewModel />
-	</Design.DataContext>
-	
-	<Grid
-		Margin="5, 15, 5, 15"
-		RowDefinitions="*, auto, auto">
+    <Design.DataContext>
+        <vm:LocationPickerViewModel />
+    </Design.DataContext>
 
-		<!-- Map: -->
-		<map:MapControl
-			x:Name="MapControl"
-			Grid.Row="0"
-			HorizontalAlignment="Stretch"
-			VerticalAlignment="Stretch"
-			Margin="0, 0, 0, 10">
-		</map:MapControl>
+    <Grid
+        Margin="5, 15, 5, 15"
+        RowDefinitions="*, auto, auto">
 
-		<!-- Apply button: -->
-		<Button
-			Grid.Column="0"
-			Grid.Row="1"
-			HorizontalAlignment="Stretch"
-			HorizontalContentAlignment="Center"
-			Content="Übernehmen"
-			IsEnabled="{Binding ApplyButtonIsEnabled}"
-			Margin="0, 0, 0, 10"
-			Command="{Binding ApplyCommand}">
-		</Button>
+        <!-- Map: -->
+        <map:MapControl
+            x:Name="MapControl"
+            Grid.Row="0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Margin="0, 0, 0, 10">
+        </map:MapControl>
 
-		<!-- Back button: -->
-		<Button
-			Grid.Column="0"
-			Grid.Row="2"
-			HorizontalAlignment="Stretch"
-			HorizontalContentAlignment="Center"
-			Content="Zurück"
-			Command="{Binding BackCommand}">
-		</Button>
-	</Grid>
+        <!-- Apply button: -->
+        <Button
+            Grid.Column="0"
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Content="Übernehmen"
+            IsEnabled="{Binding ApplyButtonIsEnabled}"
+            Margin="0, 0, 0, 10"
+            Command="{Binding ApplyCommand}">
+        </Button>
+
+        <!-- Back button: -->
+        <Button
+            Grid.Column="0"
+            Grid.Row="2"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Content="Zurück"
+            Command="{Binding BackCommand}">
+        </Button>
+    </Grid>
 
 </UserControl>

@@ -1,21 +1,20 @@
 ﻿using Avalonia.Threading;
 using System;
 
-namespace GasPrices.Utilities
+namespace GasPrices.Utilities;
+
+public static class DispatcherUtil
 {
-    public static class DispatcherUtil
+    public static void Invoke(Action action)
     {
-        public static void Invoke(Action action)
+        var dispatchObject = Dispatcher.UIThread;
+        if (dispatchObject.CheckAccess())
         {
-            var dispatchObject = Dispatcher.UIThread;
-            if (dispatchObject.CheckAccess())
-            {
-                action();
-            }
-            else
-            {
-                dispatchObject.InvokeAsync(action, DispatcherPriority.Normal).Wait();
-            }
+            action();
+        }
+        else
+        {
+            dispatchObject.InvokeAsync(action, DispatcherPriority.Normal).Wait();
         }
     }
 }

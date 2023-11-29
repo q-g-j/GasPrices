@@ -3,10 +3,14 @@
         xmlns:controls="using:GasPrices.CustomControls">
 
     <Design.PreviewWith>
-        <controls:StationCardControl />
+        <Grid
+            Width="380">
+            <controls:StationCardControl />
+        </Grid>
     </Design.PreviewWith>
+
     <Style Selector="controls|StationCardControl TextBlock">
-        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="Foreground" Value="Black" />
     </Style>
     <Style Selector="controls|StationCardControl TextBlock.title">
@@ -130,7 +134,7 @@
                             StrokeThickness="1"
                             HorizontalAlignment="Stretch">
                         </Rectangle>
-                        
+
                         <Grid
                             Grid.Column="0"
                             Grid.Row="7"

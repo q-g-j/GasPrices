@@ -21,7 +21,7 @@
         <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
             <Setter Property="Background" Value="Transparent"></Setter>
         </Style>
-        <Style Selector="ComboBoxItem TextBlock" >
+        <Style Selector="ComboBoxItem TextBlock">
             <Setter Property="Background" Value="Transparent" />
         </Style>
     </UserControl.Styles>
@@ -29,7 +29,7 @@
     <Grid
         ColumnDefinitions="*"
         RowDefinitions="Auto, *">
-        
+
         <Grid
             Grid.Column="0"
             Grid.Row="0"
@@ -42,8 +42,7 @@
                 FontFamily="{StaticResource SemiBold}"
                 FontWeight="SemiBold"
                 FontSize="18"
-                Margin="0, 0, 10, 0"
-            >
+                Margin="0, 0, 10, 0">
             </TextBlock>
             <TextBlock
                 Grid.Column="1"
@@ -51,15 +50,13 @@
                 Text="{Binding SelectedGasType}"
                 FontFamily="{StaticResource SemiBold}"
                 FontWeight="SemiBold"
-                FontSize="18"
-            >
+                FontSize="18">
             </TextBlock>
             <TextBlock
                 Grid.Column="3"
                 Grid.Row="0"
                 Text="Sortieren nach:"
-                Margin="0, 0, 10, 0"
-                >
+                Margin="0, 0, 10, 0">
             </TextBlock>
             <ComboBox
                 Grid.Column="4"
@@ -71,7 +68,7 @@
                 <ComboBoxItem>Entfernung</ComboBoxItem>
             </ComboBox>
         </Grid>
-        
+
         <ListBox
             Grid.Column="0"
             Grid.Row="1"

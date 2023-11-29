@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using GasPrices.Models;
 using GasPrices.PageTransitions;
 using GasPrices.Services;
@@ -36,7 +34,7 @@ public partial class StationListViewModel : ViewModelBase
         var settings = _settingsFileReader!.Read();
         if (!string.IsNullOrEmpty(settings!.SortBy))
         {
-            sortBy = settings!.SortBy;
+            sortBy = settings.SortBy;
         }
 
         _stations = appStateStore.Stations!
@@ -73,7 +71,7 @@ public partial class StationListViewModel : ViewModelBase
     [ObservableProperty] private List<DisplayStation>? _stations;
     [ObservableProperty] private int _selectedIndex = -1;
     [ObservableProperty] private int _selectedSortingIndex = -1;
-    [ObservableProperty] private string _selectedGasType;
+    [ObservableProperty] private string? _selectedGasType;
 
     #endregion bindable properties
 
@@ -96,7 +94,7 @@ public partial class StationListViewModel : ViewModelBase
             _ => "Price"
         };
 
-        SortStations([..Stations], sortBy!);
+        SortStations([..Stations], sortBy);
 
         Task.Run(async () =>
         {
@@ -107,7 +105,6 @@ public partial class StationListViewModel : ViewModelBase
     }
 
     #endregion OnPropertyChanged handlers
-
 
     #region private methods
 

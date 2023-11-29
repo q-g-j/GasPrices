@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace GasPrices.Views
+namespace GasPrices.Views;
+
+public partial class ResultsView : UserControl
 {
-    public partial class ResultsView : UserControl
+    public ResultsView()
     {
-        public ResultsView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

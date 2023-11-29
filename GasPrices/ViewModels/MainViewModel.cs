@@ -40,6 +40,7 @@ public partial class MainViewModel : ViewModelBase
             {
                 CurrentPageTransition = slideRight;
             }
+
             CurrentViewModel = _mainNavigationStore!.CurrentViewModel;
         };
     }

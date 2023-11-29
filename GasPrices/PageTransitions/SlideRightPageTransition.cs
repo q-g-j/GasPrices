@@ -6,24 +6,19 @@ using Avalonia.Animation;
 
 namespace GasPrices.PageTransitions
 {
-    public class SlideRightPageTransition : PageSlide
+    public class SlideRightPageTransition(
+        TimeSpan duration,
+        PageSlide.SlideAxis orientation = PageSlide.SlideAxis.Horizontal)
+        : PageSlide(duration, orientation)
     {
-        public SlideRightPageTransition()
-        {
-        }
-
-        public SlideRightPageTransition(TimeSpan duration, SlideAxis orientation = SlideAxis.Horizontal) : base(duration, orientation)
-        {
-        }
-
-        public override async Task Start(
+        public override Task Start(
             Visual? from,
             Visual? to,
             bool forward,
             CancellationToken cancellationToken)
         {
             to!.Opacity = 1;
-            await base.Start(from, to, false, cancellationToken);
+            return base.Start(from, to, false, cancellationToken);
         }
     }
 }

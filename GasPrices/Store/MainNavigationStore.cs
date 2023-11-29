@@ -1,29 +1,28 @@
 ﻿using GasPrices.ViewModels;
 using System;
 
-namespace GasPrices.Store
+namespace GasPrices.Store;
+
+public class MainNavigationStore
 {
-    public class MainNavigationStore
+    private ViewModelBase? _currentViewModel;
+    public Type? CurrentPageTransition { get; set; }
+
+    public ViewModelBase CurrentViewModel
     {
-        private ViewModelBase? _currentViewModel;
-        public Type? CurrentPageTransition { get; set; }
-
-        public ViewModelBase CurrentViewModel
+        get => _currentViewModel!;
+        set
         {
-            get => _currentViewModel!;
-            set
-            {
-                _currentViewModel?.Dispose();
-                _currentViewModel = value;
-                OnCurrentViewModelChanged();
-            }
+            _currentViewModel?.Dispose();
+            _currentViewModel = value;
+            OnCurrentViewModelChanged();
         }
+    }
 
-        public event Action? CurrentViewModelChanged;
+    public event Action? CurrentViewModelChanged;
 
-        private void OnCurrentViewModelChanged()
-        {
-            CurrentViewModelChanged?.Invoke();
-        }
+    private void OnCurrentViewModelChanged()
+    {
+        CurrentViewModelChanged?.Invoke();
     }
 }

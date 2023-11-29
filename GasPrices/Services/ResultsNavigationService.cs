@@ -4,20 +4,13 @@ using GasPrices.ViewModels;
 
 namespace GasPrices.Services;
 
-public class ResultsNavigationService
+public class ResultsNavigationService(
+    ResultsNavigationStore resultsNavigationStore,
+    Func<Type, ViewModelBase> viewModelCreator)
 {
-    private readonly ResultsNavigationStore _resultsNavigationStore;
-    private readonly Func<Type, ViewModelBase> _viewModelCreator;
-
-    public ResultsNavigationService(ResultsNavigationStore resultsNavigationStore, Func<Type, ViewModelBase> viewModelCreator)
-    {
-        _resultsNavigationStore = resultsNavigationStore;
-        _viewModelCreator = viewModelCreator;
-    }
-
     public void Navigate<TViewModel, TPageTransition>()
     {
-        _resultsNavigationStore.CurrentPageTransition = typeof(TPageTransition);
-        _resultsNavigationStore.CurrentViewModel = _viewModelCreator(typeof(TViewModel));
+        resultsNavigationStore.CurrentPageTransition = typeof(TPageTransition);
+        resultsNavigationStore.CurrentViewModel = viewModelCreator(typeof(TViewModel));
     }
 }
