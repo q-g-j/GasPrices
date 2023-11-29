@@ -38,7 +38,6 @@
             HorizontalContentAlignment="Center"
             Content="Übernehmen"
             IsEnabled="{Binding ApplyButtonIsEnabled}"
-            Margin="0, 0, 0, 10"
             Command="{Binding ApplyCommand}">
         </Button>
 
@@ -46,6 +45,7 @@
         <Button
             Grid.Column="0"
             Grid.Row="2"
+            Margin="0, 10, 0, 0"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Center"
             Content="Zurück"

@@ -24,7 +24,6 @@
         <TransitioningContentControl
             Grid.Column="0"
             Grid.Row="0"
-            Margin="0, 0, 0, 10"
             Content="{Binding CurrentViewModel}">
             <TransitioningContentControl.PageTransition>
                 <Binding Path="CurrentPageTransition" />
@@ -35,6 +34,7 @@
         <Button
             Grid.Column="0"
             Grid.Row="1"
+            Margin="0, 10, 0, 0"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Center"
             Content="Zurück"
