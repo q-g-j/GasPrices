@@ -32,12 +32,13 @@
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<AndroidEnableMultiDex>False</AndroidEnableMultiDex>
-		<AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+		<AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
 		<AndroidKeyStore>False</AndroidKeyStore>
 		<PublishTrimmed>true</PublishTrimmed>
 		<IsTrimmable>True</IsTrimmable>
 		<RunAOTCompilation>False</RunAOTCompilation>
 		<EnableLLVM>False</EnableLLVM>
+		<AndroidSupportedAbis>armeabi-v7a;x86;arm64-v8a;x86_64</AndroidSupportedAbis>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
 		<AndroidEnableMultiDex>False</AndroidEnableMultiDex>

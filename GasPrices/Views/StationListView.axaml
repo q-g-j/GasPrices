@@ -12,12 +12,6 @@
     <Design.DataContext>
         <vm:StationListViewModel />
     </Design.DataContext>
-	
-    <i:Interaction.Behaviors>
-        <ia:EventTriggerBehavior EventName="Initialized">
-            <ia:InvokeCommandAction Command="{Binding InitializedCommand}"/>
-        </ia:EventTriggerBehavior>
-    </i:Interaction.Behaviors>
 
     <UserControl.Styles>
         <Style Selector="ListBoxItem">

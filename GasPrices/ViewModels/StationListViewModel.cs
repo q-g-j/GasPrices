@@ -34,6 +34,8 @@ public partial class StationListViewModel : ViewModelBase
         _settingsFileWriter = settingsFileWriter;
 
         SelectedGasType = _appStateStore!.SelectedGasType!.ToString()!;
+        
+        InitializeStations().FireAndForget();
     }
 
     #endregion constructors
@@ -55,36 +57,6 @@ public partial class StationListViewModel : ViewModelBase
     [ObservableProperty] private string? _selectedGasType;
 
     #endregion bindable properties
-
-    #region commands
-
-    [RelayCommand]
-    public async Task InitializedCommand()
-    {
-        var sortBy = "Price";
-        var settings = await _settingsFileReader!.ReadAsync();
-        if (!string.IsNullOrEmpty(settings!.SortBy))
-        {
-            sortBy = settings.SortBy;
-        }
-
-        Stations = _appStateStore!.Stations!
-            .Where(s => s is { E5: > 0, E10: > 0, Diesel: > 0 })
-            .Select(station => new DisplayStation(station, _appStateStore!.SelectedGasType!))
-            .ToList();
-
-        var sortingIndex = sortBy switch
-        {
-            "Name" => 0,
-            "Price" => 1,
-            "Distance" => 2,
-            _ => 1
-        };
-
-        SelectedSortingIndex = sortingIndex;
-    }
-
-    #endregion commands
 
     #region OnPropertyChanged handlers
 
@@ -113,6 +85,31 @@ public partial class StationListViewModel : ViewModelBase
     #endregion OnPropertyChanged handlers
 
     #region private methods
+
+    private async Task InitializeStations()
+    {
+        var sortBy = "Price";
+        var settings = await _settingsFileReader!.ReadAsync();
+        if (!string.IsNullOrEmpty(settings!.SortBy))
+        {
+            sortBy = settings.SortBy;
+        }
+
+        Stations = _appStateStore!.Stations!
+            .Where(s => s is { E5: > 0, E10: > 0, Diesel: > 0 })
+            .Select(station => new DisplayStation(station, _appStateStore!.SelectedGasType!))
+            .ToList();
+
+        var sortingIndex = sortBy switch
+        {
+            "Name" => 0,
+            "Price" => 1,
+            "Distance" => 2,
+            _ => 1
+        };
+
+        SelectedSortingIndex = sortingIndex;
+    }
 
     private async Task UpdateSettingsAsync(string sortBy)
     {
