@@ -32,19 +32,16 @@ public partial class SettingsViewModel : ViewModelBase
         IGasPricesClient gasPricesClient)
     {
         _mainNavigationService = mainNavigationService;
+        _settingsFileReader = settingsFileReader;
         _settingsFileWriter = settingsFileWriter;
         _gasPricesClient = gasPricesClient;
+        
+        if (OperatingSystem.IsAndroid())
+        {
+            CancelButtonIsVisible = false;
+        }
 
         ((App)Application.Current!).BackPressed += OnBackPressed;
-
-        Task.Run(async () =>
-        {
-            var settings = await settingsFileReader!.ReadAsync();
-            if (settings != null && !string.IsNullOrEmpty(settings.TankerkönigApiKey))
-            {
-                TankerKoenigApiKey = settings.TankerkönigApiKey;
-            }
-        });
     }
 
     #endregion constructors
@@ -52,6 +49,7 @@ public partial class SettingsViewModel : ViewModelBase
     #region private fields
 
     private readonly MainNavigationService? _mainNavigationService;
+    private readonly SettingsFileReader? _settingsFileReader;
     private readonly SettingsFileWriter? _settingsFileWriter;
     private readonly IGasPricesClient? _gasPricesClient;
 
@@ -70,13 +68,24 @@ public partial class SettingsViewModel : ViewModelBase
     [ObservableProperty] private IBrush _noticeTextColor = new SolidColorBrush(Color.Parse("Orange"));
     [ObservableProperty] private bool _noticeTextIsVisible;
     [ObservableProperty] private bool _progressRingIsActive;
+    [ObservableProperty] private bool _cancelButtonIsVisible = true;
 
     #endregion bindable properties
 
     #region commands
 
     [RelayCommand]
-    public async Task KeyDownCommand(object sender)
+    public async Task InitializedCommand()
+    {
+        var settings = await _settingsFileReader!.ReadAsync();
+        if (settings != null && !string.IsNullOrEmpty(settings.TankerkönigApiKey))
+        {
+            TankerKoenigApiKey = settings.TankerkönigApiKey;
+        }
+    }
+    
+    [RelayCommand]
+    public Task KeyDownCommand(object sender)
     {
         var e = sender as KeyEventArgs;
         if (e?.Key == Key.Enter || e?.Key == Key.Return)
@@ -84,13 +93,15 @@ public partial class SettingsViewModel : ViewModelBase
             e.Handled = true;
             if (_isValidated)
             {
-                await SaveCommand();
+                return SaveCommand();
             }
             else if (ValidateButtonIsEnabled)
             {
-                await ValidateCommand();
+                return ValidateCommand();
             }
         }
+
+        return Task.CompletedTask;
     }
 
     [RelayCommand]
@@ -154,7 +165,7 @@ public partial class SettingsViewModel : ViewModelBase
     [RelayCommand]
     public void CancelCommand()
     {
-        _mainNavigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
+        OnBackPressed();
     }
 
     #endregion commands

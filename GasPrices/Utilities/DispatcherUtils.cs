@@ -3,7 +3,7 @@ using System;
 
 namespace GasPrices.Utilities;
 
-public static class DispatcherUtil
+public static class DispatcherUtils
 {
     public static void Invoke(Action action)
     {

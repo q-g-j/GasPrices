@@ -40,7 +40,7 @@ public class App : Application
 
         var navigationService = _host?.Services.GetRequiredService<MainNavigationService>();
         navigationService?.Navigate<AddressSelectionViewModel, CrossFade>();
-        
+
         // Line below is needed to remove Avalonia data validation.
         // Without this line you will get duplicate validations from both Avalonia and CT
         BindingPlugins.DataValidators.RemoveAt(0);
@@ -50,14 +50,14 @@ public class App : Application
             desktop.MainWindow = new MainWindow
             {
                 DataContext = _host?.Services.GetService<MainViewModel>()
-        };
+            };
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
             singleViewPlatform.MainView = new MainView
             {
                 DataContext = _host?.Services.GetService<MainViewModel>()
-        };
+            };
         }
 
         base.OnFrameworkInitializationCompleted();

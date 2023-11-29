@@ -38,6 +38,7 @@
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Center"
             Content="Zurück"
+            IsVisible="{Binding BackButtonIsVisible, FallbackValue=True}"
             Command="{Binding BackCommand}">
         </Button>
     </Grid>

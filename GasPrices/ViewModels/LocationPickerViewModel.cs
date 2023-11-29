@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Animation;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -24,6 +25,11 @@ public partial class LocationPickerViewModel : ViewModelBase
 
         ApplyButtonIsEnabled = _appStateStore.CoordsFromMapClient != null;
 
+        if (OperatingSystem.IsAndroid())
+        {
+            BackButtonIsVisible = false;
+        }
+
         ((App)Application.Current!).BackPressed += OnBackPressed;
     }
 
@@ -39,6 +45,7 @@ public partial class LocationPickerViewModel : ViewModelBase
     #region bindable properties
 
     [ObservableProperty] private bool _applyButtonIsEnabled;
+    [ObservableProperty] private bool _backButtonIsVisible = true;
 
     #endregion bindable properties
 

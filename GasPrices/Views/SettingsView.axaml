@@ -20,6 +20,10 @@
 	</Design.DataContext>
 	
 	<i:Interaction.Behaviors>
+		<ia:EventTriggerBehavior EventName="Initialized">
+			<ia:InvokeCommandAction Command="{Binding InitializedCommand}"/>
+		</ia:EventTriggerBehavior>
+		
 		<ia:EventTriggerBehavior EventName="KeyDown">
 			<ia:InvokeCommandAction Command="{Binding KeyDownCommand}" PassEventArgsToCommand="True"/>
 		</ia:EventTriggerBehavior>
@@ -99,6 +103,7 @@
 			HorizontalAlignment="Stretch"
 			HorizontalContentAlignment="Center"
 			Content="Abbrechen"
+			IsVisible="{Binding CancelButtonIsVisible, FallbackValue=True}"
 			Command="{Binding CancelCommand}">
 		</Button>
 	</Grid>

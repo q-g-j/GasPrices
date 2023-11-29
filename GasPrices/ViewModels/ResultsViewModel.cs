@@ -27,13 +27,13 @@ public partial class ResultsViewModel : ViewModelBase
         _resultsNavigationService = resultsNavigationService;
         _resultsNavigationStore = resultsNavigationStore;
 
-        var timeSpan500 = TimeSpan.FromMilliseconds(500);
-        var crossFade = new CrossFade(timeSpan500)
+        var timeSpan400 = TimeSpan.FromMilliseconds(400);
+        var crossFade = new CrossFade(timeSpan400)
         {
             FadeOutEasing = new QuadraticEaseIn()
         };
-        var slideLeft = new SlideLeftPageTransition(timeSpan500);
-        var slideRight = new SlideRightPageTransition(timeSpan500);
+        var slideLeft = new SlideLeftPageTransition(timeSpan400);
+        var slideRight = new SlideRightPageTransition(timeSpan400);
 
         CurrentPageTransition = new CompositePageTransition();
         CurrentPageTransition.PageTransitions.Add(crossFade);
@@ -54,6 +54,11 @@ public partial class ResultsViewModel : ViewModelBase
 
         _resultsNavigationService.Navigate<StationListViewModel, SlideLeftPageTransition>();
 
+        if (OperatingSystem.IsAndroid())
+        {
+            BackButtonIsVisible = false;
+        }
+
         ((App)Application.Current!).BackPressed += OnBackPressed;
     }
 
@@ -71,6 +76,7 @@ public partial class ResultsViewModel : ViewModelBase
 
     [ObservableProperty] private ViewModelBase? _currentViewModel;
     [ObservableProperty] private CompositePageTransition? _currentPageTransition;
+    [ObservableProperty] private bool _backButtonIsVisible = true;
 
     #endregion bindable properties
 

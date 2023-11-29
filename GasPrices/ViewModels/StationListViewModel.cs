@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using GasPrices.Extensions;
 using GasPrices.Models;
 using GasPrices.PageTransitions;
 using GasPrices.Services;
@@ -30,29 +33,7 @@ public partial class StationListViewModel : ViewModelBase
         _settingsFileReader = settingsFileReader;
         _settingsFileWriter = settingsFileWriter;
 
-        var sortBy = "Price";
-        var settings = _settingsFileReader!.Read();
-        if (!string.IsNullOrEmpty(settings!.SortBy))
-        {
-            sortBy = settings.SortBy;
-        }
-
-        _stations = appStateStore.Stations!
-            .Where(s => s is { E5: > 0, E10: > 0, Diesel: > 0 })
-            .Select(station => new DisplayStation(station, appStateStore.SelectedGasType!))
-            .ToList();
-
-        var sortingIndex = sortBy switch
-        {
-            "Name" => 0,
-            "Price" => 1,
-            "Distance" => 2,
-            _ => 1
-        };
-
         SelectedGasType = _appStateStore!.SelectedGasType!.ToString()!;
-
-        SelectedSortingIndex = sortingIndex;
     }
 
     #endregion constructors
@@ -75,6 +56,36 @@ public partial class StationListViewModel : ViewModelBase
 
     #endregion bindable properties
 
+    #region commands
+
+    [RelayCommand]
+    public async Task InitializedCommand()
+    {
+        var sortBy = "Price";
+        var settings = await _settingsFileReader!.ReadAsync();
+        if (!string.IsNullOrEmpty(settings!.SortBy))
+        {
+            sortBy = settings.SortBy;
+        }
+
+        Stations = _appStateStore!.Stations!
+            .Where(s => s is { E5: > 0, E10: > 0, Diesel: > 0 })
+            .Select(station => new DisplayStation(station, _appStateStore!.SelectedGasType!))
+            .ToList();
+
+        var sortingIndex = sortBy switch
+        {
+            "Name" => 0,
+            "Price" => 1,
+            "Distance" => 2,
+            _ => 1
+        };
+
+        SelectedSortingIndex = sortingIndex;
+    }
+
+    #endregion commands
+
     #region OnPropertyChanged handlers
 
     partial void OnSelectedIndexChanged(int value)
@@ -96,17 +107,26 @@ public partial class StationListViewModel : ViewModelBase
 
         SortStations([..Stations], sortBy);
 
-        Task.Run(async () =>
-        {
-            var settings = await _settingsFileReader!.ReadAsync();
-            settings!.SortBy = sortBy;
-            await _settingsFileWriter!.WriteAsync(settings);
-        });
+        UpdateSettingsAsync(sortBy).FireAndForget();
     }
 
     #endregion OnPropertyChanged handlers
 
     #region private methods
+
+    private async Task UpdateSettingsAsync(string sortBy)
+    {
+        try
+        {
+            var settings = await _settingsFileReader!.ReadAsync();
+            settings!.SortBy = sortBy;
+            await _settingsFileWriter!.WriteAsync(settings);
+        }
+        catch (Exception)
+        {
+            // Handle exceptions appropriately
+        }
+    }
 
     private void SortStations(IEnumerable<DisplayStation> stations, string sortBy)
     {

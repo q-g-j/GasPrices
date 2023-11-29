@@ -4,12 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:GasPrices.CustomControls"
              xmlns:vm="using:GasPrices.ViewModels"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
              x:Class="GasPrices.Views.StationListView">
 
     <Design.DataContext>
         <vm:StationListViewModel />
     </Design.DataContext>
+	
+    <i:Interaction.Behaviors>
+        <ia:EventTriggerBehavior EventName="Initialized">
+            <ia:InvokeCommandAction Command="{Binding InitializedCommand}"/>
+        </ia:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
 
     <UserControl.Styles>
         <Style Selector="ListBoxItem">
@@ -42,7 +50,7 @@
                 FontFamily="{StaticResource SemiBold}"
                 FontWeight="SemiBold"
                 FontSize="18"
-                Margin="0, 0, 10, 0">
+                Margin="0, 0, 6, 0">
             </TextBlock>
             <TextBlock
                 Grid.Column="1"
@@ -56,7 +64,7 @@
                 Grid.Column="3"
                 Grid.Row="0"
                 Text="Sortieren nach:"
-                Margin="0, 0, 10, 0">
+                Margin="0, 0, 8, 0">
             </TextBlock>
             <ComboBox
                 Grid.Column="4"
