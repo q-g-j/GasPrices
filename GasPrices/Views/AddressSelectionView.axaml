@@ -52,7 +52,7 @@
             Grid.Column="0"
             Grid.Row="0"
             ColumnDefinitions="*"
-            RowDefinitions="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, *, auto">
+            RowDefinitions="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, *, auto">
 
             <Grid
                 Grid.Column="0"
@@ -94,8 +94,8 @@
                 IsVisible="{Binding MapCoordinatesIsVisible, FallbackValue=false}">
                 <TextBlock
                     Grid.Row="0"
-                    Margin="0, 0, 0, 10"
-                    Text="Koordinaten vom Kartendienst:">
+                    Margin="0, 0, 0, 5"
+                    Text="Koordinaten:">
                 </TextBlock>
                 <TextBox
                     Grid.Row="1"
@@ -109,7 +109,7 @@
             <TextBlock
                 Grid.Column="0"
                 Grid.Row="2"
-                Margin="0, 0, 0, 10"
+                Margin="0, 0, 0, 5"
                 Text="Straße und Hausnummer:">
             </TextBlock>
             <TextBox
@@ -131,7 +131,7 @@
             <TextBlock
                 Grid.Column="0"
                 Grid.Row="4"
-                Margin="0, 0, 0, 10"
+                Margin="0, 0, 0, 5"
                 Text="Postleitzahl:">
             </TextBlock>
             <TextBox
@@ -157,7 +157,7 @@
             <TextBlock
                 Grid.Column="0"
                 Grid.Row="6"
-                Margin="0, 0, 0, 10"
+                Margin="0, 0, 0, 5"
                 Text="Stadt:">
             </TextBlock>
             <TextBox
@@ -175,46 +175,31 @@
                 </i:Interaction.Behaviors>
             </TextBox>
 
-            <Grid
+            <!-- Distance: -->
+            <TextBlock
                 Grid.Column="0"
                 Grid.Row="8"
-                ColumnDefinitions="auto, auto, auto, auto, auto, auto">
-                <!-- Spritsorte: -->
-                <TextBlock
-                    Grid.Column="0"
-                    Margin="0, 0, 20, 0"
-                    Text="Spritsorte:">
-                </TextBlock>
-                <ComboBox
-                    Grid.Column="1"
-                    Margin="0, 0, 20, 0"
-                    Width="100"
-                    ItemsSource="{Binding GasTypes}"
-                    SelectedItem="{Binding GasTypeSelectedItem}">
-                </ComboBox>
+                Margin="0, 0, 0, 5"
+                Text="Umkreis:">
+            </TextBlock>
 
-                <!-- Distance: -->
-                <TextBlock
-                    Grid.Column="3"
-                    Margin="0, 0, 20, 0"
-                    Text="Umkreis:">
-                </TextBlock>
+            <StackPanel
+                Grid.Column="0"
+                Grid.Row="9"
+                Orientation="Horizontal">
                 <TextBox
-                    Grid.Column="4"
-                    Margin="0, 0, 5, 0"
-                    HorizontalContentAlignment="Right"
+                    Margin="0, 0, 10, 0"
                     Text="{Binding Radius}">
                 </TextBox>
                 <TextBlock
-                    Grid.Column="5"
                     Margin="0, 0, 0, 0"
                     Text="km">
                 </TextBlock>
-            </Grid>
+            </StackPanel>
 
             <Slider
                 Grid.Column="0"
-                Grid.Row="9"
+                Grid.Row="10"
                 Minimum="1"
                 Maximum="40"
                 TickFrequency="1"
@@ -228,7 +213,7 @@
             <!-- Search button: -->
             <Button
                 Grid.Column="0"
-                Grid.Row="10"
+                Grid.Row="11"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
                 Content="Suchen"
@@ -238,7 +223,7 @@
 
             <!-- Warning message: -->
             <Grid
-                Grid.Row="11"
+                Grid.Row="12"
                 ColumnDefinitions="*"
                 RowDefinitions="auto, auto"
                 Margin="0, 20, 0, 0"
@@ -264,7 +249,7 @@
             <!-- Settings button: -->
             <Button
                 Grid.Column="0"
-                Grid.Row="12"
+                Grid.Row="14"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
                 VerticalAlignment="Bottom"

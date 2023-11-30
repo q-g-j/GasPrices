@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -32,7 +33,12 @@ public partial class StationListViewModel : ViewModelBase
         _settingsFileReader = settingsFileReader;
         _settingsFileWriter = settingsFileWriter;
 
-        SelectedGasType = _appStateStore!.SelectedGasType!.ToString()!;
+        _gasTypes =
+        [
+            new GasType("E5"),
+            new GasType("E10"),
+            new GasType("Diesel")
+        ];
 
         InitializeStations().FireAndForget();
     }
@@ -45,6 +51,8 @@ public partial class StationListViewModel : ViewModelBase
     private readonly SettingsFileWriter? _settingsFileWriter;
     private readonly ResultsNavigationService? _resultsNavigationService;
     private readonly AppStateStore? _appStateStore;
+    private GasType? _gasType;
+    private string? _sortBy;
 
     #endregion private fields
 
@@ -52,8 +60,9 @@ public partial class StationListViewModel : ViewModelBase
 
     [ObservableProperty] private List<DisplayStation>? _stations;
     [ObservableProperty] private int _selectedIndex = -1;
-    [ObservableProperty] private int _selectedSortingIndex = -1;
-    [ObservableProperty] private string? _selectedGasType;
+    [ObservableProperty] private int _selectedSortingIndex = 1;
+    [ObservableProperty] private int _selectedGasTypeIndex;
+    [ObservableProperty] private ObservableCollection<GasType>? _gasTypes;
 
     #endregion bindable properties
 
@@ -66,9 +75,24 @@ public partial class StationListViewModel : ViewModelBase
         _resultsNavigationService!.Navigate<StationDetailsViewModel, SlideLeftPageTransition>();
     }
 
+    partial void OnSelectedGasTypeIndexChanged(int value)
+    {
+        _gasType = GasTypes![value];
+
+        var stations = _appStateStore!.Stations!
+            .Where(s => s is { E5: > 0, E10: > 0, Diesel: > 0 })
+            .Select(station => new DisplayStation(station, _gasType))
+            .ToList();
+
+        SortStations(stations);
+
+        UpdateSettingsAsync().FireAndForget();
+    }
+
+
     partial void OnSelectedSortingIndexChanged(int value)
     {
-        var sortBy = value switch
+        _sortBy = value switch
         {
             0 => "Name",
             1 => "Price",
@@ -76,21 +100,9 @@ public partial class StationListViewModel : ViewModelBase
             _ => "Price"
         };
 
-        if (Stations == null)
-        {
-            var stations = _appStateStore!.Stations!
-                .Where(s => s is { E5: > 0, E10: > 0, Diesel: > 0 })
-                .Select(station => new DisplayStation(station, _appStateStore!.SelectedGasType!))
-                .ToList();
+        SortStations([..Stations]);
 
-            SortStations(stations, sortBy);
-        }
-        else
-        {
-            SortStations([..Stations], sortBy);
-        }
-
-        UpdateSettingsAsync(sortBy).FireAndForget();
+        UpdateSettingsAsync().FireAndForget();
     }
 
     #endregion OnPropertyChanged handlers
@@ -99,14 +111,21 @@ public partial class StationListViewModel : ViewModelBase
 
     private async Task InitializeStations()
     {
-        var sortBy = "Price";
+        _sortBy = "Price";
+        _gasType = new GasType("E5");
+
         var settings = await _settingsFileReader!.ReadAsync();
         if (!string.IsNullOrEmpty(settings!.SortBy))
         {
-            sortBy = settings.SortBy;
+            _sortBy = settings.SortBy;
         }
 
-        var sortingIndex = sortBy switch
+        if (!string.IsNullOrEmpty(settings.GasType))
+        {
+            _gasType = new GasType(settings.GasType);
+        }
+
+        var sortingIndex = _sortBy switch
         {
             "Name" => 0,
             "Price" => 1,
@@ -114,15 +133,24 @@ public partial class StationListViewModel : ViewModelBase
             _ => 1
         };
 
+        var stations = _appStateStore!.Stations!
+            .Where(s => s is { E5: > 0, E10: > 0, Diesel: > 0 })
+            .Select(station => new DisplayStation(station, new GasType(_gasType!.ToString())))
+            .ToList();
+
+        SortStations(stations);
+
+        SelectedGasTypeIndex = GasTypes!.IndexOf(GasTypes.FirstOrDefault(gt => gt.ToString() == _gasType.ToString())!);
         SelectedSortingIndex = sortingIndex;
     }
 
-    private async Task UpdateSettingsAsync(string sortBy)
+    private async Task UpdateSettingsAsync()
     {
         try
         {
             var settings = await _settingsFileReader!.ReadAsync();
-            settings!.SortBy = sortBy;
+            settings!.GasType = _gasType!.ToString();
+            settings.SortBy = _sortBy;
             await _settingsFileWriter!.WriteAsync(settings);
         }
         catch (Exception)
@@ -131,9 +159,9 @@ public partial class StationListViewModel : ViewModelBase
         }
     }
 
-    private void SortStations(IEnumerable<DisplayStation> stations, string sortBy)
+    private void SortStations(IEnumerable<DisplayStation> stations)
     {
-        Stations = sortBy switch
+        Stations = _sortBy switch
         {
             "Name" => stations.OrderBy(s => s.Name).ToList(),
             "Price" => stations.OrderBy(s => s.Price).ToList(),

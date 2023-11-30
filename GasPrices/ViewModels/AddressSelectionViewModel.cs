@@ -3,14 +3,11 @@ using ApiClients.Models;
 using Avalonia.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using GasPrices.Models;
 using GasPrices.Services;
 using GasPrices.Store;
 using HttpClient.Exceptions;
 using SettingsFile.Models;
 using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,15 +40,6 @@ public partial class AddressSelectionViewModel : ViewModelBase
         _gasPricesClient = gasPricesClient;
         _settingsFileReader = settingsFileReader;
         _settingsFileWriter = settingsFileWriter;
-
-        _gasTypes =
-        [
-            new GasType("E5"),
-            new GasType("E10"),
-            new GasType("Diesel")
-        ];
-
-        _gasTypeSelectedItem = _gasTypes[0];
 
         if (OperatingSystem.IsAndroid())
         {
@@ -105,8 +93,6 @@ public partial class AddressSelectionViewModel : ViewModelBase
     [ObservableProperty] private string _postalCode = string.Empty;
     [ObservableProperty] private string _city = string.Empty;
     [ObservableProperty] private string _radius = "5";
-    [ObservableProperty] private ObservableCollection<GasType>? _gasTypes;
-    [ObservableProperty] private GasType? _gasTypeSelectedItem;
     [ObservableProperty] private string? _mapCoordinates;
     [ObservableProperty] private bool _mapCoordinatesIsVisible;
     [ObservableProperty] private bool _geolocationButtonIsVisible;
@@ -138,7 +124,6 @@ public partial class AddressSelectionViewModel : ViewModelBase
     {
         MapCoordinates = string.Empty;
         MapCoordinatesIsVisible = false;
-
         GeolocationButtonIsEnabled = false;
         ProgressRingIsActive = true;
 
@@ -293,17 +278,13 @@ public partial class AddressSelectionViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public async Task KeyDownCommand(object o)
+    public Task KeyDownCommand(object o)
     {
         var e = o as KeyEventArgs;
-        if (e?.Key is Key.Enter or Key.Return)
-        {
-            if (SearchButtonIsEnabled)
-            {
-                e.Handled = true;
-                await SearchCommand();
-            }
-        }
+        if (e?.Key is not (Key.Enter or Key.Return)) return Task.CompletedTask;
+        if (!SearchButtonIsEnabled) return Task.CompletedTask;
+        e.Handled = true;
+        return SearchCommand();
     }
 
     #endregion commands
@@ -335,17 +316,6 @@ public partial class AddressSelectionViewModel : ViewModelBase
     private async Task ProcessSettingsAsync()
     {
         _settings = await _settingsFileReader?.ReadAsync()!;
-
-        if (_appStateStore?.SelectedGasType != null)
-        {
-            GasTypeSelectedItem =
-                GasTypes!.FirstOrDefault(gt => gt.ToString() == _appStateStore.SelectedGasType.ToString());
-        }
-        else if (_settings is { LastKnownGasType: not null })
-        {
-            GasTypeSelectedItem =
-                GasTypes!.FirstOrDefault(gt => gt.ToString() == _settings.LastKnownGasType);
-        }
 
         if (_appStateStore?.Distance != null)
         {
@@ -453,7 +423,6 @@ public partial class AddressSelectionViewModel : ViewModelBase
     {
         var address = new Address(Street, City, PostalCode);
         _appStateStore!.Address = address;
-        _appStateStore.SelectedGasType = GasTypeSelectedItem;
         _appStateStore.Distance = RadiusInt;
 
         var settings = await _settingsFileReader?.ReadAsync()!;
@@ -463,7 +432,6 @@ public partial class AddressSelectionViewModel : ViewModelBase
         settings.LastKnownCity = City;
         settings.LastKnownPostalCode = PostalCode;
         settings.LastKnownRadius = RadiusInt.ToString();
-        settings.LastKnownGasType = GasTypeSelectedItem?.ToString();
 
         if (_appStateStore.CoordsFromMapClient != null)
         {

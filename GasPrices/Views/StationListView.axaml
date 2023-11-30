@@ -4,8 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:GasPrices.CustomControls"
              xmlns:vm="using:GasPrices.ViewModels"
-             xmlns:i="using:Avalonia.Xaml.Interactivity"
-             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
              x:Class="GasPrices.Views.StationListView">
 
@@ -35,40 +33,38 @@
         <Grid
             Grid.Column="0"
             Grid.Row="0"
-            ColumnDefinitions="Auto, Auto, *, Auto, Auto"
+            ColumnDefinitions="Auto, Auto"
             Margin="10, 0, 0, 10">
-            <TextBlock
+            <StackPanel
                 Grid.Column="0"
                 Grid.Row="0"
-                Text="Spritsorte:"
-                FontFamily="{StaticResource SemiBold}"
-                FontWeight="SemiBold"
-                FontSize="18"
-                Margin="0, 0, 6, 0">
-            </TextBlock>
-            <TextBlock
+                Margin="0, 0, 10, 0">
+                <TextBlock
+                    Text="Spritsorte:"
+                    Margin="0, 0, 0, 3">
+                </TextBlock>
+                <ComboBox
+                    Width="90"
+                    ItemsSource="{Binding GasTypes}"
+                    SelectedIndex="{Binding SelectedGasTypeIndex}">
+                </ComboBox>
+            </StackPanel>
+            <StackPanel
                 Grid.Column="1"
                 Grid.Row="0"
-                Text="{Binding SelectedGasType}"
-                FontFamily="{StaticResource SemiBold}"
-                FontWeight="SemiBold"
-                FontSize="18">
-            </TextBlock>
-            <TextBlock
-                Grid.Column="3"
-                Grid.Row="0"
-                Text="Sortieren nach:"
-                Margin="0, 0, 8, 0">
-            </TextBlock>
-            <ComboBox
-                Grid.Column="4"
-                Grid.Row="0"
-                Margin="0, 0, 10, 0"
-                SelectedIndex="{Binding SelectedSortingIndex}">
-                <ComboBoxItem>Name</ComboBoxItem>
-                <ComboBoxItem>Preis</ComboBoxItem>
-                <ComboBoxItem>Entfernung</ComboBoxItem>
-            </ComboBox>
+                HorizontalAlignment="Right">
+                <TextBlock
+                    Text="Sortieren nach:"
+                    Margin="0, 0, 0, 3">
+                </TextBlock>
+                <ComboBox
+                    Width="130"
+                    SelectedIndex="{Binding SelectedSortingIndex}">
+                    <ComboBoxItem>Name</ComboBoxItem>
+                    <ComboBoxItem>Preis</ComboBoxItem>
+                    <ComboBoxItem>Entfernung</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
         </Grid>
 
         <ListBox

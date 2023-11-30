@@ -5,7 +5,8 @@
              xmlns:vm="using:GasPrices.ViewModels"
              xmlns:controls="using:GasPrices.CustomControls"
              x:Class="GasPrices.Views.StationDetailsView"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             d:DesignWidth="380">
 
     <Design.DataContext>
         <vm:StationDetailsViewModel />
@@ -27,10 +28,10 @@
         <Button
             Grid.Column="0"
             Grid.Row="1"
-            Width="180"
+            Width="200"
             HorizontalAlignment="Center"
             HorizontalContentAlignment="Center"
-            Content="Im Browser öffnen"
+            Content="In Google Maps öffnen"
             Command="{Binding OpenInBrowser}">
         </Button>
     </Grid>
