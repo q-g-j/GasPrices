@@ -1,16 +1,11 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Animation;
 
 namespace GasPrices.PageTransitions;
 
-public class SlideLeftPageTransition(
-    TimeSpan duration,
-    PageSlide.SlideAxis orientation = PageSlide.SlideAxis.Horizontal)
-    : PageSlide(duration,
-        orientation)
+public class SlideLeftPageTransition : PageSlide, ICustomPageTransition
 {
     public override Task Start(
         Visual? from,

@@ -12,7 +12,7 @@ using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia.Animation;
+using GasPrices.PageTransitions;
 using GasPrices.Store;
 using SettingsFile;
 
@@ -160,7 +160,7 @@ public partial class SettingsViewModel : ViewModelBase
             TankerkönigApiKey = TankerKoenigApiKey
         };
         await _settingsFileWriter!.WriteAsync(settings);
-        _mainNavigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
+        _mainNavigationService!.Navigate<AddressSelectionViewModel, CustomCrossFadePageTransition>();
     }
 
     [RelayCommand]
@@ -212,7 +212,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     private void OnBackPressed()
     {
-        _mainNavigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
+        _mainNavigationService!.Navigate<AddressSelectionViewModel, CustomCrossFadePageTransition>();
     }
 
     #endregion private methods

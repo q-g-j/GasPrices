@@ -11,7 +11,7 @@ using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia.Animation;
+using GasPrices.PageTransitions;
 using SettingsFile;
 using Xamarin.Essentials;
 
@@ -164,7 +164,7 @@ public partial class AddressSelectionViewModel : ViewModelBase
         try
         {
             _appStateStore!.CoordsFromMapClient = await GetCoordsFromAddressFields();
-            _mainNavigationService!.Navigate<LocationPickerViewModel, CrossFade>();
+            _mainNavigationService!.Navigate<LocationPickerViewModel, CustomCrossFadePageTransition>();
         }
         catch (HttpClientException ex)
         {
@@ -232,7 +232,7 @@ public partial class AddressSelectionViewModel : ViewModelBase
                     _appStateStore!.Stations = stations;
                     await SaveCurrentAddressAsync();
                     _appStateStore.CoordsFromMapClient = null;
-                    _mainNavigationService?.Navigate<ResultsViewModel, CrossFade>();
+                    _mainNavigationService?.Navigate<ResultsViewModel, CustomCrossFadePageTransition>();
                 }
                 else
                 {
@@ -274,7 +274,7 @@ public partial class AddressSelectionViewModel : ViewModelBase
     public async Task OpenSettingsCommand()
     {
         await SaveCurrentAddressAsync();
-        _mainNavigationService?.Navigate<SettingsViewModel, CrossFade>();
+        _mainNavigationService?.Navigate<SettingsViewModel, CustomCrossFadePageTransition>();
     }
 
     [RelayCommand]

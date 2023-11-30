@@ -8,6 +8,7 @@ using HttpClient;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using GasPrices.PageTransitions;
 using SettingsFile;
 
 namespace GasPrices.Extensions
@@ -59,6 +60,17 @@ namespace GasPrices.Extensions
                 // Add ViewModel factory function:
                 services.AddSingleton<Func<Type, ViewModelBase?>>(sp =>
                     type => sp.GetRequiredService(type) as ViewModelBase);
+
+                // Add PageTransitions:
+                services
+                    .AddTransient<
+                        CustomCrossFadePageTransition>();
+                services
+                    .AddTransient<
+                        CustomCompositePageTransition<CustomCrossFadePageTransition, SlideLeftPageTransition>>();
+                services
+                    .AddTransient<
+                        CustomCompositePageTransition<CustomCrossFadePageTransition, SlideRightPageTransition>>();
 
                 // Add API clients:
                 services.AddTransient<IGasPricesClient, TankerkönigClient>();

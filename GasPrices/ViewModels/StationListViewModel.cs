@@ -72,7 +72,9 @@ public partial class StationListViewModel : ViewModelBase
     {
         _appStateStore!.SelectedStation = Stations![value];
         _appStateStore!.SelectedStationIndex = value;
-        _resultsNavigationService!.Navigate<StationDetailsViewModel, SlideLeftPageTransition>();
+        _resultsNavigationService!
+            .Navigate<StationDetailsViewModel,
+                CustomCompositePageTransition<CustomCrossFadePageTransition, SlideLeftPageTransition>>();
     }
 
     partial void OnSelectedGasTypeIndexChanged(int value)

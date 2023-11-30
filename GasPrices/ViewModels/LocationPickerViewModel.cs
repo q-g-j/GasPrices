@@ -1,8 +1,8 @@
 ﻿using System;
 using Avalonia;
-using Avalonia.Animation;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GasPrices.PageTransitions;
 using GasPrices.Services;
 using GasPrices.Store;
 
@@ -54,7 +54,7 @@ public partial class LocationPickerViewModel : ViewModelBase
     [RelayCommand]
     public void ApplyCommand()
     {
-        _mainNavigationService?.Navigate<AddressSelectionViewModel, CrossFade>();
+        _mainNavigationService?.Navigate<AddressSelectionViewModel, CustomCrossFadePageTransition>();
     }
 
     [RelayCommand]
@@ -70,7 +70,7 @@ public partial class LocationPickerViewModel : ViewModelBase
     private void OnBackPressed()
     {
         _appStateStore!.CoordsFromMapClient = null;
-        _mainNavigationService!.Navigate<AddressSelectionViewModel, CrossFade>();
+        _mainNavigationService!.Navigate<AddressSelectionViewModel, CustomCrossFadePageTransition>();
     }
 
     #endregion private methods
