@@ -23,7 +23,7 @@ public partial class StationListViewModel : ViewModelBase
 
 
     public StationListViewModel(
-        ResultsNavigationService resultsNavigationService,
+        NavigationService<ResultsNavigationStore> resultsNavigationService,
         AppStateStore appStateStore,
         SettingsFileReader settingsFileReader,
         SettingsFileWriter settingsFileWriter)
@@ -49,7 +49,7 @@ public partial class StationListViewModel : ViewModelBase
 
     private readonly SettingsFileReader? _settingsFileReader;
     private readonly SettingsFileWriter? _settingsFileWriter;
-    private readonly ResultsNavigationService? _resultsNavigationService;
+    private readonly NavigationService<ResultsNavigationStore>? _resultsNavigationService;
     private readonly AppStateStore? _appStateStore;
     private GasType? _gasType;
     private string? _sortBy;

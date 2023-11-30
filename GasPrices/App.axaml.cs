@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using Avalonia.Animation;
+using GasPrices.Store;
 
 namespace GasPrices;
 
@@ -38,7 +39,7 @@ public class App : Application
         var viewLocator = _host?.Services.GetService<ViewLocatorService>();
         DataTemplates.Add(viewLocator!);
 
-        var navigationService = _host?.Services.GetRequiredService<MainNavigationService>();
+        var navigationService = _host?.Services.GetRequiredService<NavigationService<MainNavigationStore>>();
         navigationService?.Navigate<AddressSelectionViewModel, CrossFade>();
 
         // Line below is needed to remove Avalonia data validation.

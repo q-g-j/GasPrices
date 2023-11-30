@@ -17,7 +17,7 @@ public partial class LocationPickerViewModel : ViewModelBase
     }
 
     public LocationPickerViewModel(
-        MainNavigationService mainNavigationService,
+        NavigationService<MainNavigationStore> mainNavigationService,
         AppStateStore appStateStore)
     {
         _mainNavigationService = mainNavigationService;
@@ -37,7 +37,7 @@ public partial class LocationPickerViewModel : ViewModelBase
 
     #region private fields
 
-    private readonly MainNavigationService? _mainNavigationService;
+    private readonly NavigationService<MainNavigationStore>? _mainNavigationService;
     private readonly AppStateStore? _appStateStore;
 
     #endregion private fields

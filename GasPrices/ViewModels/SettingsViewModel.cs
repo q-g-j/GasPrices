@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Animation;
+using GasPrices.Store;
 using SettingsFile;
 
 namespace GasPrices.ViewModels;
@@ -26,7 +27,7 @@ public partial class SettingsViewModel : ViewModelBase
     }
 
     public SettingsViewModel(
-        MainNavigationService mainNavigationService,
+        NavigationService<MainNavigationStore> mainNavigationService,
         SettingsFileReader? settingsFileReader,
         SettingsFileWriter? settingsFileWriter,
         IGasPricesClient gasPricesClient)
@@ -48,7 +49,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     #region private fields
 
-    private readonly MainNavigationService? _mainNavigationService;
+    private readonly NavigationService<MainNavigationStore>? _mainNavigationService;
     private readonly SettingsFileReader? _settingsFileReader;
     private readonly SettingsFileWriter? _settingsFileWriter;
     private readonly IGasPricesClient? _gasPricesClient;

@@ -31,7 +31,7 @@ public partial class AddressSelectionViewModel : ViewModelBase
         AppStateStore appStateStore,
         SettingsFileReader settingsFileReader,
         SettingsFileWriter settingsFileWriter,
-        MainNavigationService mainNavigationService)
+        NavigationService<MainNavigationStore> mainNavigationService)
     {
         _mainNavigationService = mainNavigationService;
 
@@ -59,7 +59,7 @@ public partial class AddressSelectionViewModel : ViewModelBase
 
     #region private fields
 
-    private readonly MainNavigationService? _mainNavigationService;
+    private readonly NavigationService<MainNavigationStore>? _mainNavigationService;
     private readonly AppStateStore? _appStateStore;
     private readonly IMapClient? _mapClient;
     private readonly IGasPricesClient? _gasPricesClient;

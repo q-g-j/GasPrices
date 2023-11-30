@@ -46,18 +46,18 @@ namespace GasPrices.Extensions
                 services.AddTransient<SettingsViewModel>();
 
                 // Add the ViewLocator service:
-                services.AddTransient<ViewLocatorService>();
+                services.AddSingleton<ViewLocatorService>();
 
                 // Add ViewModel navigation services:
-                services.AddTransient<MainNavigationService>();
-                services.AddTransient<ResultsNavigationService>();
+                services.AddSingleton<NavigationService<MainNavigationStore>>();
+                services.AddSingleton<NavigationService<ResultsNavigationStore>>();
 
                 // Add View factory function for the ViewLocator:
-                services.AddTransient<Func<Type, Control?>>(sp =>
+                services.AddSingleton<Func<Type, Control?>>(sp =>
                     type => sp.GetRequiredService(type) as Control);
 
                 // Add ViewModel factory function:
-                services.AddTransient<Func<Type, ViewModelBase?>>(sp =>
+                services.AddSingleton<Func<Type, ViewModelBase?>>(sp =>
                     type => sp.GetRequiredService(type) as ViewModelBase);
 
                 // Add API clients:

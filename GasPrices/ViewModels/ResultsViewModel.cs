@@ -19,8 +19,8 @@ public partial class ResultsViewModel : ViewModelBase
     }
 
     public ResultsViewModel(
-        MainNavigationService mainNavigationService,
-        ResultsNavigationService resultsNavigationService,
+        NavigationService<MainNavigationStore> mainNavigationService,
+        NavigationService<ResultsNavigationStore> resultsNavigationService,
         ResultsNavigationStore resultsNavigationStore)
     {
         _mainNavigationService = mainNavigationService;
@@ -66,8 +66,8 @@ public partial class ResultsViewModel : ViewModelBase
 
     #region private fields
 
-    private readonly MainNavigationService? _mainNavigationService;
-    private readonly ResultsNavigationService? _resultsNavigationService;
+    private readonly NavigationService<MainNavigationStore>? _mainNavigationService;
+    private readonly NavigationService<ResultsNavigationStore>? _resultsNavigationService;
     private readonly ResultsNavigationStore? _resultsNavigationStore;
 
     #endregion privat fields
