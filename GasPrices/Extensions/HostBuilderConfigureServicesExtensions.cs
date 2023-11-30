@@ -46,6 +46,17 @@ namespace GasPrices.Extensions
                 services.AddTransient<StationDetailsViewModel>();
                 services.AddTransient<SettingsViewModel>();
 
+                // Add PageTransitions:
+                services
+                    .AddTransient<
+                        CustomCrossFadePageTransition>();
+                services
+                    .AddTransient<
+                        CustomCompositePageTransition<CustomCrossFadePageTransition, SlideLeftPageTransition>>();
+                services
+                    .AddTransient<
+                        CustomCompositePageTransition<CustomCrossFadePageTransition, SlideRightPageTransition>>();
+
                 // Add the ViewLocator service:
                 services.AddSingleton<ViewLocatorService>();
 
@@ -61,16 +72,9 @@ namespace GasPrices.Extensions
                 services.AddSingleton<Func<Type, ViewModelBase?>>(sp =>
                     type => sp.GetRequiredService(type) as ViewModelBase);
 
-                // Add PageTransitions:
-                services
-                    .AddTransient<
-                        CustomCrossFadePageTransition>();
-                services
-                    .AddTransient<
-                        CustomCompositePageTransition<CustomCrossFadePageTransition, SlideLeftPageTransition>>();
-                services
-                    .AddTransient<
-                        CustomCompositePageTransition<CustomCrossFadePageTransition, SlideRightPageTransition>>();
+                // Add PageTransition factory function:
+                services.AddSingleton<Func<Type, ICustomPageTransition?>>(sp =>
+                    type => sp.GetRequiredService(type) as ICustomPageTransition);
 
                 // Add API clients:
                 services.AddTransient<IGasPricesClient, TankerkönigClient>();
