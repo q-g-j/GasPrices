@@ -9,7 +9,7 @@ using GasPrices.Models;
 using GasPrices.PageTransitions;
 using GasPrices.Services;
 using GasPrices.Store;
-using SettingsFile;
+using SettingsHandling;
 
 namespace GasPrices.ViewModels;
 
@@ -21,17 +21,16 @@ public partial class StationListViewModel : ViewModelBase
     {
     }
 
-
     public StationListViewModel(
         NavigationService<ResultsNavigationStore> resultsNavigationService,
         AppStateStore appStateStore,
-        SettingsFileReader settingsFileReader,
-        SettingsFileWriter settingsFileWriter)
+        ISettingsReader settingsReader,
+        ISettingsWriter settingsWriter)
     {
         _resultsNavigationService = resultsNavigationService;
         _appStateStore = appStateStore;
-        _settingsFileReader = settingsFileReader;
-        _settingsFileWriter = settingsFileWriter;
+        _settingsReader = settingsReader;
+        _settingsWriter = settingsWriter;
 
         _gasTypes =
         [
@@ -47,8 +46,8 @@ public partial class StationListViewModel : ViewModelBase
 
     #region private fields
 
-    private readonly SettingsFileReader? _settingsFileReader;
-    private readonly SettingsFileWriter? _settingsFileWriter;
+    private readonly ISettingsReader? _settingsReader;
+    private readonly ISettingsWriter? _settingsWriter;
     private readonly NavigationService<ResultsNavigationStore>? _resultsNavigationService;
     private readonly AppStateStore? _appStateStore;
     private GasType? _gasType;
@@ -102,7 +101,7 @@ public partial class StationListViewModel : ViewModelBase
             _ => "Price"
         };
 
-        SortStations([..Stations]);
+        SortStations([.. Stations]);
 
         UpdateSettingsAsync().FireAndForget();
     }
@@ -116,7 +115,8 @@ public partial class StationListViewModel : ViewModelBase
         _sortBy = "Price";
         _gasType = new GasType("E5");
 
-        var settings = await _settingsFileReader!.ReadAsync();
+        var settings = await _settingsReader!.ReadAsync();
+
         if (!string.IsNullOrEmpty(settings!.SortBy))
         {
             _sortBy = settings.SortBy;
@@ -150,10 +150,10 @@ public partial class StationListViewModel : ViewModelBase
     {
         try
         {
-            var settings = await _settingsFileReader!.ReadAsync();
+            var settings = await _settingsReader!.ReadAsync();
             settings!.GasType = _gasType!.ToString();
             settings.SortBy = _sortBy;
-            await _settingsFileWriter!.WriteAsync(settings);
+            await _settingsWriter!.WriteAsync(settings);
         }
         catch (Exception)
         {
@@ -165,9 +165,9 @@ public partial class StationListViewModel : ViewModelBase
     {
         Stations = _sortBy switch
         {
-            "Name" => stations.OrderBy(s => s.Name).ToList(),
-            "Price" => stations.OrderBy(s => s.Price).ToList(),
-            "Distance" => stations.OrderBy(s => s.Distance).ToList(),
+            "Name" => [.. stations.OrderBy(s => s.Name)],
+            "Price" => [.. stations.OrderBy(s => s.Price)],
+            "Distance" => [.. stations.OrderBy(s => s.Distance)],
             _ => Stations
         };
     }

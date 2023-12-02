@@ -8,10 +8,12 @@ using Mapsui.Projections;
 using Mapsui.Layers;
 using Mapsui.Styles;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using GasPrices.Extensions;
 using Mapsui.Nts;
 using Mapsui.UI.Avalonia.Extensions;
 using GasPrices.ViewModels;
-using SettingsFile;
+using SettingsHandling;
 
 namespace GasPrices.Views;
 
@@ -22,28 +24,19 @@ public partial class LocationPickerView : UserControl
         InitializeComponent();
     }
 
-    public LocationPickerView(AppStateStore appStateStore, SettingsFileReader settingsFileReader)
+    public LocationPickerView(AppStateStore appStateStore, ISettingsReader settingsReader)
     {
         _appStateStore = appStateStore;
+        _settingsReader = settingsReader;
         InitializeComponent();
-
-        var settings = settingsFileReader.Read();
-        if (settings is { LastKnownLatitude: not null, LastKnownLongitude: not null })
-        {
-            _cachedPoint = new MPoint(settings.LastKnownLongitude.Value, settings.LastKnownLatitude.Value);
-        }
-        else if (_appStateStore.CoordsFromMapClient != null)
-        {
-            _cachedPoint = new MPoint(_appStateStore.CoordsFromMapClient.Longitude,
-                _appStateStore.CoordsFromMapClient.Latitude);
-        }
-
-        SetupMap();
+        
+        Initialize().FireAndForget();
     }
 
     private readonly AppStateStore? _appStateStore;
+    private readonly ISettingsReader? _settingsReader;
     private GenericCollectionLayer<List<IFeature>>? _pinLayer;
-    private readonly MPoint? _cachedPoint;
+    private  MPoint? _cachedPoint;
     private MPoint? _cachedMapPoint;
 
     private void SetupMap()
@@ -117,5 +110,21 @@ public partial class LocationPickerView : UserControl
         });
 
         _pinLayer?.DataHasChanged();
+    }
+
+    private async Task Initialize()
+    {
+        var settings = await _settingsReader!.ReadAsync();
+        if (settings is { LastKnownLatitude: not null, LastKnownLongitude: not null })
+        {
+            _cachedPoint = new MPoint(settings.LastKnownLongitude.Value, settings.LastKnownLatitude.Value);
+        }
+        else if (_appStateStore!.CoordsFromMapClient != null)
+        {
+            _cachedPoint = new MPoint(_appStateStore.CoordsFromMapClient.Longitude,
+                _appStateStore.CoordsFromMapClient.Latitude);
+        }
+
+        SetupMap();
     }
 }

@@ -9,11 +9,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using GasPrices.PageTransitions;
-using SettingsFile;
+using SettingsHandling;
 
 namespace GasPrices.Extensions
 {
-    public static class HostBuilderConfigureServicesExtensions
+    public static class HostBuilderExtensions
     {
         public static IHostBuilder AddServices(this IHostBuilder hostBuilder)
         {
@@ -81,16 +81,51 @@ namespace GasPrices.Extensions
                 services.AddTransient<IMapClient, OpenStreetMapClient>();
 
                 // Add settings file handlers:
-                services.AddTransient(sp =>
+                services.AddTransient<ISettingsWriter>(sp =>
                 {
                     var globals = sp.GetRequiredService<GlobalsStore>();
+                    if (OperatingSystem.IsBrowser())
+                    {
+                        return new SettingsLocalStorageWriter();
+                    }
+
                     return new SettingsFileWriter(globals.SettingsFolderFullPath, globals.SettingsFileFullPath);
                 });
-                services.AddTransient(sp =>
+                services.AddTransient<ISettingsReader>(sp =>
                 {
                     var globals = sp.GetRequiredService<GlobalsStore>();
+                    if (OperatingSystem.IsBrowser())
+                    {
+                        return new SettingsLocalStorageReader();
+                    }
+
                     return new SettingsFileReader(globals.SettingsFileFullPath);
                 });
+            });
+            return hostBuilder;
+        }
+
+        public static IHostBuilder AddMainView(
+            this IHostBuilder hostBuilder,
+            bool isDesktop)
+        {
+            hostBuilder.ConfigureServices(services =>
+            {
+                switch (isDesktop)
+                {
+                    case true:
+                        services.AddTransient(sp => new MainWindow
+                        {
+                            DataContext = sp.GetRequiredService<MainViewModel>()
+                        });
+                        break;
+                    case false:
+                        services.AddTransient(sp => new MainView()
+                        {
+                            DataContext = sp.GetRequiredService<MainViewModel>()
+                        });
+                        break;
+                }
             });
             return hostBuilder;
         }

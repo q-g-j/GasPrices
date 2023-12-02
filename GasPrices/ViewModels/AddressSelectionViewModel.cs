@@ -6,13 +6,14 @@ using CommunityToolkit.Mvvm.Input;
 using GasPrices.Services;
 using GasPrices.Store;
 using HttpClient.Exceptions;
-using SettingsFile.Models;
 using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using GasPrices.PageTransitions;
-using SettingsFile;
+using Serilog;
+using SettingsHandling;
+using SettingsHandling.Models;
 using Xamarin.Essentials;
 
 namespace GasPrices.ViewModels;
@@ -29,8 +30,8 @@ public partial class AddressSelectionViewModel : ViewModelBase
         IMapClient mapClient,
         IGasPricesClient gasPricesClient,
         AppStateStore appStateStore,
-        SettingsFileReader settingsFileReader,
-        SettingsFileWriter settingsFileWriter,
+        ISettingsReader settingsReader,
+        ISettingsWriter settingsWriter,
         NavigationService<MainNavigationStore> mainNavigationService)
     {
         _mainNavigationService = mainNavigationService;
@@ -38,8 +39,8 @@ public partial class AddressSelectionViewModel : ViewModelBase
         _mapClient = mapClient;
         _appStateStore = appStateStore;
         _gasPricesClient = gasPricesClient;
-        _settingsFileReader = settingsFileReader;
-        _settingsFileWriter = settingsFileWriter;
+        _settingsReader = settingsReader;
+        _settingsWriter = settingsWriter;
 
         if (OperatingSystem.IsAndroid())
         {
@@ -49,9 +50,9 @@ public partial class AddressSelectionViewModel : ViewModelBase
 
         Task.Run(async () =>
         {
-            await ProcessApiKeyAsync();
             await ProcessCoordsAsync();
             await ProcessSettingsAsync();
+            await ProcessApiKeyAsync();
         });
     }
 
@@ -63,8 +64,8 @@ public partial class AddressSelectionViewModel : ViewModelBase
     private readonly AppStateStore? _appStateStore;
     private readonly IMapClient? _mapClient;
     private readonly IGasPricesClient? _gasPricesClient;
-    private readonly SettingsFileReader? _settingsFileReader;
-    private readonly SettingsFileWriter? _settingsFileWriter;
+    private readonly ISettingsReader? _settingsReader;
+    private readonly ISettingsWriter? _settingsWriter;
 
     private Settings? _settings;
     private bool _hasStreetFocus;
@@ -225,7 +226,7 @@ public partial class AddressSelectionViewModel : ViewModelBase
             if (coords != null)
             {
                 var stations =
-                    await _gasPricesClient?.GetStationsAsync(_settings!.TankerkönigApiKey!, coords, RadiusInt)!;
+                    await _gasPricesClient?.GetStationsAsync(_settings!.TankerkoenigApiKey!, coords, RadiusInt)!;
 
                 if (stations is { Count: > 0 })
                 {
@@ -299,10 +300,9 @@ public partial class AddressSelectionViewModel : ViewModelBase
 
     #region private methods
 
-    private async Task ProcessApiKeyAsync()
+    private Task ProcessApiKeyAsync()
     {
-        _settings = await _settingsFileReader!.ReadAsync();
-        if (_settings == null || string.IsNullOrEmpty(_settings?.TankerkönigApiKey))
+        if (_settings == null || string.IsNullOrEmpty(_settings?.TankerkoenigApiKey))
         {
             SearchButtonIsEnabled = false;
             var warning = new StringBuilder();
@@ -311,11 +311,13 @@ public partial class AddressSelectionViewModel : ViewModelBase
             WarningText = warning.ToString();
             WarningTextIsVisible = true;
         }
+
+        return Task.CompletedTask;
     }
 
     private async Task ProcessSettingsAsync()
     {
-        _settings = await _settingsFileReader?.ReadAsync()!;
+        _settings = await _settingsReader?.ReadAsync()!;
 
         if (_appStateStore?.Distance != null)
         {
@@ -425,7 +427,7 @@ public partial class AddressSelectionViewModel : ViewModelBase
         _appStateStore!.Address = address;
         _appStateStore.Distance = RadiusInt;
 
-        var settings = await _settingsFileReader?.ReadAsync()!;
+        var settings = await _settingsReader?.ReadAsync()!;
         settings ??= new Settings();
 
         settings.LastKnownStreet = Street;
@@ -452,7 +454,7 @@ public partial class AddressSelectionViewModel : ViewModelBase
             }
         }
 
-        await _settingsFileWriter!.WriteAsync(settings);
+        await _settingsWriter!.WriteAsync(settings);
     }
 
     private void ResetCachedCoords()

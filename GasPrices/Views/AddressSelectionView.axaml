@@ -11,8 +11,7 @@
              mc:Ignorable="d"
              d:DesignWidth="{Binding $parent[Window].Width}"
              d:DesignHeight="{Binding $parent[Window].Height}"
-             MinWidth="400"
-             MinHeight="600"
+
              MaxWidth="600"
              MaxHeight="800">
 

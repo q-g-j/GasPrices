@@ -7,14 +7,14 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GasPrices.Services;
 using HttpClient.Exceptions;
-using SettingsFile.Models;
 using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using GasPrices.PageTransitions;
 using GasPrices.Store;
-using SettingsFile;
+using SettingsHandling;
+using SettingsHandling.Models;
 
 namespace GasPrices.ViewModels;
 
@@ -28,13 +28,13 @@ public partial class SettingsViewModel : ViewModelBase
 
     public SettingsViewModel(
         NavigationService<MainNavigationStore> mainNavigationService,
-        SettingsFileReader? settingsFileReader,
-        SettingsFileWriter? settingsFileWriter,
+        ISettingsReader? settingsReader,
+        ISettingsWriter? settingsWriter,
         IGasPricesClient gasPricesClient)
     {
         _mainNavigationService = mainNavigationService;
-        _settingsFileReader = settingsFileReader;
-        _settingsFileWriter = settingsFileWriter;
+        _settingsReader = settingsReader;
+        _settingsWriter = settingsWriter;
         _gasPricesClient = gasPricesClient;
         
         if (OperatingSystem.IsAndroid())
@@ -50,8 +50,8 @@ public partial class SettingsViewModel : ViewModelBase
     #region private fields
 
     private readonly NavigationService<MainNavigationStore>? _mainNavigationService;
-    private readonly SettingsFileReader? _settingsFileReader;
-    private readonly SettingsFileWriter? _settingsFileWriter;
+    private readonly ISettingsReader? _settingsReader;
+    private readonly ISettingsWriter? _settingsWriter;
     private readonly IGasPricesClient? _gasPricesClient;
 
     private CancellationTokenSource? _cancellationTokenSource;
@@ -78,10 +78,10 @@ public partial class SettingsViewModel : ViewModelBase
     [RelayCommand]
     public async Task InitializedCommand()
     {
-        var settings = await _settingsFileReader!.ReadAsync();
-        if (settings != null && !string.IsNullOrEmpty(settings.TankerkönigApiKey))
+        var settings = await _settingsReader!.ReadAsync();
+        if (settings != null && !string.IsNullOrEmpty(settings.TankerkoenigApiKey))
         {
-            TankerKoenigApiKey = settings.TankerkönigApiKey;
+            TankerKoenigApiKey = settings.TankerkoenigApiKey;
         }
     }
     
@@ -157,9 +157,9 @@ public partial class SettingsViewModel : ViewModelBase
     {
         var settings = new Settings
         {
-            TankerkönigApiKey = TankerKoenigApiKey
+            TankerkoenigApiKey = TankerKoenigApiKey
         };
-        await _settingsFileWriter!.WriteAsync(settings);
+        await _settingsWriter!.WriteAsync(settings);
         _mainNavigationService!.Navigate<AddressSelectionViewModel, CustomCrossFadePageTransition>();
     }
 

@@ -1,7 +1,9 @@
 ﻿using ApiClients.Models;
 using HttpClient;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace ApiClients
@@ -17,8 +19,7 @@ namespace ApiClients
 
         public async Task<List<Station>?> GetStationsAsync(string apiKey, Coords coords, int radius)
         {
-            var url =
-                $@"https://creativecommons.tankerkoenig.de/json/list.php?lat={coords.Latitude}&lng={coords.Longitude}&rad={radius}&type=all&apikey={apiKey}";
+            var url = $@"https://creativecommons.tankerkoenig.de/json/list.php?lat={coords.Latitude.ToString(CultureInfo.InvariantCulture)}&lng={coords.Longitude.ToString(CultureInfo.InvariantCulture)}&rad={radius}&type=all&apikey={apiKey}";
 
             var result = await _httpClientRepository.GetAsync(url);
 
