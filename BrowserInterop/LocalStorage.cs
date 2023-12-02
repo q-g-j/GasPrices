@@ -1,10 +1,10 @@
 ﻿using System.Runtime.InteropServices.JavaScript;
 using System.Runtime.Versioning;
 
-namespace Interop;
+namespace BrowserInterop;
 
 [SupportedOSPlatform("browser")]
-public static partial class Interop
+public static partial class LocalStorage
 {
     [JSImport("set", "local_storage")]
     public static partial void Set(string key, string? value);
@@ -14,4 +14,7 @@ public static partial class Interop
 
     [JSImport("clear", "local_storage")]
     public static partial void Clear();
+
+    [JSImport("remove", "local_storage")]
+    public static partial void Remove(string key);
 }
