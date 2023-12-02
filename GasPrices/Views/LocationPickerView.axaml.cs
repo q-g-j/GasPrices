@@ -29,14 +29,14 @@ public partial class LocationPickerView : UserControl
         _appStateStore = appStateStore;
         _settingsReader = settingsReader;
         InitializeComponent();
-        
+
         Initialize().FireAndForget();
     }
 
     private readonly AppStateStore? _appStateStore;
     private readonly ISettingsReader? _settingsReader;
     private GenericCollectionLayer<List<IFeature>>? _pinLayer;
-    private  MPoint? _cachedPoint;
+    private MPoint? _cachedPoint;
     private MPoint? _cachedMapPoint;
 
     private void SetupMap()

@@ -1,114 +1,115 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
-		<Nullable>enable</Nullable>
-		<LangVersion>latest</LangVersion>
-		<Platforms>AnyCPU;ARM64</Platforms>
-		<PublishTrimmed>true</PublishTrimmed>
-		<TrimMode>partial</TrimMode>
-	</PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <Platforms>AnyCPU;ARM64</Platforms>
+        <PublishTrimmed>true</PublishTrimmed>
+        <TrimMode>link</TrimMode>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<AvaloniaResource Include="Assets\**" />
-	</ItemGroup>
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**"/>
+    </ItemGroup>
 
-	<ItemGroup>
-		<None Remove="Assets\Fonts\Inter-Black.otf" />
-		<None Remove="Assets\Fonts\Inter-BlackItalic.otf" />
-		<None Remove="Assets\Fonts\Inter-Bold.otf" />
-		<None Remove="Assets\Fonts\Inter-BoldItalic.otf" />
-		<None Remove="Assets\Fonts\Inter-ExtraBold.otf" />
-		<None Remove="Assets\Fonts\Inter-ExtraBoldItalic.otf" />
-		<None Remove="Assets\Fonts\Inter-ExtraLight.otf" />
-		<None Remove="Assets\Fonts\Inter-ExtraLightItalic.otf" />
-		<None Remove="Assets\Fonts\Inter-Italic.otf" />
-		<None Remove="Assets\Fonts\Inter-Light.otf" />
-		<None Remove="Assets\Fonts\Inter-LightItalic.otf" />
-		<None Remove="Assets\Fonts\Inter-Medium.otf" />
-		<None Remove="Assets\Fonts\Inter-MediumItalic.otf" />
-		<None Remove="Assets\Fonts\Inter-Regular.otf" />
-		<None Remove="Assets\Fonts\Inter-SemiBold.otf" />
-		<None Remove="Assets\Fonts\Inter-SemiBoldItalic.otf" />
-		<None Remove="Assets\Fonts\Inter-Thin.otf" />
-		<None Remove="Assets\Fonts\Inter-ThinItalic.otf" />
-		<None Remove="Assets\Fonts\Inter-V.ttf" />
-		<None Remove="Assets\Fonts\selawk.ttf" />
-		<None Remove="Assets\Images\location.png" />
-		<None Remove="Assets\Images\Pin.svg" />
-	</ItemGroup>
+    <ItemGroup>
+        <None Remove="Assets\Fonts\Inter-Black.otf"/>
+        <None Remove="Assets\Fonts\Inter-BlackItalic.otf"/>
+        <None Remove="Assets\Fonts\Inter-Bold.otf"/>
+        <None Remove="Assets\Fonts\Inter-BoldItalic.otf"/>
+        <None Remove="Assets\Fonts\Inter-ExtraBold.otf"/>
+        <None Remove="Assets\Fonts\Inter-ExtraBoldItalic.otf"/>
+        <None Remove="Assets\Fonts\Inter-ExtraLight.otf"/>
+        <None Remove="Assets\Fonts\Inter-ExtraLightItalic.otf"/>
+        <None Remove="Assets\Fonts\Inter-Italic.otf"/>
+        <None Remove="Assets\Fonts\Inter-Light.otf"/>
+        <None Remove="Assets\Fonts\Inter-LightItalic.otf"/>
+        <None Remove="Assets\Fonts\Inter-Medium.otf"/>
+        <None Remove="Assets\Fonts\Inter-MediumItalic.otf"/>
+        <None Remove="Assets\Fonts\Inter-Regular.otf"/>
+        <None Remove="Assets\Fonts\Inter-SemiBold.otf"/>
+        <None Remove="Assets\Fonts\Inter-SemiBoldItalic.otf"/>
+        <None Remove="Assets\Fonts\Inter-Thin.otf"/>
+        <None Remove="Assets\Fonts\Inter-ThinItalic.otf"/>
+        <None Remove="Assets\Fonts\Inter-V.ttf"/>
+        <None Remove="Assets\Fonts\selawk.ttf"/>
+        <None Remove="Assets\Images\location.png"/>
+        <None Remove="Assets\Images\Pin.svg"/>
+    </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Avalonia" Version="11.0.5" />
-		<PackageReference Include="Avalonia.Browser" Version="11.0.5" />
-		<PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.5" />
-		<PackageReference Include="Avalonia.Skia" Version="11.0.5" />
-		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.5" />
-		<PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.5" />
-		<PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.5" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.0.5"/>
+        <PackageReference Include="Avalonia.Browser" Version="11.0.5"/>
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.5"/>
+        <PackageReference Include="Avalonia.Skia" Version="11.0.5"/>
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.5"/>
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.5"/>
+        <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.5"/>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2"/>
 
-		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.5" />
-		<PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.3" />
-		<PackageReference Include="Mapsui" Version="4.1.1" />
-		<PackageReference Include="Mapsui.Avalonia" Version="4.1.1" />
-		<PackageReference Include="Mapsui.Extensions" Version="4.1.1" />
-		<PackageReference Include="MessageBox.Avalonia" Version="3.1.5.1" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.8.0" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
-		<PackageReference Include="Serilog" Version="3.1.1" />
-		<PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
-		<PackageReference Include="Serilog.Sinks.BrowserConsole" Version="2.0.0" />
-		<PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
-		<PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
-		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-		<PackageReference Include="Xamarin.Essentials" Version="1.8.0" />
-	</ItemGroup>
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.5"/>
+        <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.3"/>
+        <PackageReference Include="Mapsui" Version="4.1.1"/>
+        <PackageReference Include="Mapsui.Avalonia" Version="4.1.1"/>
+        <PackageReference Include="Mapsui.Extensions" Version="4.1.1"/>
+        <PackageReference Include="MessageBox.Avalonia" Version="3.1.5.1"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.8.0"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0"/>
+        <PackageReference Include="Serilog" Version="3.1.1"/>
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0"/>
+        <PackageReference Include="Serilog.Sinks.BrowserConsole" Version="2.0.0"/>
+        <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1"/>
+        <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0"/>
+        <PackageReference Include="Serilog.Sinks.File" Version="5.0.0"/>
+        <PackageReference Include="Xamarin.Essentials" Version="1.8.0"/>
+    </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\ApiClients\ApiClients.csproj" />
-		<ProjectReference Include="..\HttpClient\HttpClient.csproj" />
-		<ProjectReference Include="..\SettingsHandling\SettingsHandling.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\ApiClients\ApiClients.csproj"/>
+        <ProjectReference Include="..\HttpClient\HttpClient.csproj"/>
+        <ProjectReference Include="..\SettingsHandling\SettingsHandling.csproj"/>
+    </ItemGroup>
 
-	<ItemGroup>
-	  <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-Bold.otf">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </AvaloniaResource>
-	  <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-BoldItalic.otf">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </AvaloniaResource>
-	  <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-Extralight.otf">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </AvaloniaResource>
-	  <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-ExtralightItalic.otf">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </AvaloniaResource>
-	  <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-Italic.otf">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </AvaloniaResource>
-	  <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-Light.otf">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </AvaloniaResource>
-	  <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-LightItalic.otf">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </AvaloniaResource>
-	  <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-Medium.otf">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </AvaloniaResource>
-	  <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-MediumItalic.otf">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </AvaloniaResource>
-	  <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-Regular.otf">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </AvaloniaResource>
-	  <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-Semibold.otf">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </AvaloniaResource>
-	  <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-SemiboldItalic.otf">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </AvaloniaResource>
-	</ItemGroup>
+    <ItemGroup>
+        <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-Bold.otf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+        <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-BoldItalic.otf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+        <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-Extralight.otf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+        <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-ExtralightItalic.otf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+        <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-Italic.otf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+        <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-Light.otf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+        <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-LightItalic.otf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+        <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-Medium.otf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+        <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-MediumItalic.otf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+        <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-Regular.otf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+        <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-Semibold.otf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+        <AvaloniaResource Update="Assets\Fonts\GeneralSans_Complete\Fonts\OTF\GeneralSans-SemiboldItalic.otf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+    </ItemGroup>
 </Project>

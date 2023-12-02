@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace HttpClient.Exceptions
+namespace HttpClient.Exceptions;
+
+public class HttpClientException : Exception
 {
-    public class HttpClientException : Exception
+    public HttpClientException(string message) : base(message)
     {
-        public HttpClientException(string message) : base(message)
-        {
-        }
     }
 }

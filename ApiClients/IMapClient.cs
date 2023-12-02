@@ -1,11 +1,10 @@
 ﻿using ApiClients.Models;
 using System.Threading.Tasks;
 
-namespace ApiClients
+namespace ApiClients;
+
+public interface IMapClient
 {
-    public interface IMapClient
-    {
-        Task<Coords?> GetCoordsAsync(Address address);
-        Task<Address?> GetAddressAsync(Coords coords);
-    }
+    Task<Coords?> GetCoordsAsync(Address address);
+    Task<Address?> GetAddressAsync(Coords coords);
 }
