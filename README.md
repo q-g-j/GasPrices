@@ -17,4 +17,5 @@ Sowohl bei der Kartenposition als auch nach der Nutzung des Standortdienstes erf
 |-|-|
 |GasPrices.Desktop|- Windows<br/>- Linux<br/>- MacOS|
 |GasPrices.Android|Android-Geräte|
+|~~GasPrices.iOS~~|iPhone / iPad<br/>*Deaktiviert, da ich es nicht testen kann*|
 |GasPrices.Browser|Plattformunabhängige Webassembly-App|
