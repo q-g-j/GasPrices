@@ -12,7 +12,7 @@ internal static class Program
 {
     private static async Task Main(string[] _)
     {
-        await JSHost.ImportAsync("local_storage", "./local_storage.js");
+        await JSHost.ImportAsync("local_storage", "/local_storage.js");
 
         await BuildAvaloniaApp()
             .WithInterFont()
