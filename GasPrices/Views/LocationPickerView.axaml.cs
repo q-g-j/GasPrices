@@ -28,7 +28,7 @@ public partial class LocationPickerView : UserControl
     {
         _appStateStore = appStateStore;
         _settingsReader = settingsReader;
-        
+
         InitializeComponent();
 
         Initialize().FireAndForget();
@@ -70,20 +70,15 @@ public partial class LocationPickerView : UserControl
 
         MapControl.Map.Home += _ =>
         {
-            var zoomLevel = 2;
-            var duration = 1000;
-            if (_cachedPoint == null)
+            if (_cachedPoint != null)
             {
-                zoomLevel = 3000;
-                duration = 0;
+                MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint!, 3, 0);
+                PlacePin(_cachedMapPoint);
             }
             else
             {
                 MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint!, 3000, 0);
-                PlacePin(_cachedMapPoint);
             }
-
-            MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint!, zoomLevel, duration);
         };
 
         MapControl.Tapped += (_, e) =>
@@ -115,7 +110,6 @@ public partial class LocationPickerView : UserControl
 
     private async Task Initialize()
     {
-
         var settings = await _settingsReader!.ReadAsync();
         if (settings is { LastKnownLatitude: not null, LastKnownLongitude: not null })
         {
@@ -127,5 +121,6 @@ public partial class LocationPickerView : UserControl
                 _appStateStore.CoordsFromMapClient.Latitude);
         }
 
-        SetupMap();}
+        SetupMap();
+    }
 }
