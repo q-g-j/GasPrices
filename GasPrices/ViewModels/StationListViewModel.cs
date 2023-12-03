@@ -21,6 +21,7 @@ public partial class StationListViewModel : ViewModelBase
     {
     }
 
+
     public StationListViewModel(
         NavigationService<ResultsNavigationStore> resultsNavigationService,
         AppStateStore appStateStore,
@@ -101,7 +102,7 @@ public partial class StationListViewModel : ViewModelBase
             _ => "Price"
         };
 
-        SortStations([.. Stations]);
+        SortStations([..Stations]);
 
         UpdateSettingsAsync().FireAndForget();
     }
@@ -116,7 +117,6 @@ public partial class StationListViewModel : ViewModelBase
         _gasType = new GasType("E5");
 
         var settings = await _settingsReader!.ReadAsync();
-
         if (!string.IsNullOrEmpty(settings!.SortBy))
         {
             _sortBy = settings.SortBy;
@@ -165,9 +165,9 @@ public partial class StationListViewModel : ViewModelBase
     {
         Stations = _sortBy switch
         {
-            "Name" => [.. stations.OrderBy(s => s.Name)],
-            "Price" => [.. stations.OrderBy(s => s.Price)],
-            "Distance" => [.. stations.OrderBy(s => s.Distance)],
+            "Name" => stations.OrderBy(s => s.Name).ToList(),
+            "Price" => stations.OrderBy(s => s.Price).ToList(),
+            "Distance" => stations.OrderBy(s => s.Distance).ToList(),
             _ => Stations
         };
     }

@@ -1,13 +1,6 @@
-﻿using System;
-using System.Runtime.InteropServices.JavaScript;
-using System.Threading.Tasks;
-using Avalonia.Animation;
+﻿using Avalonia.Animation;
 using CommunityToolkit.Mvvm.ComponentModel;
 using GasPrices.Store;
-using GasPrices.Utilities;
-using Microsoft.Extensions.Logging;
-using Serilog;
-using ILogger = Serilog.ILogger;
 
 namespace GasPrices.ViewModels;
 
@@ -19,10 +12,9 @@ public partial class MainViewModel : ViewModelBase
     {
     }
 
-    public MainViewModel(MainNavigationStore mainNavigationStore, ILogger<MainViewModel> logger)
+    public MainViewModel(MainNavigationStore mainNavigationStore)
     {
         _mainNavigationStore = mainNavigationStore;
-        _logger = logger;
         _currentViewModel = _mainNavigationStore.CurrentViewModel;
 
         _mainNavigationStore.CurrentViewModelChanged += () =>
@@ -37,7 +29,6 @@ public partial class MainViewModel : ViewModelBase
     #region private fields
 
     private readonly MainNavigationStore? _mainNavigationStore;
-    private readonly ILogger<MainViewModel> _logger;
 
     #endregion private fields
 

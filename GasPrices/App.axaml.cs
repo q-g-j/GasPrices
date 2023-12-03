@@ -9,21 +9,23 @@ using GasPrices.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Runtime.InteropServices.JavaScript;
-using System.Threading.Tasks;
 using GasPrices.PageTransitions;
 using GasPrices.Store;
-using Serilog;
 
 namespace GasPrices;
 
 public class App : Application
 {
-    public App()
-    {
-    }
+    private readonly IHost? _host;
 
     public event Action? BackPressed;
+
+    public App()
+    {
+        _host = new HostBuilder()
+            .AddServices()
+            .Build();
+    }
 
     public override void Initialize()
     {
@@ -32,29 +34,31 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        var host = new HostBuilder()
-            .AddServices()
-            .AddMainView(ApplicationLifetime is IClassicDesktopStyleApplicationLifetime)
-            .Build();
+        _host?.Start();
 
-        var viewLocator = host.Services.GetService<ViewLocatorService>();
+        var viewLocator = _host?.Services.GetService<ViewLocatorService>();
         DataTemplates.Add(viewLocator!);
 
-        var navigationService = host.Services.GetRequiredService<NavigationService<MainNavigationStore>>();
-        navigationService.Navigate<AddressSelectionViewModel, CustomCrossFadePageTransition>();
+        var navigationService = _host?.Services.GetRequiredService<NavigationService<MainNavigationStore>>();
+        navigationService?.Navigate<AddressSelectionViewModel, CustomCrossFadePageTransition>();
 
         // Line below is needed to remove Avalonia data validation.
         // Without this line you will get duplicate validations from both Avalonia and CT
         BindingPlugins.DataValidators.RemoveAt(0);
 
-        switch (ApplicationLifetime)
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            case IClassicDesktopStyleApplicationLifetime desktop:
-                desktop.MainWindow = host.Services.GetService<MainWindow>();
-                break;
-            case ISingleViewApplicationLifetime singleViewPlatform:
-                singleViewPlatform.MainView = host.Services.GetService<MainView>();
-                break;
+            desktop.MainWindow = new MainWindow
+            {
+                DataContext = _host?.Services.GetService<MainViewModel>()
+            };
+        }
+        else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
+        {
+            singleViewPlatform.MainView = new MainView
+            {
+                DataContext = _host?.Services.GetService<MainViewModel>()
+            };
         }
 
         base.OnFrameworkInitializationCompleted();

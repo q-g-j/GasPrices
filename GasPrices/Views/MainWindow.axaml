@@ -8,7 +8,7 @@
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
         Icon="/Assets/avalonia-logo.ico"
         Title="OpenSpritpreise"
-        Width="500"
+        Width="400"
         Height="800">
 
     <Design.DataContext>

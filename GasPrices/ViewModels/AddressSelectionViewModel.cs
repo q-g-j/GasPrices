@@ -6,14 +6,13 @@ using CommunityToolkit.Mvvm.Input;
 using GasPrices.Services;
 using GasPrices.Store;
 using HttpClient.Exceptions;
+using SettingsHandling.Models;
 using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using GasPrices.PageTransitions;
-using Serilog;
 using SettingsHandling;
-using SettingsHandling.Models;
 using Xamarin.Essentials;
 
 namespace GasPrices.ViewModels;
@@ -50,9 +49,9 @@ public partial class AddressSelectionViewModel : ViewModelBase
 
         Task.Run(async () =>
         {
+            await ProcessApiKeyAsync();
             await ProcessCoordsAsync();
             await ProcessSettingsAsync();
-            await ProcessApiKeyAsync();
         });
     }
 
@@ -300,8 +299,9 @@ public partial class AddressSelectionViewModel : ViewModelBase
 
     #region private methods
 
-    private Task ProcessApiKeyAsync()
+    private async Task ProcessApiKeyAsync()
     {
+        _settings = await _settingsReader!.ReadAsync();
         if (_settings == null || string.IsNullOrEmpty(_settings?.TankerkoenigApiKey))
         {
             SearchButtonIsEnabled = false;
@@ -311,8 +311,6 @@ public partial class AddressSelectionViewModel : ViewModelBase
             WarningText = warning.ToString();
             WarningTextIsVisible = true;
         }
-
-        return Task.CompletedTask;
     }
 
     private async Task ProcessSettingsAsync()

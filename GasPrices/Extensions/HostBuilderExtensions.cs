@@ -47,9 +47,7 @@ namespace GasPrices.Extensions
                 services.AddTransient<SettingsViewModel>();
 
                 // Add PageTransitions:
-                services
-                    .AddTransient<
-                        CustomCrossFadePageTransition>();
+                services.AddTransient<CustomCrossFadePageTransition>();
                 services
                     .AddTransient<
                         CustomCompositePageTransition<CustomCrossFadePageTransition, SlideLeftPageTransition>>();
@@ -101,31 +99,6 @@ namespace GasPrices.Extensions
 
                     return new SettingsFileReader(globals.SettingsFileFullPath);
                 });
-            });
-            return hostBuilder;
-        }
-
-        public static IHostBuilder AddMainView(
-            this IHostBuilder hostBuilder,
-            bool isDesktop)
-        {
-            hostBuilder.ConfigureServices(services =>
-            {
-                switch (isDesktop)
-                {
-                    case true:
-                        services.AddTransient(sp => new MainWindow
-                        {
-                            DataContext = sp.GetRequiredService<MainViewModel>()
-                        });
-                        break;
-                    case false:
-                        services.AddTransient(sp => new MainView()
-                        {
-                            DataContext = sp.GetRequiredService<MainViewModel>()
-                        });
-                        break;
-                }
             });
             return hostBuilder;
         }

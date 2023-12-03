@@ -28,6 +28,7 @@ public partial class LocationPickerView : UserControl
     {
         _appStateStore = appStateStore;
         _settingsReader = settingsReader;
+        
         InitializeComponent();
 
         Initialize().FireAndForget();
@@ -114,6 +115,7 @@ public partial class LocationPickerView : UserControl
 
     private async Task Initialize()
     {
+
         var settings = await _settingsReader!.ReadAsync();
         if (settings is { LastKnownLatitude: not null, LastKnownLongitude: not null })
         {
@@ -125,6 +127,5 @@ public partial class LocationPickerView : UserControl
                 _appStateStore.CoordsFromMapClient.Latitude);
         }
 
-        SetupMap();
-    }
+        SetupMap();}
 }

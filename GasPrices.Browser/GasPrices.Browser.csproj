@@ -5,6 +5,7 @@
         <WasmMainJSPath>AppBundle\main.js</WasmMainJSPath>
         <OutputType>Exe</OutputType>
         <UserSecretsId>db15e372-ad9c-42c0-8e98-00822d2ba1af</UserSecretsId>
+        <LangVersion>default</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,6 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\GasPrices\GasPrices.csproj"/>
+      <ProjectReference Include="..\GasPrices\GasPrices.csproj" />
     </ItemGroup>
 </Project>

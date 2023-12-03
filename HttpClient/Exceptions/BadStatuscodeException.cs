@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Net;
 
-namespace HttpClient.Exceptions;
-
-public class BadStatuscodeException : Exception
+namespace HttpClient.Exceptions
 {
-    public BadStatuscodeException(HttpStatusCode statusCode, string message) : base(message)
+    public class BadStatuscodeException : Exception
     {
-        StatusCode = statusCode;
-    }
+        public BadStatuscodeException(HttpStatusCode statusCode, string message) : base(message)
+        {
+            StatusCode = statusCode;
+        }
 
-    public HttpStatusCode? StatusCode { get; set; }
+        public HttpStatusCode? StatusCode { get; set; }
+    }
 }

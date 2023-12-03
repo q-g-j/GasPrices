@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GasPrices.Services;
 using HttpClient.Exceptions;
+using SettingsHandling.Models;
 using System;
 using System.Text;
 using System.Threading;
@@ -14,7 +15,6 @@ using System.Threading.Tasks;
 using GasPrices.PageTransitions;
 using GasPrices.Store;
 using SettingsHandling;
-using SettingsHandling.Models;
 
 namespace GasPrices.ViewModels;
 

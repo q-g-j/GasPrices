@@ -4,6 +4,7 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<Platforms>AnyCPU;x64</Platforms>
+		<PublishTrimmed>false</PublishTrimmed>
 		<LangVersion>default</LangVersion>
 	</PropertyGroup>
 
