@@ -64,4 +64,10 @@
         <ProjectReference Include="..\HttpClient\HttpClient.csproj"/>
         <ProjectReference Include="..\SettingsHandling\SettingsHandling.csproj"/>
     </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="System.Drawing.Common">
+        <HintPath>..\GasPrices.Desktop\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll</HintPath>
+      </Reference>
+    </ItemGroup>
 </Project>

@@ -10,8 +10,6 @@ public class SettingsLocalStorageWriter : ISettingsWriter
 {
     public Task WriteAsync(Settings? settings)
     {
-        LocalStorage.Clear();
-
         LocalStorage.Set(nameof(settings.TankerkoenigApiKey), settings!.TankerkoenigApiKey);
         LocalStorage.Set(nameof(settings.LastKnownStreet), settings!.LastKnownStreet);
         LocalStorage.Set(nameof(settings.LastKnownCity), settings!.LastKnownCity);

@@ -5,8 +5,8 @@
     <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.Resources>
-        <FontFamily x:Key="Normal">/Assets/Fonts/GeneralSans_Complete/Fonts/OTF/GeneralSans-Regular.otf</FontFamily>
-        <FontFamily x:Key="SemiBold">/Assets/Fonts/GeneralSans_Complete/Fonts/OTF/GeneralSans-SemiBold.otf</FontFamily>
+        <FontFamily x:Key="Normal">/Assets/Fonts/Inter/static/Inter-Regular.ttf#Inter</FontFamily>
+        <FontFamily x:Key="SemiBold">/Assets/Fonts/Inter/static/Inter-SemiBold.ttf#Inter</FontFamily>
         <FontFamily x:Key="Mono">/Assets/Fonts/BrutalistMono/BrutalistMono.ttf#Brutalist Mono</FontFamily>
     </Application.Resources>
 

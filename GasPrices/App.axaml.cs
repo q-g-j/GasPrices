@@ -9,6 +9,7 @@ using GasPrices.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Drawing.Text;
 using GasPrices.PageTransitions;
 using GasPrices.Store;
 

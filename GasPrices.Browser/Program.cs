@@ -10,15 +10,15 @@ namespace GasPrices.Browser;
 
 internal static class Program
 {
-    private static Task Main(string[] _)
+    private static async Task Main(string[] _)
     {
-        JSHost.ImportAsync("local_storage", "./local_storage.js");
+        await JSHost.ImportAsync("local_storage", "./local_storage.js");
 
-        return BuildAvaloniaApp()
+        await BuildAvaloniaApp()
             .WithInterFont()
             .StartBrowserAppAsync("out");
     }
 
-    public static AppBuilder BuildAvaloniaApp()
+    private static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>();
 }
