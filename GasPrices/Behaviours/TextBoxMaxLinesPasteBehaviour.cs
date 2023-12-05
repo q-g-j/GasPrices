@@ -3,6 +3,7 @@ using Avalonia.Interactivity;
 using Avalonia.Xaml.Interactivity;
 using System;
 using System.Threading.Tasks;
+using GasPrices.Utilities;
 
 namespace GasPrices.Behaviours;
 
@@ -39,26 +40,33 @@ public class TextBoxMaxLinesPasteBehaviour : Behavior<TextBox>
         var clipboard = TopLevel.GetTopLevel(textBox)!.Clipboard;
         var text = await clipboard!.GetTextAsync() ?? string.Empty;
 
-        if (textBox is { MaxLines: 1, AcceptsReturn: false })
+        DispatcherUtils.Invoke(() =>
         {
-            text = text.Replace(Environment.NewLine, " ") 
+            if (textBox is not { MaxLines: 1, AcceptsReturn: false }) return;
+            
+            text = text.Replace(Environment.NewLine, " ")
                 .Replace("\r", " ")
                 .Replace("\t", " ");
             while (text.Contains("  "))
             {
-                text = text.Replace("  ", " "); 
+                text = text.Replace("  ", " ");
             }
+
             if (text.Length > 0 && text[0] == ' ')
             {
                 text = text[1..];
             }
+
             if (text.Length > 0 && text[^1] == ' ')
             {
                 text = text[..^1];
             }
 
-            textBox.Text = text;
+            var cursorIndex = textBox.CaretIndex;
+            var textNew = textBox.Text!.Insert(cursorIndex, text);
+            textBox.Text = textNew;
+            textBox.CaretIndex = cursorIndex + text.Length;
             e.Handled = true;
-        }
+        });
     }
 }
