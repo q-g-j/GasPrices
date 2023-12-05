@@ -1,10 +1,8 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Xaml.Interactivity;
 using System;
-using Avalonia;
+using System.Threading.Tasks;
 
 namespace GasPrices.Behaviours;
 
@@ -20,19 +18,9 @@ public class TextBoxMaxLinesPasteBehaviour : Behavior<TextBox>
         base.OnAttached();
     }
 
-    private async void IsPastingFromClipboard(object? sender, RoutedEventArgs e)
+    private static void IsPastingFromClipboard(object? sender, RoutedEventArgs e)
     {
-        IClipboard clipboard = (Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)!.MainWindow!.Clipboard!;
-        var t = await clipboard.GetTextAsync() ?? string.Empty;
-
-        if (AssociatedObject is not null && AssociatedObject.MaxLines == 1 && !AssociatedObject.AcceptsReturn)
-        {
-            AssociatedObject.Text = t.Replace(Environment.NewLine, " ");
-            e.Handled = true;
-            return;
-        }
-
-        e.Handled = false;
+        Task.Run(async () => await IsPastingFromClipBoardAsync(sender, e));
     }
 
     protected override void OnDetaching()
@@ -43,5 +31,34 @@ public class TextBoxMaxLinesPasteBehaviour : Behavior<TextBox>
         }
 
         base.OnDetaching();
+    }
+
+    private static async Task IsPastingFromClipBoardAsync(object? sender, RoutedEventArgs e)
+    {
+        if (sender is not TextBox textBox) return;
+        var clipboard = TopLevel.GetTopLevel(textBox)!.Clipboard;
+        var text = await clipboard!.GetTextAsync() ?? string.Empty;
+
+        if (textBox is { MaxLines: 1, AcceptsReturn: false })
+        {
+            text = text.Replace(Environment.NewLine, " ") 
+                .Replace("\r", " ")
+                .Replace("\t", " ");
+            while (text.Contains("  "))
+            {
+                text = text.Replace("  ", " "); 
+            }
+            if (text.Length > 0 && text[0] == ' ')
+            {
+                text = text[1..];
+            }
+            if (text.Length > 0 && text[^1] == ' ')
+            {
+                text = text[..^1];
+            }
+
+            textBox.Text = text;
+            e.Handled = true;
+        }
     }
 }
