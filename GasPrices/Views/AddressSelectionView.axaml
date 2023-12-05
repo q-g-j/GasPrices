@@ -6,7 +6,6 @@
              xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
              xmlns:progRing="using:AvaloniaProgressRing"
              xmlns:vm="using:GasPrices.ViewModels"
-             xmlns:behaviours="using:GasPrices.Behaviours"
              xmlns:converters="using:GasPrices.Converters"
              x:Class="GasPrices.Views.AddressSelectionView"
              mc:Ignorable="d"
@@ -120,8 +119,6 @@
                 Text="{Binding Street}">
                 
                 <i:Interaction.Behaviors>
-                    <behaviours:TextBoxMaxLinesPasteBehaviour />
-                    
                     <ia:EventTriggerBehavior EventName="GotFocus">
                         <ia:InvokeCommandAction Command="{Binding StreetFocusChangedCommand}" CommandParameter="True" />
                     </ia:EventTriggerBehavior>
@@ -148,8 +145,6 @@
                 MaxLines="1"
                 Text="{Binding PostalCode}">
                 <i:Interaction.Behaviors>
-                    <behaviours:TextBoxMaxLinesPasteBehaviour />
-                    
                     <ia:EventTriggerBehavior EventName="GotFocus">
                         <ia:InvokeCommandAction Command="{Binding PostalCodeFocusChangedCommand}"
                                                 CommandParameter="True" />
@@ -176,8 +171,6 @@
                 MaxLines="1"
                 Text="{Binding City}">
                 <i:Interaction.Behaviors>
-                    <behaviours:TextBoxMaxLinesPasteBehaviour />
-
                     <ia:EventTriggerBehavior EventName="GotFocus">
                         <ia:InvokeCommandAction Command="{Binding CityFocusChangedCommand}" CommandParameter="True" />
                     </ia:EventTriggerBehavior>
@@ -204,9 +197,6 @@
                     AcceptsReturn="False"
                     MaxLines="1"
                     Text="{Binding Radius}">
-                    <i:Interaction.Behaviors>
-                        <behaviours:TextBoxMaxLinesPasteBehaviour />
-                    </i:Interaction.Behaviors>
                 </TextBox>
                 <TextBlock
                     Margin="0, 0, 0, 0"
