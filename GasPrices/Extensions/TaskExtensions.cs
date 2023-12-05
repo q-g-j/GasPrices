@@ -6,11 +6,11 @@ namespace GasPrices.Extensions;
 
 public static class TaskExtensions
 {
-    public static async void FireAndForget(this Task task)
+    public static void FireAndForget(this Task task)
     {
         try
         {
-            await task;
+            Task.Run(async () => await task);
         }
         catch (Exception)
         {
