@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using BrowserInterop;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GasPrices.Models;
@@ -45,7 +46,11 @@ public partial class StationDetailsViewModel : ViewModelBase
 
     private static async Task OpenBrowser(Uri uri)
     {
-        if (OperatingSystem.IsAndroid())
+        if (OperatingSystem.IsBrowser())
+        {
+            UrlHandler.OpenInNewTab(uri.ToString());
+        }
+        else if (OperatingSystem.IsAndroid())
         {
             await Browser.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
         }

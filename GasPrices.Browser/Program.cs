@@ -3,6 +3,7 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Browser;
+using Serilog;
 
 [assembly: SupportedOSPlatform("browser")]
 
@@ -13,6 +14,8 @@ internal static class Program
     private static async Task Main(string[] _)
     {
         await JSHost.ImportAsync("local_storage", "/local_storage.js");
+        await JSHost.ImportAsync("webapi_client", "/webapi_client.js");
+        await JSHost.ImportAsync("url_handler", "/url_handler.js");
 
         await BuildAvaloniaApp()
             .WithInterFont()
@@ -20,5 +23,9 @@ internal static class Program
     }
 
     private static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>();
+    {
+        var appBuilder = AppBuilder.Configure<App>();
+
+        return appBuilder;
+    }
 }

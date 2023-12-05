@@ -36,7 +36,7 @@ public partial class SettingsViewModel : ViewModelBase
         _settingsReader = settingsReader;
         _settingsWriter = settingsWriter;
         _gasPricesClient = gasPricesClient;
-        
+
         if (OperatingSystem.IsAndroid())
         {
             CancelButtonIsVisible = false;
@@ -84,22 +84,20 @@ public partial class SettingsViewModel : ViewModelBase
             TankerKoenigApiKey = settings.TankerkoenigApiKey;
         }
     }
-    
+
     [RelayCommand]
     public Task KeyDownCommand(object sender)
     {
         var e = sender as KeyEventArgs;
-        if (e?.Key == Key.Enter || e?.Key == Key.Return)
+        if (e?.Key != Key.Enter && e?.Key != Key.Return) return Task.CompletedTask;
+        e.Handled = true;
+        if (_isValidated)
         {
-            e.Handled = true;
-            if (_isValidated)
-            {
-                return SaveCommand();
-            }
-            else if (ValidateButtonIsEnabled)
-            {
-                return ValidateCommand();
-            }
+            return SaveCommand();
+        }
+        else if (ValidateButtonIsEnabled)
+        {
+            return ValidateCommand();
         }
 
         return Task.CompletedTask;

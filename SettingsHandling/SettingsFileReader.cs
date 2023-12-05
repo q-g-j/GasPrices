@@ -5,26 +5,18 @@ using SettingsHandling.Models;
 
 namespace SettingsHandling;
 
-public class SettingsFileReader : ISettingsReader
+public class SettingsFileReader(string? settingsFileFullPath) : ISettingsReader
 {
-    private readonly string? _settingsFileFullPath;
-
-    public SettingsFileReader(string? settingsFileFullPath)
-    {
-        _settingsFileFullPath = settingsFileFullPath;
-    }
-
-
     public async Task<Settings?> ReadAsync()
     {
         Settings? settings = null;
 
-        if (!File.Exists(_settingsFileFullPath))
+        if (!File.Exists(settingsFileFullPath))
         {
             return settings;
         }
 
-        using var streamReader = new StreamReader(_settingsFileFullPath!);
+        using var streamReader = new StreamReader(settingsFileFullPath!);
         var settingsJson = await streamReader.ReadToEndAsync();
 
         settings = JsonConvert.DeserializeObject<Settings>(settingsJson);

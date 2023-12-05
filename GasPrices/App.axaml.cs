@@ -9,24 +9,19 @@ using GasPrices.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Drawing.Text;
 using GasPrices.PageTransitions;
 using GasPrices.Store;
+using Serilog;
 
 namespace GasPrices;
 
 public class App : Application
 {
-    private readonly IHost? _host;
+    private readonly IHost? _host = new HostBuilder()
+        .AddServices()
+        .Build();
 
     public event Action? BackPressed;
-
-    public App()
-    {
-        _host = new HostBuilder()
-            .AddServices()
-            .Build();
-    }
 
     public override void Initialize()
     {
@@ -36,6 +31,11 @@ public class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         _host?.Start();
+        
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.BrowserConsole()
+            .WriteTo.Debug()
+            .CreateLogger();
 
         var viewLocator = _host?.Services.GetService<ViewLocatorService>();
         DataTemplates.Add(viewLocator!);

@@ -14,6 +14,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\BrowserInterop\BrowserInterop.csproj" />
 		<ProjectReference Include="..\HttpClient\HttpClient.csproj" />
 	</ItemGroup>
 

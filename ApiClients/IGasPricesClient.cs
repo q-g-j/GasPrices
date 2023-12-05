@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ApiClients
+namespace ApiClients;
+
+public interface IGasPricesClient
 {
-    public interface IGasPricesClient
-    {
-        Task<List<Station>?> GetStationsAsync(string apiKey, Coords coords, int radius);
-    }
+    Task<List<Station>?> GetStationsAsync(string apiKey, Coords coords, int radius);
 }

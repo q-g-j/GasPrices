@@ -1,59 +1,72 @@
-﻿using ApiClients.Models;
+﻿using System;
+using ApiClients.Models;
 using HttpClient;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
+using BrowserInterop;
 
-namespace ApiClients
+namespace ApiClients;
+
+public class TankerkönigClient(HttpClientRepository httpClientRepository) : IGasPricesClient
 {
-    public class TankerkönigClient : IGasPricesClient
+    public async Task<List<Station>?> GetStationsAsync(string apiKey, Coords coords, int radius)
     {
-        private readonly HttpClientRepository _httpClientRepository;
+        var url = string.Format(CultureInfo.InvariantCulture,
+            "https://creativecommons.tankerkoenig.de/json/list.php?lat={0}&lng={1}&rad={2}&type=all&apikey={3}",
+            coords.Latitude, coords.Longitude, radius, apiKey);
 
-        public TankerkönigClient(HttpClientRepository httpClientRepository)
+        var result = string.Empty;
+
+        try
         {
-            _httpClientRepository = httpClientRepository;
+            if (OperatingSystem.IsBrowser())
+            {
+                result = await WebApiClient.GetAsync(url);
+            }
+            else
+            {
+                result = await httpClientRepository.GetAsync(url);
+            }
+        }
+        catch
+        {
+            Console.WriteLine(result);
+            throw;
         }
 
-        public async Task<List<Station>?> GetStationsAsync(string apiKey, Coords coords, int radius)
+        if (string.IsNullOrEmpty(result))
         {
-            var url =
-                $@"https://creativecommons.tankerkoenig.de/json/list.php?lat={coords.Latitude}&lng={coords.Longitude}&rad={radius}&type=all&apikey={apiKey}";
-
-            var result = await _httpClientRepository.GetAsync(url);
-
-            if (string.IsNullOrEmpty(result))
-            {
-                return null;
-            }
-
-            dynamic? jsonObject = JsonConvert.DeserializeObject(result);
-
-            if (jsonObject == null || jsonObject?.stations == null) return null;
-
-            var stations = new List<Station>();
-            var stationsObject = JsonConvert.DeserializeObject<List<dynamic>>(jsonObject?.stations.ToString());
-            foreach (var station in stationsObject)
-            {
-                var stationModel = new Station
-                {
-                    Name = station.name,
-                    Brand = station.brand,
-                    Distance = station.dist,
-                    Street = station.street,
-                    HouseNumber = station.houseNumber,
-                    City = station.place,
-                    IsOpen = station.isOpen,
-                    PostalCode = station.postCode,
-                    E5 = station.e5,
-                    E10 = station.e10,
-                    Diesel = station.diesel
-                };
-
-                stations.Add(stationModel);
-            }
-
-            return stations;
+            return null;
         }
+
+        dynamic? jsonObject = JsonConvert.DeserializeObject(result);
+
+        if (jsonObject == null || jsonObject?.stations == null) return null;
+
+        var stations = new List<Station>();
+        var stationsObject = JsonConvert.DeserializeObject<List<dynamic>>(jsonObject?.stations.ToString());
+        foreach (var station in stationsObject)
+        {
+            var stationModel = new Station
+            {
+                Name = station.name,
+                Brand = station.brand,
+                Distance = station.dist,
+                Street = station.street,
+                HouseNumber = station.houseNumber,
+                City = station.place,
+                IsOpen = station.isOpen,
+                PostalCode = station.postCode,
+                E5 = station.e5,
+                E10 = station.e10,
+                Diesel = station.diesel
+            };
+
+            stations.Add(stationModel);
+        }
+
+        return stations;
     }
 }

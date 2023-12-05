@@ -5,10 +5,10 @@ using GasPrices.Store;
 using GasPrices.ViewModels;
 using GasPrices.Views;
 using HttpClient;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using GasPrices.PageTransitions;
+using Microsoft.Extensions.DependencyInjection;
 using SettingsHandling;
 
 namespace GasPrices.Extensions
@@ -26,8 +26,8 @@ namespace GasPrices.Extensions
                 services.AddSingleton<AppStateStore>();
 
                 // Add HttpClient functionality:
-                services.AddHttpClient();
                 services.AddTransient<HttpClientRepository>();
+                services.AddHttpClient();
 
                 // Add Views:
                 services.AddTransient<AddressSelectionView>();
