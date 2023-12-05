@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i="using:Avalonia.Xaml.Interactivity"
              xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+             xmlns:behaviours="using:GasPrices.Behaviours"
              xmlns:vm="using:GasPrices.ViewModels"
              xmlns:progRing="using:AvaloniaProgressRing"
              x:Class="GasPrices.Views.SettingsView"
@@ -53,8 +54,15 @@
 			Grid.Row="1"
 			Margin="0, 0, 0, 20"
 			FontFamily="{StaticResource Mono}"
+			AcceptsReturn="False"
+			MaxLines="1"
 			Text="{Binding TankerKoenigApiKey}">
+			
+			<i:Interaction.Behaviors>
+				<behaviours:TextBoxMaxLinesPasteBehaviour />
+			</i:Interaction.Behaviors>
 		</TextBox>
+		
 		<Button
 			Grid.Row="2"
 			HorizontalAlignment="Stretch"

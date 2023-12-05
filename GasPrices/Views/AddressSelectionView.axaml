@@ -6,6 +6,7 @@
              xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
              xmlns:progRing="using:AvaloniaProgressRing"
              xmlns:vm="using:GasPrices.ViewModels"
+             xmlns:behaviours="using:GasPrices.Behaviours"
              xmlns:converters="using:GasPrices.Converters"
              x:Class="GasPrices.Views.AddressSelectionView"
              mc:Ignorable="d"
@@ -114,8 +115,13 @@
                 Grid.Column="0"
                 Grid.Row="3"
                 Margin="0, 0, 0, 10"
+                AcceptsReturn="False"
+                MaxLines="1"
                 Text="{Binding Street}">
+                
                 <i:Interaction.Behaviors>
+                    <behaviours:TextBoxMaxLinesPasteBehaviour />
+                    
                     <ia:EventTriggerBehavior EventName="GotFocus">
                         <ia:InvokeCommandAction Command="{Binding StreetFocusChangedCommand}" CommandParameter="True" />
                     </ia:EventTriggerBehavior>
@@ -138,8 +144,12 @@
                 Width="100"
                 HorizontalAlignment="Left"
                 Margin="0, 0, 0, 10"
+                AcceptsReturn="False"
+                MaxLines="1"
                 Text="{Binding PostalCode}">
                 <i:Interaction.Behaviors>
+                    <behaviours:TextBoxMaxLinesPasteBehaviour />
+                    
                     <ia:EventTriggerBehavior EventName="GotFocus">
                         <ia:InvokeCommandAction Command="{Binding PostalCodeFocusChangedCommand}"
                                                 CommandParameter="True" />
@@ -162,8 +172,12 @@
                 Grid.Column="0"
                 Grid.Row="7"
                 Margin="0, 0, 0, 10"
+                AcceptsReturn="False"
+                MaxLines="1"
                 Text="{Binding City}">
                 <i:Interaction.Behaviors>
+                    <behaviours:TextBoxMaxLinesPasteBehaviour />
+
                     <ia:EventTriggerBehavior EventName="GotFocus">
                         <ia:InvokeCommandAction Command="{Binding CityFocusChangedCommand}" CommandParameter="True" />
                     </ia:EventTriggerBehavior>
@@ -187,7 +201,12 @@
                 Orientation="Horizontal">
                 <TextBox
                     Margin="0, 0, 10, 0"
+                    AcceptsReturn="False"
+                    MaxLines="1"
                     Text="{Binding Radius}">
+                    <i:Interaction.Behaviors>
+                        <behaviours:TextBoxMaxLinesPasteBehaviour />
+                    </i:Interaction.Behaviors>
                 </TextBox>
                 <TextBlock
                     Margin="0, 0, 0, 0"
