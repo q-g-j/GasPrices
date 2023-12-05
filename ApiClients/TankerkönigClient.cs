@@ -23,7 +23,7 @@ public class TankerkönigClient(HttpClientRepository httpClientRepository) : IGa
         {
             if (OperatingSystem.IsBrowser())
             {
-                result = await WebApiClient.GetAsync(url);
+                result = await JsWebApiClient.GetAsync(url);
             }
             else
             {

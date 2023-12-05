@@ -48,7 +48,7 @@ public partial class StationDetailsViewModel : ViewModelBase
     {
         if (OperatingSystem.IsBrowser())
         {
-            UrlHandler.OpenInNewTab(uri.ToString());
+            JsUrlHandler.OpenInNewTab(uri.ToString());
         }
         else if (OperatingSystem.IsAndroid())
         {

@@ -4,7 +4,7 @@ using System.Runtime.Versioning;
 namespace BrowserInterop;
 
 [SupportedOSPlatform("browser")]
-public static partial class LocalStorage
+public static partial class JsLocalStorage
 {
     [JSImport("set", "local_storage")]
     public static partial void Set(string key, string? value);
