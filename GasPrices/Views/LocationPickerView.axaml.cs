@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using GasPrices.Store;
 using Mapsui.Tiling;
@@ -13,6 +14,7 @@ using GasPrices.Extensions;
 using Mapsui.Nts;
 using Mapsui.UI.Avalonia.Extensions;
 using GasPrices.ViewModels;
+using Mapsui.Rendering.Skia;
 using SettingsHandling;
 
 namespace GasPrices.Views;
@@ -72,7 +74,14 @@ public partial class LocationPickerView : UserControl
         {
             if (_cachedPoint != null)
             {
-                MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint!, 3, 0);
+                var duration = 0;
+                if (!OperatingSystem.IsBrowser())
+                {
+                    MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint!, 3000, 0);
+                    duration = 1000;
+
+                }
+                MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint!, 3, duration);
                 PlacePin(_cachedMapPoint);
             }
             else

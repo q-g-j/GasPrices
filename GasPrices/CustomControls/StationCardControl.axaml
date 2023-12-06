@@ -39,7 +39,18 @@
         <Setter Property="Margin" Value="10, 0, 0, 0" />
         <Setter Property="FontFamily" Value="{StaticResource Normal}" />
         <Setter Property="FontSize" Value="18" />
-        <Setter Property="TextAlignment" Value="Right" />
+        <Setter Property="TextAlignment" Value="Left" />
+    </Style>
+    <Style Selector="controls|StationCardControl TextBlock.price_thousandth">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Margin" Value="0, 0, 0, 0" />
+    </Style>
+    <Style Selector="controls|StationCardControl TextBlock.euro">
+        <Setter Property="Margin" Value="5, 0, 0, 0" />
+        <Setter Property="FontFamily" Value="{StaticResource Normal}" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="Text" Value="€" />
     </Style>
 
     <Style Selector="controls|StationCardControl">
@@ -142,18 +153,27 @@
                             ColumnDefinitions="Auto, Auto"
                             RowDefinitions="Auto, Auto, Auto"
                             HorizontalAlignment="Center">
+
                             <TextBlock
                                 Grid.Column="0"
                                 Grid.Row="0"
                                 Classes="price_label"
                                 Text="E5:">
                             </TextBlock>
-                            <TextBlock
+                            <StackPanel
                                 Grid.Column="1"
                                 Grid.Row="0"
-                                Classes="price"
-                                Text="{Binding Station.E5, StringFormat=0.000 €, RelativeSource={RelativeSource TemplatedParent}}">
-                            </TextBlock>
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    Classes="price"
+                                    Text="{Binding Station.E5, StringFormat=0.00, RelativeSource={RelativeSource TemplatedParent}}">
+                                </TextBlock>
+                                <TextBlock
+                                    Classes="price_thousandth"
+                                    Text="{Binding Station.E5Thousandth, RelativeSource={RelativeSource TemplatedParent}}">
+                                </TextBlock>
+                                <TextBlock Classes="euro" />
+                            </StackPanel>
 
                             <TextBlock
                                 Grid.Column="0"
@@ -161,12 +181,20 @@
                                 Classes="price_label"
                                 Text="E10:">
                             </TextBlock>
-                            <TextBlock
+                            <StackPanel
                                 Grid.Column="1"
                                 Grid.Row="1"
-                                Classes="price"
-                                Text="{Binding Station.E10, StringFormat=0.000 €, RelativeSource={RelativeSource TemplatedParent}}">
-                            </TextBlock>
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    Classes="price"
+                                    Text="{Binding Station.E10, StringFormat=0.00, RelativeSource={RelativeSource TemplatedParent}}">
+                                </TextBlock>
+                                <TextBlock
+                                    Classes="price_thousandth"
+                                    Text="{Binding Station.E10Thousandth, RelativeSource={RelativeSource TemplatedParent}}">
+                                </TextBlock>
+                                <TextBlock Classes="euro" />
+                            </StackPanel>
 
                             <TextBlock
                                 Grid.Column="0"
@@ -174,12 +202,20 @@
                                 Classes="price_label"
                                 Text="Diesel:">
                             </TextBlock>
-                            <TextBlock
+                            <StackPanel
                                 Grid.Column="1"
                                 Grid.Row="2"
-                                Classes="price"
-                                Text="{Binding Station.Diesel, StringFormat=0.000 €, RelativeSource={RelativeSource TemplatedParent}}">
-                            </TextBlock>
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    Classes="price"
+                                    Text="{Binding Station.Diesel, StringFormat=0.00, RelativeSource={RelativeSource TemplatedParent}}">
+                                </TextBlock>
+                                <TextBlock
+                                    Classes="price_thousandth"
+                                    Text="{Binding Station.DieselThousandth, RelativeSource={RelativeSource TemplatedParent}}">
+                                </TextBlock>
+                                <TextBlock Classes="euro" />
+                            </StackPanel>
                         </Grid>
 
                     </Grid>

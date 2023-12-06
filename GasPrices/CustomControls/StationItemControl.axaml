@@ -9,19 +9,19 @@
         </Grid>
     </Design.PreviewWith>
 
-    <Style Selector="controls|StationItemControl TextBlock.tb_price">
+    <Style Selector="controls|StationItemControl TextBlock.price">
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="FontFamily" Value="{StaticResource SemiBold}" />
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
-    <Style Selector="controls|StationItemControl TextBlock.tb_price_thousandth">
+    <Style Selector="controls|StationItemControl TextBlock.price_thousandth">
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontSize" Value="9" />
         <Setter Property="Margin" Value="0, -5, 0, 0" />
     </Style>
 
-    <Style Selector="controls|StationItemControl TextBlock.tb_brand">
+    <Style Selector="controls|StationItemControl TextBlock.brand">
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="FontFamily" Value="{StaticResource SemiBold}" />
@@ -29,13 +29,13 @@
         <Setter Property="TextAlignment" Value="Left" />
     </Style>
 
-    <Style Selector="controls|StationItemControl TextBlock.tb_full_address">
+    <Style Selector="controls|StationItemControl TextBlock.full_address">
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontSize" Value="11" />
         <Setter Property="TextAlignment" Value="Left" />
     </Style>
 
-    <Style Selector="controls|StationItemControl TextBlock.tb_distance">
+    <Style Selector="controls|StationItemControl TextBlock.distance">
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontFamily" Value="{StaticResource SemiBold}" />
@@ -72,11 +72,11 @@
                             Margin="0, 0, 10, 0">
                             <TextBlock
                                 Text="{Binding Station.Price, RelativeSource={RelativeSource TemplatedParent}, StringFormat=0.00}"
-                                Classes="tb_price">
+                                Classes="price">
                             </TextBlock>
                             <TextBlock
-                                Text="{Binding Station.PriceThousandth, RelativeSource={RelativeSource TemplatedParent}}"
-                                Classes="tb_price_thousandth">
+                                Text="{Binding Station.SelectedFuelThousandth, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="price_thousandth">
                             </TextBlock>
                         </StackPanel>
                         <StackPanel
@@ -84,12 +84,12 @@
                             Grid.Row="0">
                             <TextBlock
                                 Text="{Binding Station.Brand, RelativeSource={RelativeSource TemplatedParent}}"
-                                Classes="tb_brand">
+                                Classes="brand">
                             </TextBlock>
                             <TextBlock
                                 Margin="0, 3, 0, 0"
                                 Text="{Binding Station.FullAddress, RelativeSource={RelativeSource TemplatedParent}}"
-                                Classes="tb_full_address">
+                                Classes="full_address">
                             </TextBlock>
                         </StackPanel>
                         <Border
@@ -109,13 +109,13 @@
                                     Text="{Binding Station.DistanceInUnit, RelativeSource={RelativeSource TemplatedParent}}"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    Classes="tb_distance">
+                                    Classes="distance">
                                 </TextBlock>
                                 <TextBlock
                                     Text="{Binding Station.DistanceUnit, RelativeSource={RelativeSource TemplatedParent}}"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    Classes="tb_distance">
+                                    Classes="distance">
                                 </TextBlock>
                             </StackPanel>
                         </Border>

@@ -57,7 +57,10 @@ public class DisplayStation
             DistanceInUnit = Distance;
         }
 
-        PriceThousandth = int.Parse(Price.ToString()![4].ToString());
+        E5Thousandth = int.Parse(E5.ToString()![4].ToString());
+        E10Thousandth = int.Parse(E10.ToString()![4].ToString());
+        DieselThousandth = int.Parse(Diesel.ToString()![4].ToString());
+        SelectedFuelThousandth = int.Parse(Price.ToString()![4].ToString());
         Price = double.Parse(Price.ToString()![..4]);
     }
 
@@ -75,7 +78,10 @@ public class DisplayStation
     public double? E5 { get; set; }
     public double? E10 { get; set; }
     public double? Price { get; set; }
-    public int PriceThousandth { get; set; }
+    public int SelectedFuelThousandth { get; set; }
+    public int E5Thousandth { get; set; }
+    public int E10Thousandth { get; set; }
+    public int DieselThousandth { get; set; }
     public string IsOpen { get; set; }
 
     public string GetUriData()
