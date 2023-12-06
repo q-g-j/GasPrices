@@ -457,12 +457,10 @@ public partial class AddressSelectionViewModel : ViewModelBase
 
     private void ResetCachedCoords()
     {
-        if (_hasStreetFocus || _hasPostalCodeFocus || _hasCityFocus)
-        {
-            _appStateStore!.CoordsFromMapClient = null;
-            MapCoordinates = null;
-            MapCoordinatesIsVisible = false;
-        }
+        if (!_hasStreetFocus && !_hasPostalCodeFocus && !_hasCityFocus) return;
+        _appStateStore!.CoordsFromMapClient = null;
+        MapCoordinates = null;
+        MapCoordinatesIsVisible = false;
     }
 
     private async Task<Coords?> GetCoordsFromAddressFields()

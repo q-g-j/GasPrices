@@ -44,19 +44,16 @@ public partial class LocationPickerView : UserControl
 
     private void SetupMap()
     {
+        // Add OpenStreeMap Layer:
         MapControl.Map.Layers.Add(OpenStreetMap.CreateTileLayer());
         
+        // Limit viewport size to Germany:
         var germanyPanBounds = GetLimitsOfGermany();
         MapControl.Map.Layers.Add(CreatePanBoundsLayer(germanyPanBounds));
         MapControl.Map.Navigator.Limiter = new ViewportLimiterKeepWithinExtent();
         MapControl.Map.Navigator.OverridePanBounds = germanyPanBounds;
-        
-        MapControl.Map.Navigator.RotationLock = true;
-        MapControl.UnSnapRotationDegrees = 30;
-        MapControl.ReSnapRotationDegrees = 5;
 
-        var pointLonLat = _cachedPoint ?? new MPoint(10.447683, 51.163361);
-
+        // Add pins Layer:
         _pinLayer = new GenericCollectionLayer<List<IFeature>>
         {
             Style = SymbolStyles.CreatePinStyle()
@@ -64,22 +61,34 @@ public partial class LocationPickerView : UserControl
         MapControl.Map.Layers.Add(_pinLayer);
         MapControl.Map.Layers[0].IsMapInfoLayer = false;
 
+        // Convert cached world coordinates to map coordinates:
+        var pointLonLat = _cachedPoint ?? new MPoint(10.447683, 51.163361);
         _cachedMapPoint = SphericalMercator.FromLonLat(pointLonLat);
+        
+        // Disable rotation:        
+        MapControl.Map.Navigator.RotationLock = true;
 
+        // Setup Home-Event (fired, when map is loaded):
         MapControl.Map.Home += n =>
         {
-            n.ZoomToBox(germanyPanBounds);
-
+            // if there are cached coordinates, zoom in and place a pin:
             if (_cachedPoint == null) return;
-            
+
             var duration = 0;
+
             if (!OperatingSystem.IsBrowser())
             {
                 duration = 1000;
-            }
-            n.CenterOnAndZoomTo(_cachedMapPoint!, 3, duration);
                 
-            PlacePin(_cachedMapPoint);
+                // fix cached coords not being centered during zooming animation:
+                MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint, 500);
+            }
+
+            // Center the map on the cached point
+            n.CenterOnAndZoomTo(_cachedMapPoint, 3, duration);
+
+            // Place the pin
+            PlacePin(_cachedMapPoint); 
         };
 
         MapControl.Tapped += (_, e) =>
@@ -108,8 +117,9 @@ public partial class LocationPickerView : UserControl
 
         _pinLayer?.DataHasChanged();
     }
-
-    private async Task Initialize()
+    
+    // Try to get existing coordinates from settings, then from the app state store:
+    private async Task ProcessSettingsAndState()
     {
         var settings = await _settingsReader!.ReadAsync();
         if (settings is { LastKnownLatitude: not null, LastKnownLongitude: not null })
@@ -121,17 +131,22 @@ public partial class LocationPickerView : UserControl
             _cachedPoint = new MPoint(_appStateStore.CoordsFromMapClient.Longitude,
                 _appStateStore.CoordsFromMapClient.Latitude);
         }
+    }
 
+    private async Task Initialize()
+    {
+        await ProcessSettingsAndState();
+        
         SetupMap();
-    }    
+    }
     
     private static MRect GetLimitsOfGermany()
     {
         var (minX, minY) = SphericalMercator.FromLonLat(5.866240, 47.270111);
         var (maxX, maxY) = SphericalMercator.FromLonLat(15.042050, 54.983104);
 
-        // Increase the height to both sides
-        const double extraHeight = 100000.0; // You can adjust this value as needed
+        // Increase the height to both sides:
+        const double extraHeight = 100000.0;
         minY -= extraHeight;
         maxY += extraHeight;
 
@@ -140,7 +155,6 @@ public partial class LocationPickerView : UserControl
 
     private static MemoryLayer CreatePanBoundsLayer(MRect panBounds)
     {
-        // This layer is only for visualizing the pan bounds. It is not needed for the limiter.
         return new MemoryLayer("PanBounds")
         {
             Features = new[] { new RectFeature(panBounds) },
