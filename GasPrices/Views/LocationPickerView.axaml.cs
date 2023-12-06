@@ -14,7 +14,7 @@ using GasPrices.Extensions;
 using Mapsui.Nts;
 using Mapsui.UI.Avalonia.Extensions;
 using GasPrices.ViewModels;
-using Mapsui.Rendering.Skia;
+using Mapsui.Limiting;
 using SettingsHandling;
 
 namespace GasPrices.Views;
@@ -45,21 +45,17 @@ public partial class LocationPickerView : UserControl
     private void SetupMap()
     {
         MapControl.Map.Layers.Add(OpenStreetMap.CreateTileLayer());
-
-        MapControl.Map.Navigator.RotationLock = false;
+        
+        var germanyPanBounds = GetLimitsOfGermany();
+        MapControl.Map.Layers.Add(CreatePanBoundsLayer(germanyPanBounds));
+        MapControl.Map.Navigator.Limiter = new ViewportLimiterKeepWithinExtent();
+        MapControl.Map.Navigator.OverridePanBounds = germanyPanBounds;
+        
+        MapControl.Map.Navigator.RotationLock = true;
         MapControl.UnSnapRotationDegrees = 30;
         MapControl.ReSnapRotationDegrees = 5;
 
-        MPoint pointLonLat;
-
-        if (_cachedPoint != null)
-        {
-            pointLonLat = _cachedPoint;
-        }
-        else
-        {
-            pointLonLat = new MPoint(10.447683, 51.163361);
-        }
+        var pointLonLat = _cachedPoint ?? new MPoint(10.447683, 51.163361);
 
         _pinLayer = new GenericCollectionLayer<List<IFeature>>
         {
@@ -70,24 +66,20 @@ public partial class LocationPickerView : UserControl
 
         _cachedMapPoint = SphericalMercator.FromLonLat(pointLonLat);
 
-        MapControl.Map.Home += _ =>
+        MapControl.Map.Home += n =>
         {
-            if (_cachedPoint != null)
-            {
-                var duration = 0;
-                if (!OperatingSystem.IsBrowser())
-                {
-                    MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint!, 3000, 0);
-                    duration = 1000;
+            n.ZoomToBox(germanyPanBounds);
 
-                }
-                MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint!, 3, duration);
-                PlacePin(_cachedMapPoint);
-            }
-            else
+            if (_cachedPoint == null) return;
+            
+            var duration = 0;
+            if (!OperatingSystem.IsBrowser())
             {
-                MapControl.Map.Navigator.CenterOnAndZoomTo(_cachedMapPoint!, 3000, 0);
+                duration = 1000;
             }
+            n.CenterOnAndZoomTo(_cachedMapPoint!, 3, duration);
+                
+            PlacePin(_cachedMapPoint);
         };
 
         MapControl.Tapped += (_, e) =>
@@ -131,5 +123,28 @@ public partial class LocationPickerView : UserControl
         }
 
         SetupMap();
+    }    
+    
+    private static MRect GetLimitsOfGermany()
+    {
+        var (minX, minY) = SphericalMercator.FromLonLat(5.866240, 47.270111);
+        var (maxX, maxY) = SphericalMercator.FromLonLat(15.042050, 54.983104);
+
+        // Increase the height to both sides
+        const double extraHeight = 100000.0; // You can adjust this value as needed
+        minY -= extraHeight;
+        maxY += extraHeight;
+
+        return new MRect(minX, minY, maxX, maxY);
+    }
+
+    private static MemoryLayer CreatePanBoundsLayer(MRect panBounds)
+    {
+        // This layer is only for visualizing the pan bounds. It is not needed for the limiter.
+        return new MemoryLayer("PanBounds")
+        {
+            Features = new[] { new RectFeature(panBounds) },
+            Style = new VectorStyle { Fill = null }
+        };
     }
 }
