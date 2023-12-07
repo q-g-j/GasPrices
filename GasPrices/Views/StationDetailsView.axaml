@@ -5,6 +5,8 @@
              xmlns:vm="using:GasPrices.ViewModels"
              xmlns:controls="using:GasPrices.CustomControls"
              x:Class="GasPrices.Views.StationDetailsView"
+             x:DataType="vm:StationDetailsViewModel"
+             x:CompileBindings="True"
              mc:Ignorable="d"
              d:DesignWidth="380">
 

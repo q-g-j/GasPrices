@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:GasPrices.CustomControls"
              xmlns:vm="using:GasPrices.ViewModels"
+             x:Class="GasPrices.Views.StationListView"
+             x:DataType="vm:StationListViewModel"
+             x:CompileBindings="True"
              mc:Ignorable="d"
-             d:DesignWidth="400" d:DesignHeight="800"
-             x:Class="GasPrices.Views.StationListView">
+             d:DesignWidth="400" d:DesignHeight="800">
 
     <Design.DataContext>
         <vm:StationListViewModel />

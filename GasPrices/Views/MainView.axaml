@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:GasPrices.ViewModels"
              x:Class="GasPrices.Views.MainView"
+             x:DataType="vm:MainViewModel"
+             x:CompileBindings="True"
              mc:Ignorable="d"
              d:DesignWidth="{Binding $parent[Window].Width}"
-             d:DesignHeight="{Binding $parent[Window].Height}"
-             x:DataType="vm:MainViewModel">
+             d:DesignHeight="{Binding $parent[Window].Height}">
 
     <Design.DataContext>
         <vm:MainViewModel />

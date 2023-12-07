@@ -52,13 +52,13 @@ public partial class LocationPickerViewModel : ViewModelBase
     #region commands
 
     [RelayCommand]
-    public void ApplyCommand()
+    private void Apply()
     {
         _mainNavigationService?.Navigate<AddressSelectionViewModel, CustomCrossFadePageTransition>();
     }
 
     [RelayCommand]
-    public void BackCommand()
+    private void Back()
     {
         OnBackPressed();
     }

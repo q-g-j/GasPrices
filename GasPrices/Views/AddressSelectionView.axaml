@@ -8,6 +8,8 @@
              xmlns:vm="using:GasPrices.ViewModels"
              xmlns:converters="using:GasPrices.Converters"
              x:Class="GasPrices.Views.AddressSelectionView"
+             x:DataType="vm:AddressSelectionViewModel"
+             x:CompileBindings="True"
              mc:Ignorable="d"
              d:DesignWidth="{Binding $parent[Window].Width}"
              d:DesignHeight="{Binding $parent[Window].Height}"
@@ -68,7 +70,7 @@
                     Content="Aktueller Standort"
                     IsEnabled="{Binding GeolocationButtonIsEnabled}"
                     IsVisible="{Binding GeolocationButtonIsVisible}"
-                    Command="{Binding GeolocationCommand}">
+                    Command="{Binding DeviceGeolocationCommand}">
                 </Button>
 
                 <!-- Location picker button: -->

@@ -76,7 +76,7 @@ public partial class SettingsViewModel : ViewModelBase
     #region commands
 
     [RelayCommand]
-    public async Task InitializedCommand()
+    private async Task Initialized()
     {
         var settings = await _settingsReader!.ReadAsync();
         if (settings != null && !string.IsNullOrEmpty(settings.TankerkoenigApiKey))
@@ -86,25 +86,25 @@ public partial class SettingsViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public Task KeyDownCommand(object sender)
+    private Task KeyDown(object sender)
     {
         var e = sender as KeyEventArgs;
         if (e?.Key != Key.Enter && e?.Key != Key.Return) return Task.CompletedTask;
         e.Handled = true;
         if (_isValidated)
         {
-            return SaveCommand();
+            return Save();
         }
         else if (ValidateButtonIsEnabled)
         {
-            return ValidateCommand();
+            return Validate();
         }
 
         return Task.CompletedTask;
     }
 
     [RelayCommand]
-    public async Task ValidateCommand()
+    private async Task Validate()
     {
         var coords = new Coords(11.601314, 48.135788);
 
@@ -151,7 +151,7 @@ public partial class SettingsViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public async Task SaveCommand()
+    private async Task Save()
     {
         var settings = new Settings
         {
@@ -162,7 +162,7 @@ public partial class SettingsViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public void CancelCommand()
+    private void Cancel()
     {
         OnBackPressed();
     }

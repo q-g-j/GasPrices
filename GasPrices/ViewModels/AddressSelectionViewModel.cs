@@ -111,16 +111,16 @@ public partial class AddressSelectionViewModel : ViewModelBase
     #region commands
 
     [RelayCommand]
-    public void StreetFocusChangedCommand(object value) => _hasStreetFocus = value.ToString() == "True";
+    private void StreetFocusChanged(object value) => _hasStreetFocus = value.ToString() == "True";
 
     [RelayCommand]
-    public void PostalCodeFocusChangedCommand(object value) => _hasPostalCodeFocus = value.ToString() == "True";
+    private void PostalCodeFocusChanged(object value) => _hasPostalCodeFocus = value.ToString() == "True";
 
     [RelayCommand]
-    public void CityFocusChangedCommand(object value) => _hasCityFocus = value.ToString() == "True";
+    private void CityFocusChanged(object value) => _hasCityFocus = value.ToString() == "True";
 
     [RelayCommand]
-    public async Task GeolocationCommand()
+    private async Task DeviceGeolocation()
     {
         MapCoordinates = string.Empty;
         MapCoordinatesIsVisible = false;
@@ -155,7 +155,7 @@ public partial class AddressSelectionViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public async Task LocationPickerCommand()
+    private async Task LocationPicker()
     {
         LocationPickerButtonIsEnabled = false;
 
@@ -192,7 +192,7 @@ public partial class AddressSelectionViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public async Task SearchCommand()
+    private async Task Search()
     {
         if (Radius == "0")
         {
@@ -271,20 +271,20 @@ public partial class AddressSelectionViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public async Task OpenSettingsCommand()
+    private async Task OpenSettings()
     {
         await SaveCurrentAddressAsync();
         _mainNavigationService?.Navigate<SettingsViewModel, CustomCrossFadePageTransition>();
     }
 
     [RelayCommand]
-    public Task KeyDownCommand(object o)
+    private Task KeyDown(object o)
     {
         var e = o as KeyEventArgs;
         if (e?.Key is not (Key.Enter or Key.Return)) return Task.CompletedTask;
         if (!SearchButtonIsEnabled) return Task.CompletedTask;
         e.Handled = true;
-        return SearchCommand();
+        return Search();
     }
 
     #endregion commands

@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:GasPrices.ViewModels"
              x:Class="GasPrices.Views.ResultsView"
+             x:DataType="vm:ResultsViewModel"
+             x:CompileBindings="True"
              mc:Ignorable="d"
              d:DesignWidth="{Binding $parent[Window].Width}"
              d:DesignHeight="{Binding $parent[Window].Height}"

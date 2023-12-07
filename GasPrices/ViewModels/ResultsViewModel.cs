@@ -64,7 +64,7 @@ public partial class ResultsViewModel : ViewModelBase
     #region commands
 
     [RelayCommand]
-    public void BackCommand()
+    private void Back()
     {
         OnBackPressed();
     }

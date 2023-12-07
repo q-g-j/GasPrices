@@ -7,6 +7,8 @@
              xmlns:vm="using:GasPrices.ViewModels"
              xmlns:progRing="using:AvaloniaProgressRing"
              x:Class="GasPrices.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel"
+             x:CompileBindings="True"
              mc:Ignorable="d"
              d:DesignWidth="{Binding $parent[Window].Width}" 
              d:DesignHeight="{Binding $parent[Window].Height}"

@@ -5,9 +5,11 @@
              xmlns:map="using:Mapsui.UI.Avalonia"
              xmlns:vm="using:GasPrices.ViewModels"
              x:Class="GasPrices.Views.LocationPickerView"
+             x:DataType="vm:LocationPickerViewModel"
+             x:CompileBindings="True"
              mc:Ignorable="d"
-             d:DesignWidth="{Binding $parent[Window].Width}"
-             d:DesignHeight="{Binding $parent[Window].Height}"
+             d:DesignWidth="{CompiledBinding $parent[Window].Width}"
+             d:DesignHeight="{CompiledBinding $parent[Window].Height}"
              MaxWidth="600"
              MaxHeight="800">
 

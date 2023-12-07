@@ -6,6 +6,8 @@
         <Platforms>AnyCPU;ARM64</Platforms>
         <PublishTrimmed>true</PublishTrimmed>
         <TrimMode>partial</TrimMode>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+
     </PropertyGroup>
 
     <ItemGroup>
@@ -36,45 +38,45 @@
         <None Remove="Assets\Images\location.png"/>
         <None Remove="Assets\Images\Pin.svg"/>
         <None Update="Assets\Shapefiles\de_10km.dbf">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
         <None Update="Assets\Shapefiles\de_10km.png">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
         <None Update="Assets\Shapefiles\de_10km.prj">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
         <None Update="Assets\Shapefiles\de_10km.shp">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
         <None Update="Assets\Shapefiles\de_10km.shx">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.0.6" />
-        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.6" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.6" />
+        <PackageReference Include="Avalonia" Version="11.0.6"/>
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.6"/>
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6"/>
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.6"/>
         <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.5"/>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2"/>
 
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.6" />
-        <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.3" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.6"/>
+        <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.3"/>
         <PackageReference Include="Mapsui" Version="4.1.1"/>
         <PackageReference Include="Mapsui.Avalonia" Version="4.1.1"/>
         <PackageReference Include="Mapsui.Extensions" Version="4.1.1"/>
-        <PackageReference Include="MessageBox.Avalonia" Version="3.1.5.1" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.8.0" />
+        <PackageReference Include="MessageBox.Avalonia" Version="3.1.5.1"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.8.0"/>
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0"/>
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0"/>
-        <PackageReference Include="Serilog" Version="3.1.1" />
-        <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
-        <PackageReference Include="Serilog.Sinks.BrowserConsole" Version="2.0.0" />
-        <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
+        <PackageReference Include="Serilog" Version="3.1.1"/>
+        <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0"/>
+        <PackageReference Include="Serilog.Sinks.BrowserConsole" Version="2.0.0"/>
+        <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0"/>
         <PackageReference Include="Xamarin.Essentials" Version="1.8.0"/>
     </ItemGroup>
 
@@ -85,8 +87,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="System.Drawing.Common">
-        <HintPath>..\GasPrices.Desktop\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll</HintPath>
-      </Reference>
+        <Reference Include="System.Drawing.Common">
+            <HintPath>..\GasPrices.Desktop\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll</HintPath>
+        </Reference>
     </ItemGroup>
 </Project>
