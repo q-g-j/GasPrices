@@ -47,19 +47,20 @@ public class App : Application
         // Without this line you will get duplicate validations from both Avalonia and CT
         BindingPlugins.DataValidators.RemoveAt(0);
 
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        switch (ApplicationLifetime)
         {
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = _host?.Services.GetService<MainViewModel>()
-            };
-        }
-        else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
-        {
-            singleViewPlatform.MainView = new MainView
-            {
-                DataContext = _host?.Services.GetService<MainViewModel>()
-            };
+            case IClassicDesktopStyleApplicationLifetime desktop:
+                desktop.MainWindow = new MainWindow
+                {
+                    DataContext = _host?.Services.GetService<MainViewModel>()
+                };
+                break;
+            case ISingleViewApplicationLifetime singleViewPlatform:
+                singleViewPlatform.MainView = new MainView
+                {
+                    DataContext = _host?.Services.GetService<MainViewModel>()
+                };
+                break;
         }
 
         base.OnFrameworkInitializationCompleted();
@@ -73,5 +74,10 @@ public class App : Application
     public bool IsBackPressedSubscribed()
     {
         return BackPressed != null;
+    }
+
+    public static App GetCurrent()
+    {
+        return (App)Current!;
     }
 }

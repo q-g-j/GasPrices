@@ -36,16 +36,4 @@ public class MainActivity : AvaloniaMainActivity<App>
 
         base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
-    public override void OnBackPressed()
-    {
-        if (Avalonia.Application.Current is App app && app.IsBackPressedSubscribed())
-        {
-            app.OnBackPressed();
-        }
-        else
-        {
-            base.OnBackPressed();
-        }
-    }
 }

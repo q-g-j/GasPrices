@@ -40,7 +40,7 @@ public partial class ResultsViewModel : ViewModelBase
             BackButtonIsVisible = false;
         }
 
-        ((App)Application.Current!).BackPressed += OnBackPressed;
+        App.GetCurrent().BackPressed += OnBackPressed;
     }
 
     #endregion constructors
@@ -93,7 +93,7 @@ public partial class ResultsViewModel : ViewModelBase
 
     public override void Dispose()
     {
-        ((App)Application.Current!).BackPressed -= OnBackPressed;
+        App.GetCurrent().BackPressed -= OnBackPressed;
     }
 
     #endregion public overrides
