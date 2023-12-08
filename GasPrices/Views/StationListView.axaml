@@ -56,7 +56,6 @@
             </Style.Animations>
         </Style>
 
-
         <Style Selector="ListBox.fade_out Border#StationDistanceBorder">
             <Setter Property="Background" Value="Transparent" />
         </Style>

@@ -188,6 +188,13 @@ public partial class StationListViewModel : ViewModelBase
 
     private void SortStations()
     {
+        if (OperatingSystem.IsBrowser())
+        {
+            UpdateStations();
+            _isFirstRun = false;
+            return;
+        }
+        
         if (!_isFirstRun)
         {
             ListBoxFadeIn = false;
@@ -195,10 +202,8 @@ public partial class StationListViewModel : ViewModelBase
             _timer!.Start();
         }
         else
-
         {
             UpdateStations();
-
             _isFirstRun = false;
         }
     }
