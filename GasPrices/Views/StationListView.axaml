@@ -27,6 +27,40 @@
         <Style Selector="ComboBoxItem TextBlock">
             <Setter Property="Background" Value="Transparent" />
         </Style>
+
+        <Style Selector="controls|StationCardControl"></Style>
+
+        <Style Selector="ListBox.fade_out">
+            <Style.Animations>
+                <Animation Duration="{Binding ListBoxFadingDuration}">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="1.0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="0.3" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+
+        <Style Selector="ListBox.fade_in Border#StationDistanceBorder">
+            <Style.Animations>
+                <Animation Duration="{Binding ListBoxFadingDuration}">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="0.3" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="1.0" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+
+
+        <Style Selector="ListBox.fade_out Border#StationDistanceBorder">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
     </UserControl.Styles>
 
     <Grid
@@ -73,6 +107,8 @@
         <ListBox
             Grid.Column="0"
             Grid.Row="1"
+            Classes.fade_out="{Binding ListBoxFadeOut, Mode=OneWay}"
+            Classes.fade_in="{Binding ListBoxFadeIn, Mode=OneWay}"
             ItemsSource="{Binding Stations}"
             Background="Transparent"
             SelectionMode="Single"

@@ -8,6 +8,9 @@
       },
       "applicationUrl": "http://localhost:5001",
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/debug?browser={browserInspectUri}"
+    },
+    "Docker": {
+      "commandName": "Docker"
     }
   }
 }

@@ -8,6 +8,7 @@
         <LangVersion>default</LangVersion>
         <WasmAllowUndefinedSymbols>false</WasmAllowUndefinedSymbols>
         <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+        <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <!--    <ItemGroup>-->
@@ -20,14 +21,15 @@
     <!--    </ItemGroup>-->
 
     <ItemGroup>
-        <WasmExtraFilesToDeploy Include="AppBundle\**"/>
+        <WasmExtraFilesToDeploy Include="AppBundle\**" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Avalonia.Browser" Version="11.0.6" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\GasPrices\GasPrices.csproj"/>
+        <ProjectReference Include="..\GasPrices\GasPrices.csproj" />
     </ItemGroup>
 </Project>

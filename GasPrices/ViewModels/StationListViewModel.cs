@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using GasPrices.Extensions;
 using GasPrices.Models;
@@ -10,6 +11,7 @@ using GasPrices.PageTransitions;
 using GasPrices.Services;
 using GasPrices.Store;
 using SettingsHandling;
+using SettingsHandling.Models;
 
 namespace GasPrices.ViewModels;
 
@@ -20,7 +22,6 @@ public partial class StationListViewModel : ViewModelBase
     public StationListViewModel()
     {
     }
-
 
     public StationListViewModel(
         NavigationService<ResultsNavigationStore> resultsNavigationService,
@@ -40,6 +41,17 @@ public partial class StationListViewModel : ViewModelBase
             new GasType("Diesel")
         ];
 
+        _listBoxFadingDuration = TimeSpan.FromMilliseconds(200);
+        _timer = new DispatcherTimer { Interval = _listBoxFadingDuration };
+
+        _timer.Tick += (_, _) =>
+        {
+            ListBoxFadeOut = false;
+            UpdateStations();
+            ListBoxFadeIn = true;
+            _timer.Stop();
+        };
+
         InitializeStations().FireAndForget();
     }
 
@@ -49,20 +61,27 @@ public partial class StationListViewModel : ViewModelBase
 
     private readonly ISettingsReader? _settingsReader;
     private readonly ISettingsWriter? _settingsWriter;
+    private Settings? _settings;
     private readonly NavigationService<ResultsNavigationStore>? _resultsNavigationService;
     private readonly AppStateStore? _appStateStore;
     private GasType? _gasType;
     private string? _sortBy;
+    private bool _isFirstRun = true;
+    private readonly DispatcherTimer? _timer;
+    private List<DisplayStation>? _stationsTemp;
 
     #endregion private fields
 
     #region bindable properties
 
-    [ObservableProperty] private List<DisplayStation>? _stations;
+    [ObservableProperty] private ObservableCollection<DisplayStation>? _stations;
     [ObservableProperty] private int _selectedIndex = -1;
-    [ObservableProperty] private int _selectedSortingIndex = 1;
-    [ObservableProperty] private int _selectedGasTypeIndex;
+    [ObservableProperty] private int _selectedSortingIndex = -1;
+    [ObservableProperty] private int _selectedGasTypeIndex = -1;
     [ObservableProperty] private ObservableCollection<GasType>? _gasTypes;
+    [ObservableProperty] private TimeSpan _listBoxFadingDuration;
+    [ObservableProperty] private bool _listBoxFadeOut;
+    [ObservableProperty] private bool _listBoxFadeIn;
 
     #endregion bindable properties
 
@@ -79,14 +98,16 @@ public partial class StationListViewModel : ViewModelBase
 
     partial void OnSelectedGasTypeIndexChanged(int value)
     {
+        if (_isFirstRun) return;
+
         _gasType = GasTypes![value];
 
-        var stations = _appStateStore!.Stations!
+        _stationsTemp = _appStateStore!.Stations!
             .Where(s => s is { E5: > 0, E10: > 0, Diesel: > 0 })
             .Select(station => new DisplayStation(station, _gasType))
             .ToList();
 
-        SortStations(stations);
+        SortStations();
 
         UpdateSettingsAsync().FireAndForget();
     }
@@ -94,6 +115,8 @@ public partial class StationListViewModel : ViewModelBase
 
     partial void OnSelectedSortingIndexChanged(int value)
     {
+        if (_isFirstRun) return;
+
         _sortBy = value switch
         {
             0 => "Name",
@@ -102,7 +125,7 @@ public partial class StationListViewModel : ViewModelBase
             _ => "Price"
         };
 
-        SortStations([..Stations]);
+        SortStations();
 
         UpdateSettingsAsync().FireAndForget();
     }
@@ -116,15 +139,16 @@ public partial class StationListViewModel : ViewModelBase
         _sortBy = "Price";
         _gasType = new GasType("E5");
 
-        var settings = await _settingsReader!.ReadAsync();
-        if (!string.IsNullOrEmpty(settings!.SortBy))
+        _settings = await _settingsReader!.ReadAsync();
+
+        if (!string.IsNullOrEmpty(_settings!.SortBy))
         {
-            _sortBy = settings.SortBy;
+            _sortBy = _settings.SortBy;
         }
 
-        if (!string.IsNullOrEmpty(settings.GasType))
+        if (!string.IsNullOrEmpty(_settings.GasType))
         {
-            _gasType = new GasType(settings.GasType);
+            _gasType = new GasType(_settings.GasType);
         }
 
         var sortingIndex = _sortBy switch
@@ -135,15 +159,16 @@ public partial class StationListViewModel : ViewModelBase
             _ => 1
         };
 
-        var stations = _appStateStore!.Stations!
+        _stationsTemp = new List<DisplayStation>(_appStateStore!.Stations!
             .Where(s => s is { E5: > 0, E10: > 0, Diesel: > 0 })
-            .Select(station => new DisplayStation(station, new GasType(_gasType!.ToString())))
-            .ToList();
-
-        SortStations(stations);
+            .Select(station => new DisplayStation(station, new GasType(_gasType!.ToString()))).ToList());
 
         SelectedGasTypeIndex = GasTypes!.IndexOf(GasTypes.FirstOrDefault(gt => gt.ToString() == _gasType.ToString())!);
         SelectedSortingIndex = sortingIndex;
+
+        SortStations();
+
+        _isFirstRun = false;
     }
 
     private async Task UpdateSettingsAsync()
@@ -161,15 +186,34 @@ public partial class StationListViewModel : ViewModelBase
         }
     }
 
-    private void SortStations(IEnumerable<DisplayStation> stations)
+    private void SortStations()
     {
-        Stations = _sortBy switch
+        if (!_isFirstRun)
         {
-            "Name" => stations.OrderBy(s => s.Name).ToList(),
-            "Price" => stations.OrderBy(s => s.Price).ToList(),
-            "Distance" => stations.OrderBy(s => s.Distance).ToList(),
-            _ => Stations
+            ListBoxFadeIn = false;
+            ListBoxFadeOut = true;
+            _timer!.Start();
+        }
+        else
+
+        {
+            UpdateStations();
+
+            _isFirstRun = false;
+        }
+    }
+
+    private void UpdateStations()
+    {
+        _stationsTemp = _sortBy switch
+        {
+            "Name" => _stationsTemp!.OrderBy(s => s.Brand).ToList(),
+            "Price" => _stationsTemp!.OrderBy(s => s.Price).ToList(),
+            "Distance" => _stationsTemp!.OrderBy(s => s.Distance).ToList(),
+            _ => _stationsTemp
         };
+
+        Stations = new ObservableCollection<DisplayStation>(_stationsTemp!);
     }
 
     #endregion

@@ -3,7 +3,6 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Browser;
-using Serilog;
 
 [assembly: SupportedOSPlatform("browser")]
 

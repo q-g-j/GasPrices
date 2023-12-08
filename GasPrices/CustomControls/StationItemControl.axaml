@@ -102,8 +102,10 @@
                             CornerRadius="50"
                             Width="40"
                             Height="40"
+                            Opacity="{TemplateBinding Opacity}"
                             Classes="border_common border_distance">
                             <StackPanel
+                                Opacity="{TemplateBinding Opacity}"
                                 VerticalAlignment="Center">
                                 <TextBlock
                                     Text="{Binding Station.DistanceInUnit, RelativeSource={RelativeSource TemplatedParent}}"
