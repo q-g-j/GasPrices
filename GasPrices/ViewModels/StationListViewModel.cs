@@ -42,14 +42,22 @@ public partial class StationListViewModel : ViewModelBase
         ];
 
         _listBoxFadingDuration = TimeSpan.FromMilliseconds(300);
-        _timer = new DispatcherTimer { Interval = _listBoxFadingDuration };
+        _fadeOutTimer = new DispatcherTimer { Interval = _listBoxFadingDuration };
+        _fadeInTimer = new DispatcherTimer { Interval = _listBoxFadingDuration };
 
-        _timer.Tick += (_, _) =>
+        _fadeOutTimer.Tick += (_, _) =>
         {
-            _timer.Stop();
+            _fadeOutTimer.Stop();
             ListBoxFadeOut = false;
             UpdateStations();
             ListBoxFadeIn = true;
+            _fadeInTimer.Start();
+        };
+
+        _fadeInTimer.Tick += (_, _) =>
+        {
+            _fadeInTimer.Stop();
+            ListBoxFadeIn = false;
         };
 
         InitializeStations().FireAndForget();
@@ -67,7 +75,8 @@ public partial class StationListViewModel : ViewModelBase
     private GasType? _gasType;
     private string? _sortBy;
     private bool _isFirstRun = true;
-    private readonly DispatcherTimer? _timer;
+    private readonly DispatcherTimer? _fadeOutTimer;
+    private readonly DispatcherTimer? _fadeInTimer;
     private List<DisplayStation>? _stationsTemp;
 
     #endregion private fields
@@ -194,12 +203,12 @@ public partial class StationListViewModel : ViewModelBase
             _isFirstRun = false;
             return;
         }
-        
+
         if (!_isFirstRun)
         {
             ListBoxFadeIn = false;
             ListBoxFadeOut = true;
-            _timer!.Start();
+            _fadeOutTimer!.Start();
         }
         else
         {
