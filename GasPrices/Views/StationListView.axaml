@@ -43,7 +43,7 @@
             </Style.Animations>
         </Style>
 
-        <Style Selector="ListBox.fade_in Border#StationDistanceBorder">
+        <Style Selector="ListBox.fade_in">
             <Style.Animations>
                 <Animation Duration="{Binding ListBoxFadingDuration}">
                     <KeyFrame Cue="0%">
@@ -57,6 +57,10 @@
         </Style>
 
         <Style Selector="ListBox.fade_out Border#StationDistanceBorder">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <Style Selector="ListBox.fade_in Border#StationDistanceBorder">
             <Setter Property="Background" Value="Transparent" />
         </Style>
 

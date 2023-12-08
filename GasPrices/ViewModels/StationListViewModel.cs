@@ -41,15 +41,15 @@ public partial class StationListViewModel : ViewModelBase
             new GasType("Diesel")
         ];
 
-        _listBoxFadingDuration = TimeSpan.FromMilliseconds(200);
+        _listBoxFadingDuration = TimeSpan.FromMilliseconds(300);
         _timer = new DispatcherTimer { Interval = _listBoxFadingDuration };
 
         _timer.Tick += (_, _) =>
         {
+            _timer.Stop();
             ListBoxFadeOut = false;
             UpdateStations();
             ListBoxFadeIn = true;
-            _timer.Stop();
         };
 
         InitializeStations().FireAndForget();
