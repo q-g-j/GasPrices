@@ -42,15 +42,9 @@
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
 
-    <Style Selector="controls|StationItemControl Border.border_station:pointerover">
-        <Setter Property="Background" Value="{StaticResource StationPointerOverBackground}" />
-    </Style>
-
-    <Style Selector="controls|StationItemControl Border.border_station:pointerover Border.border_distance">
-        <Setter Property="Background" Value="{StaticResource StationPointerOverBackground}" />
-    </Style>
-
     <Style Selector="controls|StationItemControl Border.border_common" />
+    <Style Selector="controls|StationItemControl Border.border_distance" />
+    <Style Selector="controls|StationItemControl Border.border_station" />
 
     <Style Selector="controls|StationItemControl">
         <!-- Set Defaults -->
@@ -102,10 +96,8 @@
                             CornerRadius="50"
                             Width="40"
                             Height="40"
-                            Opacity="{TemplateBinding Opacity}"
                             Classes="border_common border_distance">
                             <StackPanel
-                                Opacity="{TemplateBinding Opacity}"
                                 VerticalAlignment="Center">
                                 <TextBlock
                                     Text="{Binding Station.DistanceInUnit, RelativeSource={RelativeSource TemplatedParent}}"

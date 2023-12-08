@@ -28,9 +28,17 @@
             <Setter Property="Background" Value="Transparent" />
         </Style>
 
-        <Style Selector="controls|StationCardControl"></Style>
+        <Style Selector="controls|StationCardControl" />
 
-        <Style Selector="ListBox.fade_out">
+        <Style Selector="ListBox:not(.fade_out):not(.fade_in) ListBoxItem:not(:selected) controls|StationItemControl Border.border_station:pointerover">
+            <Setter Property="Background" Value="{StaticResource StationPointerOverBackground}" />
+        </Style>
+        
+        <Style Selector="ListBox:not(.fade_out):not(.fade_in) controls|StationItemControl Border.border_station:pointerover Border.border_distance">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <Style Selector="ListBox.fade_out Border#StationBorder">
             <Style.Animations>
                 <Animation Duration="{Binding ListBoxFadingDuration}">
                     <KeyFrame Cue="0%">
@@ -43,7 +51,7 @@
             </Style.Animations>
         </Style>
 
-        <Style Selector="ListBox.fade_in">
+        <Style Selector="ListBox.fade_in Border#StationBorder">
             <Style.Animations>
                 <Animation Duration="{Binding ListBoxFadingDuration}">
                     <KeyFrame Cue="0%">
@@ -54,14 +62,6 @@
                     </KeyFrame>
                 </Animation>
             </Style.Animations>
-        </Style>
-
-        <Style Selector="ListBox.fade_out Border#StationDistanceBorder">
-            <Setter Property="Background" Value="Transparent" />
-        </Style>
-
-        <Style Selector="ListBox.fade_in Border#StationDistanceBorder">
-            <Setter Property="Background" Value="Transparent" />
         </Style>
 
     </UserControl.Styles>
@@ -100,7 +100,7 @@
                 <ComboBox
                     Width="130"
                     SelectedIndex="{Binding SelectedSortingIndex}">
-                    <ComboBoxItem>Name</ComboBoxItem>
+                    <ComboBoxItem>Firma</ComboBoxItem>
                     <ComboBoxItem>Preis</ComboBoxItem>
                     <ComboBoxItem>Entfernung</ComboBoxItem>
                 </ComboBox>
