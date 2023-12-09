@@ -45,7 +45,7 @@
                         <Setter Property="Opacity" Value="1.0" />
                     </KeyFrame>
                     <KeyFrame Cue="100%">
-                        <Setter Property="Opacity" Value="0.3" />
+                        <Setter Property="Opacity" Value="0.1" />
                     </KeyFrame>
                 </Animation>
             </Style.Animations>
@@ -55,7 +55,7 @@
             <Style.Animations>
                 <Animation Duration="{Binding ListBoxFadingDuration}">
                     <KeyFrame Cue="0%">
-                        <Setter Property="Opacity" Value="0.3" />
+                        <Setter Property="Opacity" Value="0.1" />
                     </KeyFrame>
                     <KeyFrame Cue="100%">
                         <Setter Property="Opacity" Value="1.0" />

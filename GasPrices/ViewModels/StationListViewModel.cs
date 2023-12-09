@@ -221,9 +221,9 @@ public partial class StationListViewModel : ViewModelBase
     {
         _stationsTemp = _sortBy switch
         {
-            "Name" => _stationsTemp!.OrderBy(s => s.Brand).ToList(),
-            "Price" => _stationsTemp!.OrderBy(s => s.Price).ToList(),
-            "Distance" => _stationsTemp!.OrderBy(s => s.Distance).ToList(),
+            "Name" => [.. _stationsTemp!.OrderBy(s => s.Brand)],
+            "Price" => [.. _stationsTemp!.OrderBy(s => s.Price)],
+            "Distance" => [.. _stationsTemp!.OrderBy(s => s.Distance)],
             _ => _stationsTemp
         };
 
