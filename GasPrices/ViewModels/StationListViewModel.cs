@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
+using ExCSS;
 using GasPrices.Extensions;
 using GasPrices.Models;
 using GasPrices.PageTransitions;
@@ -58,6 +59,7 @@ public partial class StationListViewModel : ViewModelBase
         {
             _fadeInTimer.Stop();
             ListBoxFadeIn = false;
+            ListBoxGridIsVisible = false;
         };
 
         InitializeStations().FireAndForget();
@@ -91,6 +93,7 @@ public partial class StationListViewModel : ViewModelBase
     [ObservableProperty] private TimeSpan _listBoxFadingDuration;
     [ObservableProperty] private bool _listBoxFadeOut;
     [ObservableProperty] private bool _listBoxFadeIn;
+    [ObservableProperty] private bool _listBoxGridIsVisible;
 
     #endregion bindable properties
 
@@ -98,6 +101,8 @@ public partial class StationListViewModel : ViewModelBase
 
     partial void OnSelectedIndexChanged(int value)
     {
+        if (ListBoxGridIsVisible) return;
+        ListBoxGridIsVisible = true;
         _appStateStore!.SelectedStation = Stations![value];
         _appStateStore!.SelectedStationIndex = value;
         _resultsNavigationService!
@@ -209,6 +214,8 @@ public partial class StationListViewModel : ViewModelBase
             ListBoxFadeIn = false;
             ListBoxFadeOut = true;
             _fadeOutTimer!.Start();
+            ListBoxGridIsVisible = true;
+
         }
         else
         {

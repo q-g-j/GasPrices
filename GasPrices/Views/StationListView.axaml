@@ -18,17 +18,15 @@
         <Style Selector="ListBoxItem">
             <Setter Property="Padding" Value="2"></Setter>
         </Style>
-        <Style Selector="ListBoxItem:selected > controls|StationItemControl Border.border_common">
-            <Setter Property="Background" Value="{StaticResource StationSelectedBackground}"></Setter>
+        <Style Selector="ListBox ListBoxItem:selected > controls|StationItemControl Border.border_common">
+            <Setter Property="Background" Value="{StaticResource StationSelectedBackground}" />
         </Style>
-        <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
-            <Setter Property="Background" Value="Transparent"></Setter>
-        </Style>
+		<Style Selector="ListBox ListBoxItem:selected /template/ ContentPresenter">
+			<Setter Property="Background" Value="Transparent" />
+		</Style>
         <Style Selector="ComboBoxItem TextBlock">
             <Setter Property="Background" Value="Transparent" />
         </Style>
-
-        <Style Selector="controls|StationCardControl" />
 
         <Style Selector="ListBox:not(.fade_out):not(.fade_in) ListBoxItem:not(:selected) controls|StationItemControl Border.border_station:pointerover">
             <Setter Property="Background" Value="{StaticResource StationPointerOverBackground}" />
@@ -106,6 +104,15 @@
                 </ComboBox>
             </StackPanel>
         </Grid>
+		<Grid
+            Grid.Column="0"
+            Grid.Row="1"
+			Background="Transparent"
+			ZIndex="10"
+			HorizontalAlignment="Stretch"
+			VerticalAlignment="Stretch"
+			IsVisible="{Binding ListBoxGridIsVisible}">
+		</Grid>
 
         <ListBox
             Grid.Column="0"
