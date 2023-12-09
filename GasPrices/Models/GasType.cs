@@ -1,10 +1,9 @@
-﻿namespace GasPrices.Models
+﻿namespace GasPrices.Models;
+
+public class GasType(string? name)
 {
-    public class GasType(string? name)
+    public override string? ToString()
     {
-        public override string? ToString()
-        {
-            return name;
-        }
+        return name;
     }
 }
