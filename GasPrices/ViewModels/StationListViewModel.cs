@@ -50,7 +50,7 @@ public partial class StationListViewModel : ViewModelBase
         {
             _fadeOutTimer.Stop();
             ListBoxFadeOut = false;
-            UpdateStations();
+            SortStations();
             ListBoxFadeIn = true;
             _fadeInTimer.Start();
         };
@@ -121,7 +121,7 @@ public partial class StationListViewModel : ViewModelBase
             .Select(station => new DisplayStation(station, _gasType))
             .ToList();
 
-        SortStations();
+        FadeAndSortStations();
 
         UpdateSettingsAsync().FireAndForget();
     }
@@ -139,7 +139,7 @@ public partial class StationListViewModel : ViewModelBase
             _ => "Price"
         };
 
-        SortStations();
+        FadeAndSortStations();
 
         UpdateSettingsAsync().FireAndForget();
     }
@@ -180,7 +180,7 @@ public partial class StationListViewModel : ViewModelBase
         SelectedGasTypeIndex = GasTypes!.IndexOf(GasTypes.FirstOrDefault(gt => gt.ToString() == _gasType.ToString())!);
         SelectedSortingIndex = sortingIndex;
 
-        SortStations();
+        FadeAndSortStations();
 
         _isFirstRun = false;
     }
@@ -200,31 +200,22 @@ public partial class StationListViewModel : ViewModelBase
         }
     }
 
-    private void SortStations()
+    private void FadeAndSortStations()
     {
-        if (OperatingSystem.IsBrowser())
+        if (_isFirstRun || OperatingSystem.IsBrowser())
         {
-            UpdateStations();
+            SortStations();
             _isFirstRun = false;
             return;
         }
 
-        if (!_isFirstRun)
-        {
-            ListBoxFadeIn = false;
-            ListBoxFadeOut = true;
-            _fadeOutTimer!.Start();
-            ListBoxGridIsVisible = true;
-
-        }
-        else
-        {
-            UpdateStations();
-            _isFirstRun = false;
-        }
+        ListBoxFadeIn = false;
+        ListBoxFadeOut = true;
+        _fadeOutTimer!.Start();
+        ListBoxGridIsVisible = true;
     }
 
-    private void UpdateStations()
+    private void SortStations()
     {
         _stationsTemp = _sortBy switch
         {

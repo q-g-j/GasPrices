@@ -18,16 +18,4 @@ public static class DispatcherUtils
             dispatchObject.InvokeAsync(action, DispatcherPriority.Normal).Wait();
         }
     }
-    public static async Task InvokeAsync(Action action)
-    {
-        var dispatchObject = Dispatcher.UIThread;
-        if (dispatchObject.CheckAccess())
-        {
-            action();
-        }
-        else
-        {
-            await dispatchObject.InvokeAsync(action, DispatcherPriority.Normal);
-        }
-    }
 }
