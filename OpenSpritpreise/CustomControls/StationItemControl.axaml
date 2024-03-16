@@ -1,0 +1,121 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:OpenSpritpreise.CustomControls">
+
+    <Design.PreviewWith>
+        <Grid
+            Width="380">
+            <controls:StationItemControl />
+        </Grid>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|StationItemControl TextBlock.price">
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontFamily" Value="{StaticResource SemiBold}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="controls|StationItemControl TextBlock.price_thousandth">
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="FontSize" Value="9" />
+        <Setter Property="Margin" Value="0, -5, 0, 0" />
+    </Style>
+
+    <Style Selector="controls|StationItemControl TextBlock.brand">
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontFamily" Value="{StaticResource SemiBold}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="TextAlignment" Value="Left" />
+    </Style>
+
+    <Style Selector="controls|StationItemControl TextBlock.full_address">
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="TextAlignment" Value="Left" />
+    </Style>
+
+    <Style Selector="controls|StationItemControl TextBlock.distance">
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="{StaticResource SemiBold}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style Selector="controls|StationItemControl Border.border_common" />
+    <Style Selector="controls|StationItemControl Border.border_distance" />
+    <Style Selector="controls|StationItemControl Border.border_station" />
+
+    <Style Selector="controls|StationItemControl">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    x:Name="StationBorder"
+                    Padding="5, 4, 5, 3"
+                    Background="{StaticResource StationBackground}"
+                    CornerRadius="10"
+                    Classes="border_common border_station">
+                    <Grid
+                        ColumnDefinitions="Auto, *, Auto"
+                        RowDefinitions="Auto">
+                        <StackPanel
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            Orientation="Horizontal"
+                            Margin="0, 0, 10, 0">
+                            <TextBlock
+                                Text="{Binding Station.Price, RelativeSource={RelativeSource TemplatedParent}, StringFormat=0.00}"
+                                Classes="price">
+                            </TextBlock>
+                            <TextBlock
+                                Text="{Binding Station.SelectedFuelThousandth, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="price_thousandth">
+                            </TextBlock>
+                        </StackPanel>
+                        <StackPanel
+                            Grid.Column="1"
+                            Grid.Row="0">
+                            <TextBlock
+                                Text="{Binding Station.Brand, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="brand">
+                            </TextBlock>
+                            <TextBlock
+                                Margin="0, 3, 0, 0"
+                                Text="{Binding Station.FullAddress, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="full_address">
+                            </TextBlock>
+                        </StackPanel>
+                        <Border
+                            x:Name="StationDistanceBorder"
+                            Grid.Column="2"
+                            Grid.Row="0"
+                            Background="White"
+                            BorderBrush="Black"
+                            BorderThickness="1"
+                            CornerRadius="50"
+                            Width="40"
+                            Height="40"
+                            Classes="border_common border_distance">
+                            <StackPanel
+                                VerticalAlignment="Center">
+                                <TextBlock
+                                    Text="{Binding Station.DistanceInUnit, RelativeSource={RelativeSource TemplatedParent}}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Classes="distance">
+                                </TextBlock>
+                                <TextBlock
+                                    Text="{Binding Station.DistanceUnit, RelativeSource={RelativeSource TemplatedParent}}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Classes="distance">
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

@@ -9,7 +9,7 @@ using BrowserInterop;
 
 namespace ApiClients;
 
-public class TankerkönigClient(HttpClientRepository httpClientRepository) : IGasPricesClient
+public class TankerkönigClient(HttpClientRepository httpClientRepository) : IOpenSpritpreiseClient
 {
     public async Task<List<Station>?> GetStationsAsync(string apiKey, Coords coords, int radius)
     {

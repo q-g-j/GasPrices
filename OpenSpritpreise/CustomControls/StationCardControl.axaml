@@ -1,0 +1,226 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:OpenSpritpreise.CustomControls">
+
+    <Design.PreviewWith>
+        <Grid
+            Width="380">
+            <controls:StationCardControl />
+        </Grid>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|StationCardControl TextBlock">
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Foreground" Value="Black" />
+    </Style>
+    <Style Selector="controls|StationCardControl TextBlock.title">
+        <Setter Property="FontFamily" Value="{StaticResource SemiBold}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector="controls|StationCardControl TextBlock.label">
+        <Setter Property="FontFamily" Value="{StaticResource SemiBold}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="TextAlignment" Value="Left" />
+    </Style>
+    <Style Selector="controls|StationCardControl TextBlock.address_data">
+        <Setter Property="Margin" Value="10, 0, 0, 0" />
+        <Setter Property="TextAlignment" Value="Left" />
+    </Style>
+    <Style Selector="controls|StationCardControl TextBlock.price_label">
+        <Setter Property="FontFamily" Value="{StaticResource SemiBold}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="TextAlignment" Value="Left" />
+    </Style>
+    <Style Selector="controls|StationCardControl TextBlock.price">
+        <Setter Property="Margin" Value="10, 0, 0, 0" />
+        <Setter Property="FontFamily" Value="{StaticResource Normal}" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="TextAlignment" Value="Left" />
+    </Style>
+    <Style Selector="controls|StationCardControl TextBlock.price_thousandth">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Margin" Value="0, 0, 0, 0" />
+    </Style>
+    <Style Selector="controls|StationCardControl TextBlock.euro">
+        <Setter Property="Margin" Value="5, 0, 0, 0" />
+        <Setter Property="FontFamily" Value="{StaticResource Normal}" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="Text" Value="€" />
+    </Style>
+
+    <Style Selector="controls|StationCardControl">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    Padding="13"
+                    CornerRadius="10"
+                    Background="{StaticResource StationCardBackground}">
+                    <Grid
+                        ColumnDefinitions="Auto, *"
+                        RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto">
+
+                        <TextBlock
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                            Margin="0, 0, 0, 5"
+                            Text="{Binding Station.Name, RelativeSource={RelativeSource TemplatedParent}}"
+                            Classes="title">
+                        </TextBlock>
+
+                        <Rectangle
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Margin="5, 5, 5, 10"
+                            Stroke="Black"
+                            StrokeThickness="1"
+                            HorizontalAlignment="Stretch">
+                        </Rectangle>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            Grid.Row="2"
+                            Classes="label"
+                            Text="Firma:">
+                        </TextBlock>
+                        <TextBlock
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            Classes="address_data"
+                            Text="{Binding Station.Brand, RelativeSource={RelativeSource TemplatedParent}}">
+                        </TextBlock>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            Grid.Row="3"
+                            Classes="label"
+                            Text="Straße:">
+                        </TextBlock>
+                        <TextBlock
+                            Grid.Column="1"
+                            Grid.Row="3"
+                            Classes="address_data"
+                            Text="{Binding Station.Street, RelativeSource={RelativeSource TemplatedParent}}">
+                        </TextBlock>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            Grid.Row="4"
+                            Classes="label"
+                            Text="Ort:">
+                        </TextBlock>
+                        <TextBlock
+                            Grid.Column="1"
+                            Grid.Row="4"
+                            Classes="address_data"
+                            Text="{Binding Station.PostalCodeAndCity, RelativeSource={RelativeSource TemplatedParent}}">
+                        </TextBlock>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            Grid.Row="5"
+                            Classes="label"
+                            Text="Geöffnet:">
+                        </TextBlock>
+                        <TextBlock
+                            Grid.Column="1"
+                            Grid.Row="5"
+                            Classes="address_data"
+                            Text="{Binding Station.IsOpen, RelativeSource={RelativeSource TemplatedParent}}">
+                        </TextBlock>
+
+                        <Rectangle
+                            Grid.Column="0"
+                            Grid.Row="6"
+                            Grid.ColumnSpan="2"
+                            Margin="5, 10, 5, 10"
+                            Stroke="Black"
+                            StrokeThickness="1"
+                            HorizontalAlignment="Stretch">
+                        </Rectangle>
+
+                        <Grid
+                            Grid.Column="0"
+                            Grid.Row="7"
+                            Grid.ColumnSpan="2"
+                            ColumnDefinitions="Auto, Auto"
+                            RowDefinitions="Auto, Auto, Auto"
+                            HorizontalAlignment="Center">
+
+                            <TextBlock
+                                Grid.Column="0"
+                                Grid.Row="0"
+                                Classes="price_label"
+                                Text="E5:">
+                            </TextBlock>
+                            <StackPanel
+                                Grid.Column="1"
+                                Grid.Row="0"
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    Classes="price"
+                                    Text="{Binding Station.E5, StringFormat=0.00, RelativeSource={RelativeSource TemplatedParent}}">
+                                </TextBlock>
+                                <TextBlock
+                                    Classes="price_thousandth"
+                                    Text="{Binding Station.E5Thousandth, RelativeSource={RelativeSource TemplatedParent}}">
+                                </TextBlock>
+                                <TextBlock Classes="euro" />
+                            </StackPanel>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                Classes="price_label"
+                                Text="E10:">
+                            </TextBlock>
+                            <StackPanel
+                                Grid.Column="1"
+                                Grid.Row="1"
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    Classes="price"
+                                    Text="{Binding Station.E10, StringFormat=0.00, RelativeSource={RelativeSource TemplatedParent}}">
+                                </TextBlock>
+                                <TextBlock
+                                    Classes="price_thousandth"
+                                    Text="{Binding Station.E10Thousandth, RelativeSource={RelativeSource TemplatedParent}}">
+                                </TextBlock>
+                                <TextBlock Classes="euro" />
+                            </StackPanel>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                Grid.Row="2"
+                                Classes="price_label"
+                                Text="Diesel:">
+                            </TextBlock>
+                            <StackPanel
+                                Grid.Column="1"
+                                Grid.Row="2"
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    Classes="price"
+                                    Text="{Binding Station.Diesel, StringFormat=0.00, RelativeSource={RelativeSource TemplatedParent}}">
+                                </TextBlock>
+                                <TextBlock
+                                    Classes="price_thousandth"
+                                    Text="{Binding Station.DieselThousandth, RelativeSource={RelativeSource TemplatedParent}}">
+                                </TextBlock>
+                                <TextBlock Classes="euro" />
+                            </StackPanel>
+                        </Grid>
+
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

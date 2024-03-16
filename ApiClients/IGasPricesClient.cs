@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ApiClients;
 
-public interface IGasPricesClient
+public interface IOpenSpritpreiseClient
 {
     Task<List<Station>?> GetStationsAsync(string apiKey, Coords coords, int radius);
 }
