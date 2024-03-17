@@ -78,7 +78,7 @@
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
                     Margin="2, 0, 0, 0"
-                    Content="Auf Karte wählen!"
+                    Content="Auf Karte wählen"
                     IsEnabled="{Binding LocationPickerButtonIsEnabled}"
                     Command="{Binding LocationPickerCommand}">
 				</Button>
