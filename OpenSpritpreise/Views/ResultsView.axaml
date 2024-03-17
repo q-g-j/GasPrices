@@ -8,7 +8,8 @@
              x:CompileBindings="True"
              mc:Ignorable="d"
              d:DesignWidth="{Binding $parent[Window].Width}"
-             d:DesignHeight="{Binding $parent[Window].Height}">
+             d:DesignHeight="{Binding $parent[Window].Height}"
+			 MaxHeight="{Binding $parent[Window].Bounds.Size.Height}">
 
     <Design.DataContext>
         <vm:ResultsViewModel />

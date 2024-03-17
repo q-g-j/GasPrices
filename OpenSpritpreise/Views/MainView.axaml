@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:OpenSpritpreise.ViewModels"
+			 Name="mainView"
              x:Class="OpenSpritpreise.Views.MainView"
              x:DataType="vm:MainViewModel"
              x:CompileBindings="True"
@@ -16,7 +17,7 @@
 	</Design.DataContext>
 
 	<Grid
-		RowDefinitions="* Auto"
+		RowDefinitions="*, auto"
 		Margin="{OnPlatform Default='0 0 0 0', Browser='0 0 0 50'}">
 		<ScrollViewer Grid.Row="0">
 			<TransitioningContentControl
