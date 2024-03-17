@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenSpritpreise.Android", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenSpritpreise.iOS", "OpenSpritpreise.iOS\OpenSpritpreise.iOS.csproj", "{66A567C1-EA97-4249-B7BD-ED83A5AA4E33}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpClient", "HttpClient\HttpClient.csproj", "{4688D669-73F2-49D1-87D6-7B2DD9042D26}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -142,6 +144,18 @@ Global
 		{66A567C1-EA97-4249-B7BD-ED83A5AA4E33}.Release|x64.ActiveCfg = Release|Any CPU
 		{66A567C1-EA97-4249-B7BD-ED83A5AA4E33}.Release|x64.Build.0 = Release|Any CPU
 		{66A567C1-EA97-4249-B7BD-ED83A5AA4E33}.Release|x64.Deploy.0 = Release|Any CPU
+		{4688D669-73F2-49D1-87D6-7B2DD9042D26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4688D669-73F2-49D1-87D6-7B2DD9042D26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4688D669-73F2-49D1-87D6-7B2DD9042D26}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{4688D669-73F2-49D1-87D6-7B2DD9042D26}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{4688D669-73F2-49D1-87D6-7B2DD9042D26}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4688D669-73F2-49D1-87D6-7B2DD9042D26}.Debug|x64.Build.0 = Debug|Any CPU
+		{4688D669-73F2-49D1-87D6-7B2DD9042D26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4688D669-73F2-49D1-87D6-7B2DD9042D26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4688D669-73F2-49D1-87D6-7B2DD9042D26}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{4688D669-73F2-49D1-87D6-7B2DD9042D26}.Release|ARM64.Build.0 = Release|Any CPU
+		{4688D669-73F2-49D1-87D6-7B2DD9042D26}.Release|x64.ActiveCfg = Release|Any CPU
+		{4688D669-73F2-49D1-87D6-7B2DD9042D26}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
