@@ -5,15 +5,15 @@
         xmlns:views="clr-namespace:OpenSpritpreise.Views"
         xmlns:vm="using:OpenSpritpreise.ViewModels"
         x:Class="OpenSpritpreise.Views.MainWindow"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
+        mc:Ignorable="d"
+        d:DesignWidth="400"
+        d:DesignHeight="800"
         Icon="/Assets/avalonia-logo.ico"
-        Title="OpenSpritpreise"
-        Width="500"
-        MinHeight="500">
+        Title="OpenSpritpreise">
 
-    <Design.DataContext>
-        <vm:MainViewModel />
-    </Design.DataContext>
+	<Design.DataContext>
+		<vm:MainViewModel />
+	</Design.DataContext>
 
-    <views:MainView />
+	<views:MainView />
 </Window>

@@ -8,18 +8,24 @@
              x:CompileBindings="True"
              mc:Ignorable="d"
              d:DesignWidth="{Binding $parent[Window].Width}"
-             d:DesignHeight="{Binding $parent[Window].Height}">
+             d:DesignHeight="{Binding $parent[Window].Height}"
+             MaxWidth="600"
+			 >
 
-    <Design.DataContext>
-        <vm:MainViewModel />
-    </Design.DataContext>
+	<Design.DataContext>
+		<vm:MainViewModel />
+	</Design.DataContext>
 
-    <Grid>
-        <ScrollViewer>
-            <TransitioningContentControl
-                Content="{Binding CurrentViewModel}"
-                PageTransition="{Binding CurrentPageTransition}">
-            </TransitioningContentControl>
-        </ScrollViewer>
-    </Grid>
+	<Grid
+		RowDefinitions="* Auto"
+		Margin="{OnPlatform Default='0 0 0 0', Browser='0 0 0 50'}">
+		<ScrollViewer Grid.Row="0">
+			<TransitioningContentControl
+				Content="{Binding CurrentViewModel}"
+				PageTransition="{Binding CurrentPageTransition}">
+			</TransitioningContentControl>
+		</ScrollViewer>
+		<Grid Grid.Row="1" />
+	</Grid>
+
 </UserControl>

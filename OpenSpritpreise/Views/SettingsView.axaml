@@ -11,9 +11,7 @@
              x:CompileBindings="True"
              mc:Ignorable="d"
              d:DesignWidth="{Binding $parent[Window].Width}" 
-             d:DesignHeight="{Binding $parent[Window].Height}"
-             MaxWidth="600"
-             MaxHeight="800">
+             d:DesignHeight="{Binding $parent[Window].Height}">
 
 	<Design.DataContext>
 		<vm:SettingsViewModel />
