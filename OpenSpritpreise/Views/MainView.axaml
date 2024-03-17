@@ -7,10 +7,9 @@
              x:DataType="vm:MainViewModel"
              x:CompileBindings="True"
              mc:Ignorable="d"
+			 MaxWidth="600"
              d:DesignWidth="{Binding $parent[Window].Width}"
-             d:DesignHeight="{Binding $parent[Window].Height}"
-             MaxWidth="600"
-			 >
+             d:DesignHeight="{Binding $parent[Window].Height}">
 
 	<Design.DataContext>
 		<vm:MainViewModel />

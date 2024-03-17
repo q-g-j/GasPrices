@@ -8,6 +8,8 @@
         mc:Ignorable="d"
         d:DesignWidth="400"
         d:DesignHeight="800"
+        Width="600"
+		Height="{OnPlatform Windows='800', Linux='800', macOS='800'}"
         Icon="/Assets/avalonia-logo.ico"
         Title="OpenSpritpreise">
 
