@@ -6,10 +6,17 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>link</TrimMode>
+    <ApplicationIcon>..\OpenSpritpreise\Assets\avalonia-logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>none</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,5 +27,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OpenSpritpreise\OpenSpritpreise.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\OpenSpritpreise\Assets\avalonia-logo.ico">
+      <Link>avalonia-logo.ico</Link>
+    </None>
   </ItemGroup>
 </Project>

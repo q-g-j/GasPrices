@@ -4,9 +4,9 @@
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
         <Platforms>AnyCPU;ARM64</Platforms>
-        <PublishTrimmed>true</PublishTrimmed>
-        <TrimMode>partial</TrimMode>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <PublishTrimmed>true</PublishTrimmed>
+        <TrimMode>link</TrimMode>
     </PropertyGroup>
 
     <ItemGroup>
