@@ -9,7 +9,7 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="OpenSpritpreise"
         Width="500"
-        Height="800">
+        MinHeight="500">
 
     <Design.DataContext>
         <vm:MainViewModel />

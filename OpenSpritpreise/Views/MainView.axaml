@@ -15,9 +15,11 @@
     </Design.DataContext>
 
     <Grid>
-        <TransitioningContentControl
-            Content="{Binding CurrentViewModel}"
-            PageTransition="{Binding CurrentPageTransition}">
-        </TransitioningContentControl>
+        <ScrollViewer>
+            <TransitioningContentControl
+                Content="{Binding CurrentViewModel}"
+                PageTransition="{Binding CurrentPageTransition}">
+            </TransitioningContentControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>
