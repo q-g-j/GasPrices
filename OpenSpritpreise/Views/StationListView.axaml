@@ -11,102 +11,103 @@
              d:DesignWidth="400"
              d:DesignHeight="800">
 
-    <Design.DataContext>
-        <vm:StationListViewModel />
-    </Design.DataContext>
+	<Design.DataContext>
+		<vm:StationListViewModel />
+	</Design.DataContext>
 
-    <UserControl.Styles>
-        <Style Selector="ListBoxItem">
-            <Setter Property="Padding" Value="2"></Setter>
-        </Style>
-        <Style Selector="ListBox ListBoxItem:selected > controls|StationItemControl Border.border_common">
-            <Setter Property="Background" Value="{StaticResource StationSelectedBackground}" />
-        </Style>
+	<UserControl.Styles>
+		<Style Selector="ListBoxItem">
+			<Setter Property="Padding" Value="2"></Setter>
+		</Style>
+		<Style Selector="ListBox ListBoxItem:selected > controls|StationItemControl Border.border_common">
+			<Setter Property="Background" Value="{StaticResource StationSelectedBackground}" />
+		</Style>
 		<Style Selector="ListBox ListBoxItem:selected /template/ ContentPresenter">
 			<Setter Property="Background" Value="Transparent" />
 		</Style>
-        <Style Selector="ComboBoxItem TextBlock">
-            <Setter Property="Background" Value="Transparent" />
-        </Style>
+		<Style Selector="ComboBoxItem TextBlock">
+			<Setter Property="Background" Value="Transparent" />
+		</Style>
 
-        <Style Selector="ListBox:not(.fade_out):not(.fade_in) ListBoxItem:not(:selected) controls|StationItemControl Border.border_station:pointerover">
-            <Setter Property="Background" Value="{StaticResource StationPointerOverBackground}" />
-        </Style>
-        
-        <Style Selector="ListBox:not(.fade_out):not(.fade_in) controls|StationItemControl Border.border_station:pointerover Border.border_distance">
-            <Setter Property="Background" Value="Transparent" />
-        </Style>
+		<Style Selector="ListBox:not(.fade_out):not(.fade_in) ListBoxItem:not(:selected) controls|StationItemControl Border.border_station:pointerover">
+			<Setter Property="Background" Value="{StaticResource StationPointerOverBackground}" />
+		</Style>
 
-        <Style Selector="ListBox.fade_out Border#StationBorder">
-            <Style.Animations>
-                <Animation Duration="{Binding ListBoxFadingDuration}">
-                    <KeyFrame Cue="0%">
-                        <Setter Property="Opacity" Value="1.0" />
-                    </KeyFrame>
-                    <KeyFrame Cue="100%">
-                        <Setter Property="Opacity" Value="0.1" />
-                    </KeyFrame>
-                </Animation>
-            </Style.Animations>
-        </Style>
+		<Style Selector="ListBox:not(.fade_out):not(.fade_in) controls|StationItemControl Border.border_station:pointerover Border.border_distance">
+			<Setter Property="Background" Value="Transparent" />
+		</Style>
 
-        <Style Selector="ListBox.fade_in Border#StationBorder">
-            <Style.Animations>
-                <Animation Duration="{Binding ListBoxFadingDuration}">
-                    <KeyFrame Cue="0%">
-                        <Setter Property="Opacity" Value="0.1" />
-                    </KeyFrame>
-                    <KeyFrame Cue="100%">
-                        <Setter Property="Opacity" Value="1.0" />
-                    </KeyFrame>
-                </Animation>
-            </Style.Animations>
-        </Style>
+		<Style Selector="ListBox.fade_out Border#StationBorder">
+			<Style.Animations>
+				<Animation Duration="{Binding ListBoxFadingDuration}">
+					<KeyFrame Cue="0%">
+						<Setter Property="Opacity" Value="1.0" />
+					</KeyFrame>
+					<KeyFrame Cue="100%">
+						<Setter Property="Opacity" Value="0.1" />
+					</KeyFrame>
+				</Animation>
+			</Style.Animations>
+		</Style>
 
-    </UserControl.Styles>
+		<Style Selector="ListBox.fade_in Border#StationBorder">
+			<Style.Animations>
+				<Animation Duration="{Binding ListBoxFadingDuration}">
+					<KeyFrame Cue="0%">
+						<Setter Property="Opacity" Value="0.1" />
+					</KeyFrame>
+					<KeyFrame Cue="100%">
+						<Setter Property="Opacity" Value="1.0" />
+					</KeyFrame>
+				</Animation>
+			</Style.Animations>
+		</Style>
 
-    <Grid
+	</UserControl.Styles>
+
+	<Grid
         ColumnDefinitions="*"
         RowDefinitions="auto, *">
 
-        <Grid
+		<Grid
             Grid.Column="0"
             Grid.Row="0"
             ColumnDefinitions="Auto, Auto"
             Margin="10, 0, 0, 10">
-            <StackPanel
+			<StackPanel
                 Grid.Column="0"
                 Grid.Row="0"
                 Margin="0, 0, 10, 0">
-                <TextBlock
+				<TextBlock
                     Text="Spritsorte:"
                     Margin="0, 0, 0, 3">
-                </TextBlock>
-                <ComboBox
+				</TextBlock>
+				<ComboBox
                     Width="90"
                     ItemsSource="{Binding GasTypes}"
                     SelectedIndex="{Binding SelectedGasTypeIndex}">
-                </ComboBox>
-            </StackPanel>
-            <StackPanel
+				</ComboBox>
+			</StackPanel>
+			<StackPanel
                 Grid.Column="1"
                 Grid.Row="0"
                 HorizontalAlignment="Right">
-                <TextBlock
+				<TextBlock
                     Text="Sortieren nach:"
                     Margin="0, 0, 0, 3">
-                </TextBlock>
-                <ComboBox
+				</TextBlock>
+				<ComboBox
                     Width="130"
                     SelectedIndex="{Binding SelectedSortingIndex}">
-                    <ComboBoxItem>Firma</ComboBoxItem>
-                    <ComboBoxItem>Preis</ComboBoxItem>
-                    <ComboBoxItem>Entfernung</ComboBoxItem>
-                </ComboBox>
-            </StackPanel>
-        </Grid>
-		
+					<ComboBoxItem>Firma</ComboBoxItem>
+					<ComboBoxItem>Preis</ComboBoxItem>
+					<ComboBoxItem>Entfernung</ComboBoxItem>
+				</ComboBox>
+			</StackPanel>
+		</Grid>
+
 		<Grid
+			x:Name="transparentGrid"
             Grid.Column="0"
             Grid.Row="1"
 			Background="Transparent"
@@ -116,7 +117,12 @@
 			IsVisible="{Binding ListBoxGridIsVisible}">
 		</Grid>
 
-        <ListBox
+		<Grid
+			Name="dummyGrid"
+			Grid.Row="1">
+		</Grid>
+
+		<ListBox
             Grid.Column="0"
             Grid.Row="1"
             Classes.fade_out="{Binding ListBoxFadeOut, Mode=OneWay}"
@@ -125,18 +131,18 @@
             Background="Transparent"
             SelectionMode="Single"
             HorizontalAlignment="Stretch"
-			VerticalAlignment="Stretch"
+			Height="{Binding Bounds.Size.Height, ElementName=dummyGrid}"
             SelectedIndex="{Binding SelectedIndex}">
 
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <controls:StationItemControl
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<controls:StationItemControl
                         Station="{Binding}"
                         Margin="5, 0, 5, 0">
-                    </controls:StationItemControl>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+					</controls:StationItemControl>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
 
-        </ListBox>
-    </Grid>
+		</ListBox>
+	</Grid>
 </UserControl>
