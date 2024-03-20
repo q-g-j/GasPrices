@@ -2,5 +2,6 @@
   <PropertyGroup>
     <Nullable>enable</Nullable>
     <AvaloniaVersion>11.0.10</AvaloniaVersion>
+    <DotNetVersion>net8.0</DotNetVersion>
   </PropertyGroup>
 </Project>

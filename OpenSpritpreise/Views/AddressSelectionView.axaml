@@ -14,256 +14,260 @@
              d:DesignWidth="{Binding $parent[Window].Width}"
              d:DesignHeight="{Binding $parent[Window].Height}">
 
-	<Design.DataContext>
-		<vm:AddressSelectionViewModel />
-	</Design.DataContext>
+    <Design.DataContext>
+        <vm:AddressSelectionViewModel />
+    </Design.DataContext>
 
-	<UserControl.Resources>
-		<converters:RadiusValueConverter x:Key="RadiusValueConverter" />
-	</UserControl.Resources>
+    <UserControl.Resources>
+        <converters:RadiusValueConverter x:Key="RadiusValueConverter" />
+    </UserControl.Resources>
 
-	<i:Interaction.Behaviors>
-		<ia:EventTriggerBehavior EventName="KeyDown">
-			<ia:InvokeCommandAction Command="{Binding KeyDownCommand}" PassEventArgsToCommand="True" />
-		</ia:EventTriggerBehavior>
-	</i:Interaction.Behaviors>
+    <i:Interaction.Behaviors>
+        <ia:EventTriggerBehavior EventName="KeyDown">
+            <ia:InvokeCommandAction Command="{Binding KeyDownCommand}" PassEventArgsToCommand="True" />
+        </ia:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
 
-	<Grid
-        ColumnDefinitions="*"
-        RowDefinitions="*"
-        Margin="5, 15, 5, 15">
-
-		<progRing:ProgressRing
-            Grid.Column="0"
-            Grid.Row="0"
-            Grid.RowSpan="2"
-            Width="80"
-            Height="80"
-            IsActive="{Binding ProgressRingIsActive, FallbackValue=False}"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Foreground="LightGray"
-            Margin="0, -200, 0, 0">
-		</progRing:ProgressRing>
-
-		<Grid
-            Grid.Column="0"
-            Grid.Row="0"
+    <ScrollViewer>
+        <Grid
             ColumnDefinitions="*"
-            RowDefinitions="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, *, auto">
+            RowDefinitions="*"
+            Margin="5, 15, 5, 15">
 
-			<Grid
+            <progRing:ProgressRing
                 Grid.Column="0"
                 Grid.Row="0"
-                ColumnDefinitions="*, *"
-                HorizontalAlignment="Stretch"
-                Margin="0, 0, 0, 10">
+                Width="80"
+                Height="80"
+                IsActive="{Binding ProgressRingIsActive, FallbackValue=False}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="LightGray"
+                Margin="0, -200, 0, 0">
+            </progRing:ProgressRing>
 
-				<!-- Geolocation button: -->
-				<Button
+            <Grid
+                Grid.Column="0"
+                Grid.Row="0"
+                ColumnDefinitions="*"
+                RowDefinitions="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, *, auto">
+
+                <Grid
                     Grid.Column="0"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    Margin="0, 0, 2, 0"
-                    Content="Aktueller Standort"
-                    IsEnabled="{Binding GeolocationButtonIsEnabled}"
-                    IsVisible="{Binding GeolocationButtonIsVisible}"
-                    Command="{Binding DeviceGeolocationCommand}">
-				</Button>
-
-				<!-- Location picker button: -->
-				<Button
-                    Grid.Column="{Binding LocationPickerButtonGridColumn, FallbackValue=1}"
-                    Grid.ColumnSpan="2"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    Margin="2, 0, 0, 0"
-                    Content="Auf Karte wählen"
-                    IsEnabled="{Binding LocationPickerButtonIsEnabled}"
-                    Command="{Binding LocationPickerCommand}">
-				</Button>
-			</Grid>
-
-			<!-- Map Coordinates: -->
-			<Grid
-                RowDefinitions="auto, auto"
-                Grid.Column="0"
-                Grid.Row="1"
-                IsVisible="{Binding MapCoordinatesIsVisible, FallbackValue=false}">
-				<TextBlock
                     Grid.Row="0"
-                    Margin="0, 0, 0, 5"
-                    Text="Koordinaten:">
-				</TextBlock>
-				<TextBox
+                    ColumnDefinitions="*, *"
+                    HorizontalAlignment="Stretch"
+                    Margin="0, 0, 0, 10">
+
+                    <!-- Geolocation button: -->
+                    <Button
+                        Grid.Column="0"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Margin="0, 0, 2, 0"
+                        Content="Aktueller Standort"
+                        IsEnabled="{Binding GeolocationButtonIsEnabled}"
+                        IsVisible="{Binding GeolocationButtonIsVisible}"
+                        Command="{Binding DeviceGeolocationCommand}">
+                    </Button>
+
+                    <!-- Location picker button: -->
+                    <Button
+                        Grid.Column="{Binding LocationPickerButtonGridColumn, FallbackValue=1}"
+                        Grid.ColumnSpan="2"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Margin="2, 0, 0, 0"
+                        Content="Auf Karte wählen"
+                        IsEnabled="{Binding LocationPickerButtonIsEnabled}"
+                        Command="{Binding LocationPickerCommand}">
+                    </Button>
+                </Grid>
+
+                <!-- Map Coordinates: -->
+                <Grid
+                    RowDefinitions="auto, auto"
+                    Grid.Column="0"
                     Grid.Row="1"
+                    IsVisible="{Binding MapCoordinatesIsVisible, FallbackValue=false}">
+                    <TextBlock
+                        Grid.Row="0"
+                        Margin="0, 0, 0, 5"
+                        Text="Koordinaten:">
+                    </TextBlock>
+                    <TextBox
+                        Grid.Row="1"
+                        Margin="0, 0, 0, 10"
+                        IsEnabled="False"
+                        Text="{Binding MapCoordinates}">
+                    </TextBox>
+                </Grid>
+
+                <!-- Street: -->
+                <TextBlock
+                    Grid.Column="0"
+                    Grid.Row="2"
+                    Margin="0, 0, 0, 5"
+                    Text="Straße und Hausnummer:">
+                </TextBlock>
+                <TextBox
+                    Grid.Column="0"
+                    Grid.Row="3"
                     Margin="0, 0, 0, 10"
-                    IsEnabled="False"
-                    Text="{Binding MapCoordinates}">
-				</TextBox>
-			</Grid>
-
-			<!-- Street: -->
-			<TextBlock
-                Grid.Column="0"
-                Grid.Row="2"
-                Margin="0, 0, 0, 5"
-                Text="Straße und Hausnummer:">
-			</TextBlock>
-			<TextBox
-                Grid.Column="0"
-                Grid.Row="3"
-                Margin="0, 0, 0, 10"
-                AcceptsReturn="False"
-                MaxLines="1"
-                Text="{Binding Street}">
-
-				<i:Interaction.Behaviors>
-					<ia:EventTriggerBehavior EventName="GotFocus">
-						<ia:InvokeCommandAction Command="{Binding StreetFocusChangedCommand}" CommandParameter="True" />
-					</ia:EventTriggerBehavior>
-					<ia:EventTriggerBehavior EventName="LostFocus">
-						<ia:InvokeCommandAction Command="{Binding StreetFocusChangedCommand}" CommandParameter="False" />
-					</ia:EventTriggerBehavior>
-				</i:Interaction.Behaviors>
-			</TextBox>
-
-			<!-- Postal code: -->
-			<TextBlock
-                Grid.Column="0"
-                Grid.Row="4"
-                Margin="0, 0, 0, 5"
-                Text="Postleitzahl:">
-			</TextBlock>
-			<TextBox
-                Grid.Column="0"
-                Grid.Row="5"
-                Width="100"
-                HorizontalAlignment="Left"
-                Margin="0, 0, 0, 10"
-                AcceptsReturn="False"
-                MaxLines="1"
-                Text="{Binding PostalCode}">
-				<i:Interaction.Behaviors>
-					<ia:EventTriggerBehavior EventName="GotFocus">
-						<ia:InvokeCommandAction Command="{Binding PostalCodeFocusChangedCommand}"
-                                                CommandParameter="True" />
-					</ia:EventTriggerBehavior>
-					<ia:EventTriggerBehavior EventName="LostFocus">
-						<ia:InvokeCommandAction Command="{Binding PostalCodeFocusChangedCommand}"
-                                                CommandParameter="False" />
-					</ia:EventTriggerBehavior>
-				</i:Interaction.Behaviors>
-			</TextBox>
-
-			<!-- City: -->
-			<TextBlock
-                Grid.Column="0"
-                Grid.Row="6"
-                Margin="0, 0, 0, 5"
-                Text="Stadt:">
-			</TextBlock>
-			<TextBox
-                Grid.Column="0"
-                Grid.Row="7"
-                Margin="0, 0, 0, 10"
-                AcceptsReturn="False"
-                MaxLines="1"
-                Text="{Binding City}">
-				<i:Interaction.Behaviors>
-					<ia:EventTriggerBehavior EventName="GotFocus">
-						<ia:InvokeCommandAction Command="{Binding CityFocusChangedCommand}" CommandParameter="True" />
-					</ia:EventTriggerBehavior>
-					<ia:EventTriggerBehavior EventName="LostFocus">
-						<ia:InvokeCommandAction Command="{Binding CityFocusChangedCommand}" CommandParameter="False" />
-					</ia:EventTriggerBehavior>
-				</i:Interaction.Behaviors>
-			</TextBox>
-
-			<!-- Distance: -->
-			<TextBlock
-                Grid.Column="0"
-                Grid.Row="8"
-                Margin="0, 0, 0, 5"
-                Text="Umkreis:">
-			</TextBlock>
-
-			<StackPanel
-                Grid.Column="0"
-                Grid.Row="9"
-                Orientation="Horizontal">
-				<TextBox
-                    Margin="0, 0, 10, 0"
                     AcceptsReturn="False"
                     MaxLines="1"
-                    Text="{Binding Radius}">
-				</TextBox>
-				<TextBlock
-                    Margin="0, 0, 0, 0"
-                    Text="km">
-				</TextBlock>
-			</StackPanel>
+                    Text="{Binding Street}">
 
-			<Slider
-                Grid.Column="0"
-                Grid.Row="10"
-                Minimum="1"
-                Maximum="40"
-                TickFrequency="1"
-                IsSnapToTickEnabled="True"
-                Margin="0, 0, 0, 10"
-                Padding="10, 0, 10, 0"
-                HorizontalAlignment="Stretch"
-                Value="{Binding Radius, Converter={StaticResource RadiusValueConverter}}">
-			</Slider>
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="GotFocus">
+                            <ia:InvokeCommandAction Command="{Binding StreetFocusChangedCommand}"
+                                                    CommandParameter="True" />
+                        </ia:EventTriggerBehavior>
+                        <ia:EventTriggerBehavior EventName="LostFocus">
+                            <ia:InvokeCommandAction Command="{Binding StreetFocusChangedCommand}"
+                                                    CommandParameter="False" />
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
 
-			<!-- Search button: -->
-			<Button
-                Grid.Column="0"
-                Grid.Row="11"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center"
-                Content="Suchen"
-                IsEnabled="{Binding SearchButtonIsEnabled}"
-                Command="{Binding SearchCommand}">
-			</Button>
-
-			<!-- Warning message: -->
-			<Grid
-                Grid.Row="12"
-                ColumnDefinitions="*"
-                RowDefinitions="auto, auto"
-                Margin="0, 20, 0, 0"
-                IsVisible="{Binding WarningTextIsVisible, FallbackValue=false}">
-				<TextBlock
-                    Grid.Row="0"
-                    FontSize="20"
-                    FontWeight="DemiBold"
-                    Text="Warnung:"
-                    Foreground="Orange"
-                    Margin="0, 0, 0, 20">
-				</TextBlock>
-				<TextBlock
+                <!-- Postal code: -->
+                <TextBlock
                     Grid.Column="0"
-                    Grid.Row="1"
-                    FontSize="16"
-                    Text="{Binding WarningText}"
-                    TextWrapping="Wrap"
-                    Foreground="Orange">
-				</TextBlock>
-			</Grid>
+                    Grid.Row="4"
+                    Margin="0, 0, 0, 5"
+                    Text="Postleitzahl:">
+                </TextBlock>
+                <TextBox
+                    Grid.Column="0"
+                    Grid.Row="5"
+                    Width="100"
+                    HorizontalAlignment="Left"
+                    Margin="0, 0, 0, 10"
+                    AcceptsReturn="False"
+                    MaxLines="1"
+                    Text="{Binding PostalCode}">
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="GotFocus">
+                            <ia:InvokeCommandAction Command="{Binding PostalCodeFocusChangedCommand}"
+                                                    CommandParameter="True" />
+                        </ia:EventTriggerBehavior>
+                        <ia:EventTriggerBehavior EventName="LostFocus">
+                            <ia:InvokeCommandAction Command="{Binding PostalCodeFocusChangedCommand}"
+                                                    CommandParameter="False" />
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
 
-			<!-- Settings button: -->
-			<Button
-				Grid.Column="0"
-				Grid.Row="13"
-				HorizontalAlignment="Stretch"
-				HorizontalContentAlignment="Center"
-				Content="Einstellungen"
-				Margin="0 10 0 0"
-				Command="{Binding OpenSettingsCommand}">
-			</Button>
-		</Grid>
+                <!-- City: -->
+                <TextBlock
+                    Grid.Column="0"
+                    Grid.Row="6"
+                    Margin="0, 0, 0, 5"
+                    Text="Stadt:">
+                </TextBlock>
+                <TextBox
+                    Grid.Column="0"
+                    Grid.Row="7"
+                    Margin="0, 0, 0, 10"
+                    AcceptsReturn="False"
+                    MaxLines="1"
+                    Text="{Binding City}">
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="GotFocus">
+                            <ia:InvokeCommandAction Command="{Binding CityFocusChangedCommand}"
+                                                    CommandParameter="True" />
+                        </ia:EventTriggerBehavior>
+                        <ia:EventTriggerBehavior EventName="LostFocus">
+                            <ia:InvokeCommandAction Command="{Binding CityFocusChangedCommand}"
+                                                    CommandParameter="False" />
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
 
-	</Grid>
+                <!-- Distance: -->
+                <TextBlock
+                    Grid.Column="0"
+                    Grid.Row="8"
+                    Margin="0, 0, 0, 5"
+                    Text="Umkreis:">
+                </TextBlock>
+
+                <StackPanel
+                    Grid.Column="0"
+                    Grid.Row="9"
+                    Orientation="Horizontal">
+                    <TextBox
+                        Margin="0, 0, 10, 0"
+                        AcceptsReturn="False"
+                        MaxLines="1"
+                        Text="{Binding Radius}">
+                    </TextBox>
+                    <TextBlock
+                        Margin="0, 0, 0, 0"
+                        Text="km">
+                    </TextBlock>
+                </StackPanel>
+
+                <Slider
+                    Grid.Column="0"
+                    Grid.Row="10"
+                    Minimum="1"
+                    Maximum="40"
+                    TickFrequency="1"
+                    IsSnapToTickEnabled="True"
+                    Margin="0, 0, 0, 10"
+                    Padding="10, 0, 10, 0"
+                    HorizontalAlignment="Stretch"
+                    Value="{Binding Radius, Converter={StaticResource RadiusValueConverter}}">
+                </Slider>
+
+                <!-- Search button: -->
+                <Button
+                    Grid.Column="0"
+                    Grid.Row="11"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Content="Suchen"
+                    IsEnabled="{Binding SearchButtonIsEnabled}"
+                    Command="{Binding SearchCommand}">
+                </Button>
+
+                <!-- Warning message: -->
+                <Grid
+                    Grid.Row="12"
+                    ColumnDefinitions="*"
+                    RowDefinitions="auto, auto"
+                    Margin="0, 20, 0, 0"
+                    IsVisible="{Binding WarningTextIsVisible, FallbackValue=false}">
+                    <TextBlock
+                        Grid.Row="0"
+                        FontSize="20"
+                        FontWeight="DemiBold"
+                        Text="Warnung:"
+                        Foreground="Orange"
+                        Margin="0, 0, 0, 20">
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Column="0"
+                        Grid.Row="1"
+                        FontSize="16"
+                        Text="{Binding WarningText}"
+                        TextWrapping="Wrap"
+                        Foreground="Orange">
+                    </TextBlock>
+                </Grid>
+
+                <!-- Settings button: -->
+                <Button
+                    Grid.Column="0"
+                    Grid.Row="13"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Content="Einstellungen"
+                    Margin="0 10 0 0"
+                    Command="{Binding OpenSettingsCommand}">
+                </Button>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

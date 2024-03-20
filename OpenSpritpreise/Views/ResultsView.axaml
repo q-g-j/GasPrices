@@ -14,30 +14,32 @@
         <vm:ResultsViewModel />
     </Design.DataContext>
 
-    <Grid
-        ColumnDefinitions="*"
-        RowDefinitions="*, auto"
-        Margin="5, 15, 5, 15">
+    <ScrollViewer>
+        <Grid
+            ColumnDefinitions="*"
+            RowDefinitions="*, auto"
+            Margin="5, 15, 5, 15">
 
-        <TransitioningContentControl
-            Grid.Column="0"
-            Grid.Row="0"
-            Content="{Binding CurrentViewModel}">
-            <TransitioningContentControl.PageTransition>
-                <Binding Path="CurrentPageTransition" />
-            </TransitioningContentControl.PageTransition>
-        </TransitioningContentControl>
+            <TransitioningContentControl
+                Grid.Column="0"
+                Grid.Row="0"
+                Content="{Binding CurrentViewModel}">
+                <TransitioningContentControl.PageTransition>
+                    <Binding Path="CurrentPageTransition" />
+                </TransitioningContentControl.PageTransition>
+            </TransitioningContentControl>
 
-        <!-- Back button: -->
-        <Button
-            Grid.Column="0"
-            Grid.Row="1"
-            Margin="0, 10, 0, 0"
-            HorizontalAlignment="Stretch"
-            HorizontalContentAlignment="Center"
-            Content="Zurück"
-            IsVisible="{Binding BackButtonIsVisible, FallbackValue=True}"
-            Command="{Binding BackCommand}">
-        </Button>
-    </Grid>
+            <!-- Back button: -->
+            <Button
+                Grid.Column="0"
+                Grid.Row="1"
+                Margin="0, 10, 0, 0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                Content="Zurück"
+                IsVisible="{Binding BackButtonIsVisible, FallbackValue=True}"
+                Command="{Binding BackCommand}">
+            </Button>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

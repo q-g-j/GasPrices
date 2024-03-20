@@ -9,9 +9,7 @@
              x:CompileBindings="True"
              mc:Ignorable="d"
              d:DesignWidth="{CompiledBinding $parent[Window].Width}"
-             d:DesignHeight="{CompiledBinding $parent[Window].Height}"
-             MaxWidth="600"
-             MaxHeight="800">
+             d:DesignHeight="{CompiledBinding $parent[Window].Height}">
 
     <Design.DataContext>
         <vm:LocationPickerViewModel />

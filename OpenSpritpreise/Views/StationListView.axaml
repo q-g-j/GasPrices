@@ -107,7 +107,6 @@
 		</Grid>
 
 		<Grid
-			x:Name="transparentGrid"
             Grid.Column="0"
             Grid.Row="1"
 			Background="Transparent"
@@ -118,7 +117,7 @@
 		</Grid>
 
 		<Grid
-			Name="dummyGrid"
+			Name="DummyGrid"
 			Grid.Row="1">
 		</Grid>
 
@@ -131,7 +130,7 @@
             Background="Transparent"
             SelectionMode="Single"
             HorizontalAlignment="Stretch"
-			Height="{Binding Bounds.Size.Height, ElementName=dummyGrid}"
+			Height="{Binding Bounds.Size.Height, ElementName=DummyGrid}"
             SelectedIndex="{Binding SelectedIndex}">
 
 			<ListBox.ItemTemplate>

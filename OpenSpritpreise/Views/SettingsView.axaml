@@ -10,102 +10,104 @@
              x:DataType="vm:SettingsViewModel"
              x:CompileBindings="True"
              mc:Ignorable="d"
-             d:DesignWidth="{Binding $parent[Window].Width}" 
+             d:DesignWidth="{Binding $parent[Window].Width}"
              d:DesignHeight="{Binding $parent[Window].Height}">
 
-	<Design.DataContext>
-		<vm:SettingsViewModel />
-	</Design.DataContext>
-	
-	<i:Interaction.Behaviors>
-		<ia:EventTriggerBehavior EventName="Initialized">
-			<ia:InvokeCommandAction Command="{Binding InitializedCommand}"/>
-		</ia:EventTriggerBehavior>
-		
-		<ia:EventTriggerBehavior EventName="KeyDown">
-			<ia:InvokeCommandAction Command="{Binding KeyDownCommand}" PassEventArgsToCommand="True"/>
-		</ia:EventTriggerBehavior>
-	</i:Interaction.Behaviors>
+    <Design.DataContext>
+        <vm:SettingsViewModel />
+    </Design.DataContext>
 
-	<Grid
-		RowDefinitions="auto, auto, auto, *, auto, auto"
-		Margin="5, 15, 5, 15">
+    <i:Interaction.Behaviors>
+        <ia:EventTriggerBehavior EventName="Initialized">
+            <ia:InvokeCommandAction Command="{Binding InitializedCommand}" />
+        </ia:EventTriggerBehavior>
 
-		<progRing:ProgressRing
-			Grid.Column="0"
-			Grid.Row="0"
-			Grid.RowSpan="6"
-			Width="80"
-			Height="80"
-			IsActive="{Binding ProgressRingIsActive, FallbackValue=False}"
-			HorizontalAlignment="Center"
-			VerticalAlignment="Center"
-			Foreground="LightGray"
-			Margin="0, 0, 0, 0">
-		</progRing:ProgressRing>
-		
-		<TextBlock
-			Grid.Row="0"
-			Margin="0, 0, 0, 10"
-			Text="Tankerkönig API-Schlüssel:">
-		</TextBlock>
-		<TextBox
-			Grid.Row="1"
-			Margin="0, 0, 0, 20"
-			FontFamily="{StaticResource Mono}"
-			AcceptsReturn="False"
-			MaxLines="1"
-			Text="{Binding TankerKoenigApiKey}">
-		</TextBox>
-		
-		<Button
-			Grid.Row="2"
-			HorizontalAlignment="Stretch"
-			HorizontalContentAlignment="Center"
-			IsEnabled="{Binding ValidateButtonIsEnabled}"
-			Content="Überprüfen"
-			Command="{Binding ValidateCommand}">
-		</Button>
+        <ia:EventTriggerBehavior EventName="KeyDown">
+            <ia:InvokeCommandAction Command="{Binding KeyDownCommand}" PassEventArgsToCommand="True" />
+        </ia:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
 
-		<!-- Message: -->
-		<Grid
-			Grid.Row="3"
-			RowDefinitions="auto, auto"
-			Margin="0, 20, 0, 0"
-			IsVisible="{Binding NoticeTextIsVisible, FallbackValue=false}">
-			<TextBlock
-				Grid.Row="0"
-				FontSize="20"
-				FontWeight="DemiBold"
-				Text="{Binding NoticeTitleText}"
-				Foreground="{Binding NoticeTextColor}"
-				Margin="0, 0, 0, 20">
-			</TextBlock>
-			<TextBlock
-				Grid.Row="1"
-				FontSize="16"
-				Text="{Binding NoticeText}"
-				TextWrapping="Wrap"
-				Foreground="{Binding NoticeTextColor}">
-			</TextBlock>
-		</Grid>
-		
-		<Button
-			Grid.Row="4"
-			HorizontalAlignment="Stretch"
-			HorizontalContentAlignment="Center"
-			IsEnabled="{Binding SaveButtonIsEnabled}"
-			Content="Speichern"
-			Command="{Binding SaveCommand}">
-		</Button>
-		<Button
-			Grid.Row="5"
-			Margin="0, 10, 0, 0"
-			HorizontalAlignment="Stretch"
-			HorizontalContentAlignment="Center"
-			Content="Abbrechen"
-			IsVisible="{Binding CancelButtonIsVisible, FallbackValue=True}"
-			Command="{Binding CancelCommand}">
-		</Button>
-	</Grid>
+    <ScrollViewer>
+        <Grid
+            RowDefinitions="auto, auto, auto, *, auto, auto"
+            Margin="5, 15, 5, 15">
+
+            <progRing:ProgressRing
+                Grid.Column="0"
+                Grid.Row="0"
+                Grid.RowSpan="6"
+                Width="80"
+                Height="80"
+                IsActive="{Binding ProgressRingIsActive, FallbackValue=False}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="LightGray"
+                Margin="0, 0, 0, 0">
+            </progRing:ProgressRing>
+
+            <TextBlock
+                Grid.Row="0"
+                Margin="0, 0, 0, 10"
+                Text="Tankerkönig API-Schlüssel:">
+            </TextBlock>
+            <TextBox
+                Grid.Row="1"
+                Margin="0, 0, 0, 20"
+                FontFamily="{StaticResource Mono}"
+                AcceptsReturn="False"
+                MaxLines="1"
+                Text="{Binding TankerKoenigApiKey}">
+            </TextBox>
+
+            <Button
+                Grid.Row="2"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                IsEnabled="{Binding ValidateButtonIsEnabled}"
+                Content="Überprüfen"
+                Command="{Binding ValidateCommand}">
+            </Button>
+
+            <!-- Message: -->
+            <Grid
+                Grid.Row="3"
+                RowDefinitions="auto, auto"
+                Margin="0, 20, 0, 0"
+                IsVisible="{Binding NoticeTextIsVisible, FallbackValue=false}">
+                <TextBlock
+                    Grid.Row="0"
+                    FontSize="20"
+                    FontWeight="DemiBold"
+                    Text="{Binding NoticeTitleText}"
+                    Foreground="{Binding NoticeTextColor}"
+                    Margin="0, 0, 0, 20">
+                </TextBlock>
+                <TextBlock
+                    Grid.Row="1"
+                    FontSize="16"
+                    Text="{Binding NoticeText}"
+                    TextWrapping="Wrap"
+                    Foreground="{Binding NoticeTextColor}">
+                </TextBlock>
+            </Grid>
+
+            <Button
+                Grid.Row="4"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                IsEnabled="{Binding SaveButtonIsEnabled}"
+                Content="Speichern"
+                Command="{Binding SaveCommand}">
+            </Button>
+            <Button
+                Grid.Row="5"
+                Margin="0, 10, 0, 0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                Content="Abbrechen"
+                IsVisible="{Binding CancelButtonIsVisible, FallbackValue=True}"
+                Command="{Binding CancelCommand}">
+            </Button>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
