@@ -15,7 +15,7 @@ Sowohl bei der Kartenposition als auch nach der Nutzung des Standortdienstes erf
 
 |Projekt-Name|Beschreibung|
 |-|-|
-|GasPrices.Desktop|- Windows<br/>- Linux<br/>- MacOS|
-|GasPrices.Android|Android-Geräte|
-|GasPrices.iOS|iPhone / iPad|
-|GasPrices.Browser|Plattformunabhängige Webassembly-App|
+|OpenSpritpreise.Desktop|- Windows<br/>- Linux<br/>- MacOS|
+|OpenSpritpreise.Android|Android-Geräte|
+|OpenSpritpreise.iOS|iPhone / iPad|
+|OpenSpritpreise.Browser|Plattformunabhängige Webassembly-App|
