@@ -6,8 +6,6 @@
     <TargetFramework>$(DotNetVersion)</TargetFramework>
     <Nullable>enable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-    <PublishTrimmed>true</PublishTrimmed>
-    <TrimMode>link</TrimMode>
     <ApplicationIcon>..\OpenSpritpreise\Assets\avalonia-logo.ico</ApplicationIcon>
   </PropertyGroup>
 

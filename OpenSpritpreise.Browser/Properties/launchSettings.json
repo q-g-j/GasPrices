@@ -6,7 +6,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://192.168.100.100:5000",
+      "applicationUrl": "https://192.168.100.100:5001;http://192.168.100.100:5000",
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/debug?browser={browserInspectUri}"
     }
   }

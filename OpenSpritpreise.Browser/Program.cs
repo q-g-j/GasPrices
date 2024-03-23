@@ -16,6 +16,7 @@ internal sealed partial class Program
         await JSHost.ImportAsync("url_handler", "/url_handler.js");
 
         await BuildAvaloniaApp()
+            .WithInterFont()
             .StartBrowserAppAsync("out");
     }
     public static AppBuilder BuildAvaloniaApp()
