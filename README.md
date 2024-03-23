@@ -21,7 +21,7 @@ Both for map positioning and after using the location service, the search is don
 |OpenSpritpreise.Browser|Platform-independent WebAssembly app|
 
 ### Technical Details
-Written in C# with .NET Framework 8.0 and the GUI framework [AvaloniaUI](https://github.com/AvaloniaUI/Avalonia).
+Written in C# with .NET 8.0 and the GUI framework [AvaloniaUI](https://github.com/AvaloniaUI/Avalonia).
 
 The project template used is ```avalonia.xplat``` ([Link](https://github.com/AvaloniaUI/avalonia-dotnet-templates)). This allows executing the same program code (in this project: ```OpenSpritpreise/OpenSpritpreise.csproj```) on different platforms (see [Supported Platforms](https://github.com/q-g-j/OpenSpritpreise/edit/master/README.md#supported-platforms)). The browser version unfortunately still has some minor bugs: in mobile browsers, there may be issues with keyboard input.
 
