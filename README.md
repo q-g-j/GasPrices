@@ -4,6 +4,8 @@ Copyright 2024 Jann Emken
 ### Description
 A cross-platform app for listing nearby gas stations and fuel prices (limited to Germany).
 
+In-App texts are in German only.
+
 Requires a personal API key from [Tankerkönig.de](http://tankerkoenig.de/). This can be obtained for free [here](https://creativecommons.tankerkoenig.de/) and must be provided once in the app settings.
 
 The location can be optionally selected on a map.<br/>
