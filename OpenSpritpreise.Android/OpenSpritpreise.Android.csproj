@@ -9,12 +9,16 @@
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <Authors>Jann Emken</Authors>
+    <Company>qgjsoft</Company>
+    <Product>OpenSpritpreise</Product>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <RuntimeIdentifiers>android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>
     <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
     <DebugType>none</DebugType>
     <DocumentationFile />
+    <WarningLevel>0</WarningLevel>
   </PropertyGroup>
 
   <ItemGroup>
