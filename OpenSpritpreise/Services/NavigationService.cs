@@ -13,7 +13,7 @@ public class NavigationService<TNavigationStore>(
 {
     public void Navigate<TViewModel, TPageTransition>()
         where TViewModel : ViewModelBase
-        where TPageTransition : ICustomPageTransition, new()
+        where TPageTransition : ICustomPageTransition
     {
         navigationStore.CurrentPageTransition = pageTransitionCreator(typeof(TPageTransition));
         navigationStore.CurrentViewModel = viewModelCreator(typeof(TViewModel));

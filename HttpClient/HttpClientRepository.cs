@@ -11,7 +11,7 @@ public class HttpClientRepository(IHttpClientFactory httpClientFactory)
     {
         var client = httpClientFactory.CreateClient();
         client.DefaultRequestHeaders.Add("User-Agent",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0");
+            "Mozilla/5.0 (compatible; AcmeInc/1.0)");
         client.Timeout = TimeSpan.FromMilliseconds(8000);
 
         HttpResponseMessage? response = null;

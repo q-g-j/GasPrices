@@ -1,17 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
 		<TargetFramework>$(DotNetVersion)-browser</TargetFramework>
 		<RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
 		<WasmMainJSPath>wwwroot\main.js</WasmMainJSPath>
 		<WasmRuntimeAssetsLocation>./_framework</WasmRuntimeAssetsLocation>
-    </PropertyGroup>
+	</PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Avalonia.Browser" Version="$(AvaloniaVersion)"/>
-    </ItemGroup>
+	<ItemGroup>
+		<WasmExtraFilesToDeploy Include="wwwroot\**" />
+	</ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\OpenSpritpreise\OpenSpritpreise.csproj"/>
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\OpenSpritpreise\OpenSpritpreise.csproj" />
+	</ItemGroup>
 </Project>
