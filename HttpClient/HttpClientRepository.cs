@@ -15,7 +15,6 @@ public class HttpClientRepository(IHttpClientFactory httpClientFactory)
         client.Timeout = TimeSpan.FromMilliseconds(8000);
 
         HttpResponseMessage? response = null;
-        Console.WriteLine(response);
 
         try
         {
