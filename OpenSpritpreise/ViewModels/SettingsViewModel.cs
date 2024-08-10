@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using OpenSpritpreise.PageTransitions;
 using OpenSpritpreise.Store;
 using SettingsHandling;
+using Serilog;
 
 namespace OpenSpritpreise.ViewModels;
 

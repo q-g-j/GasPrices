@@ -2,6 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
              xmlns:map="using:Mapsui.UI.Avalonia"
              xmlns:vm="using:OpenSpritpreise.ViewModels"
              x:Class="OpenSpritpreise.Views.LocationPickerView"
@@ -20,13 +22,12 @@
         RowDefinitions="*, auto, auto">
 
         <!-- Map: -->
-        <map:MapControl
-            x:Name="MapControl"
+        <ContentControl Content="{Binding MapControlObj}"
             Grid.Row="0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Margin="0, 0, 0, 10">
-        </map:MapControl>
+        </ContentControl>
 
         <!-- Apply button: -->
         <Button
